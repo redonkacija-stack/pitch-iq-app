@@ -23,9 +23,11 @@ import {
   Save,
   ShieldCheck,
   Sparkles,
+  Swords,
   Target,
   TrendingUp,
 } from "lucide-react";
+import InvasionGame from "./components/InvasionGame";
 import "./index.css";
 
 const STORAGE_KEY = "pitchiq-coach-workspace:v1";
@@ -209,6 +211,7 @@ function Sidebar({ activeView, onNavigate, onNewPitch, mobileOpen, onClose }) {
     { id: "builder", label: "Pitch builder", icon: FileText },
     { id: "practice", label: "Practice room", icon: Mic2 },
     { id: "feedback", label: "Scorecard", icon: ListChecks },
+    { id: "invasion", label: "Football Invasion", icon: Swords },
   ];
   return (
     <>
@@ -319,6 +322,7 @@ function Topbar({ onMenu, activeView, onNavigate }) {
     builder: "Pitch builder",
     practice: "Practice room",
     feedback: "Your scorecard",
+    invasion: "Football Invasion",
   };
   return (
     <header className="sticky top-0 z-30 flex h-[68px] items-center justify-between border-b border-white/[.07] bg-[#0f172a]/90 px-4 backdrop-blur-xl sm:px-7 lg:px-9">
@@ -515,6 +519,33 @@ function Overview({
               : "Audience, problem, solution, proof, ask"
           }
         />
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-xl border border-sky-200/15 bg-[#13243a] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div className="flex items-start gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-sky-200/10 text-sky-100">
+            <Swords size={19} />
+          </span>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[.14em] text-sky-100">
+              New / local head-to-head
+            </p>
+            <h3 className="mt-1 font-display text-xl font-bold">
+              Football Invasion
+            </h3>
+            <p className="mt-1 max-w-xl text-xs leading-relaxed text-slate-400">
+              Challenge a friend on the same device. Room codes seed the same
+              player order; take turns answering three escalating clues per
+              player.
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={() => onNavigate("invasion")}
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-sky-100/20 bg-sky-100/[.07] px-4 py-2.5 text-xs font-bold text-sky-50 transition hover:bg-sky-100/[.12]"
+        >
+          Open game <ArrowRight size={14} />
+        </button>
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(330px,.7fr)]">
@@ -1350,6 +1381,9 @@ export default function App() {
                 sessions={workspace.practiceSessions}
                 onRecord={recordPractice}
               />
+            )}
+            {activeView === "invasion" && (
+              <InvasionGame onBack={() => navigate("overview")} />
             )}
           </main>
           <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[.06] px-4 py-4 text-[10px] text-slate-600 sm:px-7 lg:px-9">
