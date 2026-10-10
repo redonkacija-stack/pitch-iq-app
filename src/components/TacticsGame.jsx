@@ -13,6 +13,7 @@ import confetti from "canvas-confetti";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 import FlagIcon from "./FlagIcon";
+import ClubCrest from "./ClubCrest";
 
 export default function TacticsGame({
   challenge,
@@ -159,12 +160,21 @@ export default function TacticsGame({
                   : `The answer: ${challenge.answer}`}
               </p>
               <div className="mt-2 flex items-center gap-2 text-xs font-semibold text-white/80">
+                <ClubCrest
+                  src={challenge.teamLogoUrl}
+                  alt={`${challenge.team || challenge.answer} crest`}
+                  className="h-9 w-9"
+                  fallbackClassName="h-5 w-5"
+                />
                 <FlagIcon
                   code={challenge.managerNationalityCode}
                   label={`${challenge.answer} nationality`}
                   className="h-4 w-6"
                 />
-                {challenge.answer}
+                <span>
+                  {challenge.answer}
+                  {challenge.team ? ` · ${challenge.team}` : ""}
+                </span>
               </div>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-mist">
                 {challenge.explanation}

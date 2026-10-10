@@ -13,6 +13,7 @@ import confetti from "canvas-confetti";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 import FlagIcon from "./FlagIcon";
+import ClubCrest from "./ClubCrest";
 
 function normalize(value) {
   return value
@@ -157,6 +158,12 @@ export default function TransferGame({
                     className={`min-w-0 ${index % 2 === 1 ? "sm:text-right" : ""}`}
                   >
                     <p className="flex items-center gap-2 text-sm font-bold">
+                      <ClubCrest
+                        src={club.logoUrl}
+                        alt={`${club.name} crest`}
+                        className="h-8 w-8 rounded-md"
+                        fallbackClassName="h-5 w-5"
+                      />
                       <FlagIcon
                         code={club.countryCode}
                         label={`${club.country} flag`}
@@ -286,6 +293,12 @@ export default function TransferGame({
                 {result.won ? "Path identified" : "Time called"}
               </p>
               <p className="flex items-center gap-1 text-xs text-mist">
+                <ClubCrest
+                  src={challenge.clubs.at(-1).logoUrl}
+                  alt={`${challenge.clubs.at(-1).name} crest`}
+                  className="mr-1 h-8 w-8 rounded-md"
+                  fallbackClassName="h-5 w-5"
+                />
                 <FlagIcon
                   code={challenge.nationalityCode}
                   label={`${challenge.answer} nationality`}

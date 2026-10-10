@@ -266,12 +266,71 @@ const managerNationalityCodes = {
   "Unai Emery": "es",
 };
 
+const clubCrestFiles = {
+  "AC Milan": "AC Milan logo.svg",
+  "Al-Hilal": "Al-Hilal SFC Logo.svg",
+  "Al Nassr": "Al-Nassr FC Logo.svg",
+  Ajax: "AFC Ajax logo.svg",
+  Arsenal: "Arsenal FC.svg",
+  "Arsenal (loan)": "Arsenal FC.svg",
+  Barcelona: "FC Barcelona (crest).svg",
+  "Barcelona academy": "FC Barcelona (crest).svg",
+  "Bayer Leverkusen": "Bayer 04 Leverkusen logo.svg",
+  "Bayern Munich": "FC Bayern München logo (2017).svg",
+  "Borussia Mönchengladbach": "Borussia Mönchengladbach logo.svg",
+  "Dinamo Zagreb": "GNK Dinamo Zagreb logo.svg",
+  "Inter Milan": "Inter Milan.svg",
+  Juventus: "Juventus FC 2017 logo.svg",
+  "LA Galaxy": "LA Galaxy logo.svg",
+  Lens: "RC Lens logo.svg",
+  Liverpool: "Liverpool FC.svg",
+  "Manchester City": "Manchester City FC badge.svg",
+  "Manchester United": "Manchester United FC crest.svg",
+  Málaga: "Málaga CF logo.svg",
+  "Malmö FF": "Malmö FF logo.svg",
+  Monaco: "AS Monaco FC.svg",
+  "New York Red Bulls": "New York Red Bulls logo.svg",
+  "Newell’s Old Boys": "Newell's Old Boys logo.svg",
+  "Paris Saint-Germain": "Paris Saint-Germain F.C..svg",
+  Porto: "FC Porto.svg",
+  Real: "Real Madrid CF.svg",
+  "Real Madrid": "Real Madrid CF.svg",
+  Santos: "Santos FC logo.svg",
+  Sevilla: "Sevilla FC crest.svg",
+  Spain: "Spain national football team crest.svg",
+  "Sporting CP": "Sporting Clube de Portugal (Logo).svg",
+  Tottenham: "Tottenham Hotspur.svg",
+  "Tottenham Hotspur": "Tottenham Hotspur.svg",
+  Valencia: "Valencia CF logo.svg",
+  Villarreal: "Villarreal CF logo.svg",
+  Netherlands: "Netherlands national football team.svg",
+};
+
+function clubLogoUrl(name) {
+  const file = clubCrestFiles[name];
+  return file
+    ? `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=128`
+    : null;
+}
+
+const tacticalTeamByManager = {
+  "Carlo Ancelotti": "Real Madrid",
+  "Diego Simeone": "Atlético Madrid",
+  "Jürgen Klopp": "Liverpool",
+  "Mikel Arteta": "Arsenal",
+  "Pep Guardiola": "Manchester City",
+};
+clubCrestFiles["Atlético Madrid"] = "Atletico Madrid 2017 logo.svg";
+
 export const matches = rawMatches.map((match) => ({
   ...match,
+  teamLogoUrl: match.teamLogoUrl || clubLogoUrl(match.team),
+  opponentLogoUrl: match.opponentLogoUrl || clubLogoUrl(match.opponent),
   players: match.players.map((player) => ({
     ...player,
     nationalityCode:
       player.nationalityCode || nationalityCodeByEmoji[player.flag] || null,
+    clubLogoUrl: player.clubLogoUrl || clubLogoUrl(match.team),
   })),
 }));
 
@@ -284,11 +343,16 @@ export const careers = rawCareers.map((career) => ({
   clubs: career.clubs.map((club) => ({
     ...club,
     countryCode: club.countryCode || countryCodeByName[club.country] || null,
+    logoUrl: club.logoUrl || clubLogoUrl(club.name),
   })),
 }));
 
 export const profiles = rawProfiles.map((profile) => ({
   ...profile,
+  team: profile.team || tacticalTeamByManager[profile.answer] || null,
+  teamLogoUrl:
+    profile.teamLogoUrl ||
+    clubLogoUrl(tacticalTeamByManager[profile.answer] || ""),
   managerNationalityCode:
     profile.managerNationalityCode ||
     managerNationalityCodes[profile.answer] ||

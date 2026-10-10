@@ -1,4 +1,5 @@
 import FlagIcon from "./FlagIcon";
+import ClubCrest from "./ClubCrest";
 
 export default function PitchCanvas({
   players,
@@ -43,7 +44,19 @@ export default function PitchCanvas({
             <span
               className={`max-w-full truncate rounded bg-[#0f172a]/85 px-1.5 py-1 text-center text-[10px] font-bold leading-tight text-white sm:text-[11px] ${isKnown ? "border border-lime/30" : isSelected ? "outline outline-1 outline-lime/50" : ""}`}
             >
-              {isKnown ? player.name : player.position}
+              <span className="inline-flex max-w-full items-center justify-center gap-1">
+                {isKnown && (
+                  <ClubCrest
+                    src={player.clubLogoUrl}
+                    alt="Team crest"
+                    className="h-4 w-4 rounded"
+                    fallbackClassName="h-3 w-3"
+                  />
+                )}
+                <span className="truncate">
+                  {isKnown ? player.name : player.position}
+                </span>
+              </span>
             </span>
           </button>
         );

@@ -13,6 +13,7 @@ import {
 import confetti from "canvas-confetti";
 import PitchCanvas from "./PitchCanvas";
 import FlagIcon from "./FlagIcon";
+import ClubCrest from "./ClubCrest";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 
@@ -209,22 +210,46 @@ export default function LineupGame({
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(310px,.75fr)]">
         <section className="glass-panel rounded-2xl p-3 sm:p-5">
           <div className="mb-3 flex items-center justify-between px-1">
-            <div>
-              <p className="font-display text-lg font-bold uppercase">
-                {challenge.team}
-              </p>
-              <p className="text-[10px] uppercase tracking-[.15em] text-mist">
-                vs {challenge.opponent}
-              </p>
+            <div className="flex items-center gap-3">
+              <ClubCrest
+                src={challenge.teamLogoUrl}
+                alt={`${challenge.team} crest`}
+                className="h-10 w-10 sm:h-12 sm:w-12"
+                fallbackClassName="h-6 w-6"
+              />
+              <div>
+                <p className="font-display text-lg font-bold uppercase">
+                  {challenge.team}
+                </p>
+                <p className="text-[10px] uppercase tracking-[.15em] text-mist">
+                  {challenge.subtitle.split("·").slice(1).join("·").trim()}
+                </p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="font-display text-lg font-bold">
-                {guessed.size}
-                <span className="text-mist"> / 11</span>
-              </p>
-              <p className="text-[10px] uppercase tracking-[.15em] text-mist">
-                players found
-              </p>
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="font-display text-sm font-bold uppercase text-mist">
+                  {challenge.opponent}
+                </p>
+                <p className="text-[10px] uppercase tracking-[.15em] text-mist">
+                  Opponent
+                </p>
+              </div>
+              <ClubCrest
+                src={challenge.opponentLogoUrl}
+                alt={`${challenge.opponent} crest`}
+                className="h-10 w-10 sm:h-12 sm:w-12"
+                fallbackClassName="h-6 w-6"
+              />
+              <div className="text-right">
+                <p className="font-display text-lg font-bold">
+                  {guessed.size}
+                  <span className="text-mist"> / 11</span>
+                </p>
+                <p className="text-[10px] uppercase tracking-[.15em] text-mist">
+                  players found
+                </p>
+              </div>
             </div>
           </div>
           <PitchCanvas
@@ -249,8 +274,18 @@ export default function LineupGame({
                   />
                   <span className="font-bold">#{player.number}</span>
                 </span>
-                <span className="ml-2 truncate text-right text-xs text-mist">
-                  {guessed.has(player.id) ? player.name : player.position}
+                <span className="ml-2 flex min-w-0 items-center justify-end gap-1.5 truncate text-right text-xs text-mist">
+                  {guessed.has(player.id) && (
+                    <ClubCrest
+                      src={player.clubLogoUrl}
+                      alt={`${challenge.team} crest`}
+                      className="h-5 w-5"
+                      fallbackClassName="h-3.5 w-3.5"
+                    />
+                  )}
+                  <span className="truncate">
+                    {guessed.has(player.id) ? player.name : player.position}
+                  </span>
                 </span>
               </button>
             ))}
