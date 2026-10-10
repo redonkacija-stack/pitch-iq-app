@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Check, Copy, RotateCcw, Shield, Swords } from "lucide-react";
+import { Check, Copy, Link as LinkIcon, RotateCcw, Shield, Swords } from "lucide-react";
+import { getShareableRoomUrl } from "../utils/peerSync";
 
 export default function LiveScoreHeader({
   room,
@@ -10,6 +11,7 @@ export default function LiveScoreHeader({
   onExitRoom,
 }) {
   const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   if (!room) return null;
 
@@ -30,7 +32,16 @@ export default function LiveScoreHeader({
     try {
       await navigator.clipboard.writeText(room.code);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {}
+  }
+
+  async function copyLink() {
+    try {
+      const url = getShareableRoomUrl(room.code);
+      await navigator.clipboard.writeText(url);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 1500);
     } catch {}
   }
 
@@ -54,6 +65,14 @@ export default function LiveScoreHeader({
               ) : (
                 <Copy size={12} className="text-slate-500" />
               )}
+            </button>
+            <button
+              onClick={copyLink}
+              className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/40 px-2.5 py-1 text-xs font-semibold text-slate-300 transition hover:border-white/30 hover:text-white"
+              title="Click to copy invite link"
+            >
+              <LinkIcon size={12} className={copiedLink ? "text-lime" : "text-slate-500"} />
+              <span>{copiedLink ? "Link Copied" : "Share"}</span>
             </button>
             <span className="hidden rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[11px] text-slate-400 sm:inline-block">
               {room.mode.toUpperCase()}
