@@ -9,7 +9,7 @@ From an empty folder, run:
 ```powershell
 npx create-vite@latest . --no-interactive --template react
 npm install
-npm install lucide-react canvas-confetti
+npm install lucide-react canvas-confetti flag-icons
 npm install -D tailwindcss@3.4.17 postcss autoprefixer
 ```
 
@@ -34,6 +34,7 @@ Create a production build with `npm run build`, and preview it locally with `npm
     ├── App.jsx
     ├── index.css
     ├── components
+    │   ├── FlagIcon.jsx
     │   ├── LineupGame.jsx
     │   ├── Navbar.jsx
     │   ├── PitchCanvas.jsx
@@ -65,4 +66,4 @@ Scores, rounds, sound preference, daily progress, and streaks are stored locally
 
 ## Data Notes
 
-`src/data/gameData.js` composes three starting lineups, five career paths, and five tactical profiles. The lineups include Barcelona’s 2015 UEFA Champions League final XI, Spain’s 2010 FIFA World Cup final XI, and Real Madrid’s 2018 UEFA Champions League final XI. Daily IDs are deterministic for a given release and date, so changing dataset ordering in a future release can change that release’s daily selection.
+`src/data/gameData.js` composes three starting lineups, five career paths, and five tactical profiles. The lineups include Barcelona’s 2015 UEFA Champions League final XI, Spain’s 2010 FIFA World Cup final XI, and Real Madrid’s 2018 UEFA Champions League final XI. `FlagIcon.jsx` uses locally bundled SVGs from `flag-icons` for the country codes present in the data, with a globe fallback for unknown or failed flags. Daily IDs are deterministic for a given release and date, so changing dataset ordering in a future release can change that release’s daily selection.

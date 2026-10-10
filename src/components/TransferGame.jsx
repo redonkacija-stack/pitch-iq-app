@@ -12,6 +12,7 @@ import {
 import confetti from "canvas-confetti";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
+import FlagIcon from "./FlagIcon";
 
 function normalize(value) {
   return value
@@ -124,7 +125,11 @@ export default function TransferGame({
             <p className="mt-1 text-xs text-mist">
               {challenge.clubs.length} club spells{" "}
               <span className="mx-1 text-white/20">·</span> starting nation{" "}
-              <span className="ml-1 text-lg">{challenge.nationality}</span>
+              <FlagIcon
+                code={challenge.nationalityCode}
+                label={`${challenge.answer} nationality`}
+                className="ml-1 h-4 w-6 align-middle"
+              />
             </p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-semibold text-white/80">
@@ -151,7 +156,14 @@ export default function TransferGame({
                   <div
                     className={`min-w-0 ${index % 2 === 1 ? "sm:text-right" : ""}`}
                   >
-                    <p className="truncate text-sm font-bold">{club.name}</p>
+                    <p className="flex items-center gap-2 text-sm font-bold">
+                      <FlagIcon
+                        code={club.countryCode}
+                        label={`${club.country} flag`}
+                        className="h-3.5 w-5"
+                      />
+                      <span className="truncate">{club.name}</span>
+                    </p>
                     <p className="text-[10px] uppercase tracking-[.12em] text-mist">
                       {club.country}
                     </p>
@@ -232,6 +244,14 @@ export default function TransferGame({
             </button>
           </div>
           <div className="mt-3 min-h-[74px] rounded-lg border border-white/[.07] bg-black/15 p-3">
+            <div className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.1em] text-mist">
+              <FlagIcon
+                code={challenge.nationalityCode}
+                label={`${challenge.answer} nationality`}
+                className="h-3.5 w-5"
+              />
+              Player nationality
+            </div>
             {hintsShown ? (
               <ul className="space-y-2">
                 {challenge.hints.slice(0, hintsShown).map((hint, index) => (
@@ -265,7 +285,12 @@ export default function TransferGame({
               <p className="font-display text-2xl font-bold uppercase">
                 {result.won ? "Path identified" : "Time called"}
               </p>
-              <p className="text-xs text-mist">
+              <p className="flex items-center gap-1 text-xs text-mist">
+                <FlagIcon
+                  code={challenge.nationalityCode}
+                  label={`${challenge.answer} nationality`}
+                  className="mr-1 h-3.5 w-5"
+                />
                 {result.won ? challenge.answer : `It was ${challenge.answer}.`}{" "}
                 {result.score} points earned.
               </p>

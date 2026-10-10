@@ -2,7 +2,7 @@ import { matches as originalMatches } from "./matchData.js";
 import { careers as originalCareers } from "./transferData.js";
 import { profiles as originalProfiles } from "./tacticsData.js";
 
-export const matches = [
+const rawMatches = [
   ...originalMatches,
   {
     id: "real-madrid-liverpool-2018",
@@ -128,7 +128,7 @@ export const matches = [
   },
 ];
 
-export const careers = [
+const rawCareers = [
   ...originalCareers,
   {
     id: "cristiano-ronaldo-career",
@@ -189,7 +189,7 @@ export const careers = [
   },
 ];
 
-export const profiles = [
+const rawProfiles = [
   ...originalProfiles,
   {
     id: "ancelotti-fluid-real",
@@ -225,3 +225,75 @@ export const profiles = [
       "Arteta’s Arsenal combines positional structure, aggressive pressing and carefully managed rest defence. The specific shape varies by opponent and player availability.",
   },
 ];
+
+const nationalityCodeByEmoji = {
+  "🇦🇷": "ar",
+  "🇧🇷": "br",
+  "🇨🇷": "cr",
+  "🇭🇷": "hr",
+  "🇩🇪": "de",
+  "🇪🇸": "es",
+  "🇫🇷": "fr",
+  "🇵🇹": "pt",
+  "🇸🇪": "se",
+  "🇺🇾": "uy",
+};
+
+const countryCodeByName = {
+  Brazil: "br",
+  Croatia: "hr",
+  England: "gb-eng",
+  France: "fr",
+  Germany: "de",
+  Italy: "it",
+  Netherlands: "nl",
+  Portugal: "pt",
+  "Saudi Arabia": "sa",
+  Spain: "es",
+  Sweden: "se",
+  "United States": "us",
+};
+
+const managerNationalityCodes = {
+  "Carlo Ancelotti": "it",
+  "Diego Simeone": "ar",
+  "Jürgen Klopp": "de",
+  "José Mourinho": "pt",
+  "Mikel Arteta": "es",
+  "Pep Guardiola": "es",
+  "Roberto De Zerbi": "it",
+  "Thomas Tuchel": "de",
+  "Unai Emery": "es",
+};
+
+export const matches = rawMatches.map((match) => ({
+  ...match,
+  players: match.players.map((player) => ({
+    ...player,
+    nationalityCode:
+      player.nationalityCode || nationalityCodeByEmoji[player.flag] || null,
+  })),
+}));
+
+export const careers = rawCareers.map((career) => ({
+  ...career,
+  nationalityCode:
+    career.nationalityCode ||
+    nationalityCodeByEmoji[career.nationality] ||
+    null,
+  clubs: career.clubs.map((club) => ({
+    ...club,
+    countryCode: club.countryCode || countryCodeByName[club.country] || null,
+  })),
+}));
+
+export const profiles = rawProfiles.map((profile) => ({
+  ...profile,
+  managerNationalityCode:
+    profile.managerNationalityCode ||
+    managerNationalityCodes[profile.answer] ||
+    null,
+  optionNationalityCodes: profile.options.map(
+    (manager) => managerNationalityCodes[manager] || null,
+  ),
+}));

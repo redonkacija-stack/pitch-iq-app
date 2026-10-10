@@ -12,6 +12,7 @@ import {
 import confetti from "canvas-confetti";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
+import FlagIcon from "./FlagIcon";
 
 export default function TacticsGame({
   challenge,
@@ -124,7 +125,14 @@ export default function TacticsGame({
                   <span className="grid h-7 w-7 place-items-center rounded-md border border-white/10 font-display text-xs font-bold text-mist">
                     {String.fromCharCode(65 + index)}
                   </span>
-                  <span className="font-semibold">{option}</span>
+                  <span className="flex items-center gap-2 font-semibold">
+                    <FlagIcon
+                      code={challenge.optionNationalityCodes?.[index]}
+                      label={`${option} nationality`}
+                      className="h-4 w-6"
+                    />
+                    {option}
+                  </span>
                 </span>
                 {isAnswer ? (
                   <Check size={18} />
@@ -150,6 +158,14 @@ export default function TacticsGame({
                   ? "Good read"
                   : `The answer: ${challenge.answer}`}
               </p>
+              <div className="mt-2 flex items-center gap-2 text-xs font-semibold text-white/80">
+                <FlagIcon
+                  code={challenge.managerNationalityCode}
+                  label={`${challenge.answer} nationality`}
+                  className="h-4 w-6"
+                />
+                {challenge.answer}
+              </div>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-mist">
                 {challenge.explanation}
               </p>

@@ -1,3 +1,5 @@
+import FlagIcon from "./FlagIcon";
+
 export default function PitchCanvas({
   players,
   guessed,
@@ -33,12 +35,11 @@ export default function PitchCanvas({
             >
               {isKnown ? "✓" : player.number}
             </span>
-            <span
-              className="rounded-full border border-white/25 bg-[#0f172a]/85 px-1.5 py-0.5 text-[10px] leading-none"
-              title="Nationality"
-            >
-              {player.flag}
-            </span>
+            <FlagIcon
+              code={player.nationalityCode}
+              label={`${player.name} nationality`}
+              className="h-4 w-6"
+            />
             <span
               className={`max-w-full truncate rounded bg-[#0f172a]/85 px-1.5 py-1 text-center text-[10px] font-bold leading-tight text-white sm:text-[11px] ${isKnown ? "border border-lime/30" : isSelected ? "outline outline-1 outline-lime/50" : ""}`}
             >

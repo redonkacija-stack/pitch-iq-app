@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import PitchCanvas from "./PitchCanvas";
+import FlagIcon from "./FlagIcon";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 
@@ -241,7 +242,11 @@ export default function LineupGame({
                 className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left ${guessed.has(player.id) ? "border-lime/25 bg-lime/[.07]" : selectedId === player.id ? "border-lime/40 bg-lime/[.08]" : "border-white/10 bg-white/[.03] active:bg-white/[.08]"}`}
               >
                 <span className="flex items-center gap-2">
-                  <span className="text-base">{player.flag}</span>
+                  <FlagIcon
+                    code={player.nationalityCode}
+                    label={`${player.name} nationality`}
+                    className="h-4 w-6"
+                  />
                   <span className="font-bold">#{player.number}</span>
                 </span>
                 <span className="ml-2 truncate text-right text-xs text-mist">
@@ -303,8 +308,15 @@ export default function LineupGame({
                       }}
                       className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm hover:bg-lime/10"
                     >
-                      <span>{player.name}</span>
-                      <span className="text-xs text-mist">
+                      <span className="flex min-w-0 items-center gap-2">
+                        <FlagIcon
+                          code={player.nationalityCode}
+                          label={`${player.name} nationality`}
+                          className="h-4 w-6"
+                        />
+                        <span className="truncate">{player.name}</span>
+                      </span>
+                      <span className="ml-3 text-xs text-mist">
                         {player.position}
                       </span>
                     </button>
