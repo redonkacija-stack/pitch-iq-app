@@ -1,0 +1,55 @@
+export const careers = [
+  {
+    id: "zlatan-career",
+    answer: "Zlatan Ibrahimović",
+    aliases: ["zlatan", "ibrahimovic", "ibrahimović"],
+    nationality: "🇸🇪",
+    clubs: [
+      { name: "Malmö FF", years: "1999–2001", country: "Sweden" },
+      { name: "Ajax", years: "2001–2004", country: "Netherlands" },
+      { name: "Juventus", years: "2004–2006", country: "Italy" },
+      { name: "Inter Milan", years: "2006–2009", country: "Italy" },
+      { name: "Barcelona", years: "2009–2010", country: "Spain" },
+      { name: "AC Milan", years: "2010–2012", country: "Italy" },
+      { name: "Paris Saint-Germain", years: "2012–2016", country: "France" },
+      { name: "Manchester United", years: "2016–2018", country: "England" },
+      { name: "LA Galaxy", years: "2018–2019", country: "United States" },
+      { name: "AC Milan", years: "2020–2023", country: "Italy" },
+    ],
+    hints: [
+      "Scored more than 500 senior career goals for club and country.",
+      "Won league titles in the Netherlands, Italy, Spain and France.",
+      "Known for an overhead kick against England in 2012.",
+    ],
+    fact: "Across a two-decade career, Ibrahimović played for clubs in seven countries and won league titles in four of them.",
+  },
+  {
+    id: "thierry-henry-career",
+    answer: "Thierry Henry",
+    aliases: ["henry", "thierry"],
+    nationality: "🇫🇷",
+    clubs: [
+      { name: "Monaco", years: "1994–1999", country: "France" },
+      { name: "Juventus", years: "1999", country: "Italy" },
+      { name: "Arsenal", years: "1999–2007", country: "England" },
+      { name: "Barcelona", years: "2007–2010", country: "Spain" },
+      {
+        name: "New York Red Bulls",
+        years: "2010–2012",
+        country: "United States",
+      },
+      { name: "Arsenal (loan)", years: "2012", country: "England" },
+      {
+        name: "New York Red Bulls",
+        years: "2012–2014",
+        country: "United States",
+      },
+    ],
+    hints: [
+      "Scored 175 Premier League goals for Arsenal.",
+      "Won the 1998 FIFA World Cup with France.",
+      "Became Arsenal’s all-time leading scorer.",
+    ],
+    fact: "Henry won the Premier League Golden Boot four times and was part of Arsenal’s unbeaten 2003–04 league side.",
+  },
+];
