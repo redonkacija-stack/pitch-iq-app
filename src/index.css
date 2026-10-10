@@ -31,66 +31,48 @@ button {
 }
 ::selection {
   color: #052e16;
-  background: #22c55e;
+  background: #6ee7b7;
 }
-.pitch-surface {
-  background-color: #14532d;
-  background-image:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 50%, transparent 50%),
-    radial-gradient(
-      ellipse at center,
-      transparent 0 38%,
-      rgba(225, 255, 232, 0.2) 38.2% 38.55%,
-      transparent 38.75%
-    ),
-    linear-gradient(rgba(225, 255, 232, 0.2), rgba(225, 255, 232, 0.2));
-  background-size:
-    20% 100%,
-    100% 100%,
-    1px 100%;
-  background-position:
-    0 0,
-    center,
-    center;
-  background-repeat: repeat, no-repeat, no-repeat;
-}
-.pitch-lines::before,
-.pitch-lines::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  width: 30%;
-  height: 14%;
-  border: 1px solid rgba(225, 255, 232, 0.2);
-  transform: translateX(-50%);
-}
-.pitch-lines::before {
-  top: 0;
-  border-top: 0;
-}
-.pitch-lines::after {
-  bottom: 0;
-  border-bottom: 0;
-}
-.glass-panel {
-  border: 1px solid rgba(226, 240, 229, 0.09);
-  background: linear-gradient(
-    145deg,
-    rgba(30, 41, 59, 0.92),
-    rgba(15, 23, 42, 0.92)
+.score-ring {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9999px;
+  background: conic-gradient(
+    #6ee7b7 var(--score),
+    rgba(148, 163, 184, 0.14) var(--score)
   );
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(14px);
 }
-.noise-bg {
-  background-image: radial-gradient(
-    rgba(195, 226, 200, 0.12) 0.55px,
-    transparent 0.55px
-  );
-  background-size: 9px 9px;
+.score-ring-center {
+  display: flex;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  background: #131e32;
 }
-.lineup-slot {
-  transform: translate(-50%, -50%);
+.score-ring-center strong {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 2.45rem;
+  line-height: 1;
+  font-weight: 700;
+  color: #f8fafc;
+}
+.score-ring-center span {
+  margin-top: 3px;
+  font-size: 9px;
+  line-height: 1;
+  color: #94a3b8;
+}
+.score-ring.h-11 .score-ring-center {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+}
+.score-ring.h-11 .score-ring-center strong {
+  font-size: 14px;
 }
 .animate-fade-in {
   animation: fade-in 0.45s ease-out both;
