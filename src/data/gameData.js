@@ -322,7 +322,15 @@ const tacticalTeamByManager = {
 };
 clubCrestFiles["Atlético Madrid"] = "Atletico Madrid 2017 logo.svg";
 
-export const matches = rawMatches.map((match) => ({
+function deduplicate(list) {
+  const map = new Map();
+  for (const item of list) {
+    if (item?.id) map.set(item.id, { ...map.get(item.id), ...item });
+  }
+  return Array.from(map.values());
+}
+
+export const matches = deduplicate(rawMatches).map((match) => ({
   ...match,
   teamLogoUrl: match.teamLogoUrl || clubLogoUrl(match.team),
   opponentLogoUrl: match.opponentLogoUrl || clubLogoUrl(match.opponent),
@@ -334,7 +342,7 @@ export const matches = rawMatches.map((match) => ({
   })),
 }));
 
-export const careers = rawCareers.map((career) => ({
+export const careers = deduplicate(rawCareers).map((career) => ({
   ...career,
   nationalityCode:
     career.nationalityCode ||
@@ -347,7 +355,7 @@ export const careers = rawCareers.map((career) => ({
   })),
 }));
 
-export const profiles = rawProfiles.map((profile) => ({
+export const profiles = deduplicate(rawProfiles).map((profile) => ({
   ...profile,
   team: profile.team || tacticalTeamByManager[profile.answer] || null,
   teamLogoUrl:

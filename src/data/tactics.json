@@ -1,0 +1,123 @@
+[
+  {
+    "id": "guardiola-city",
+    "question": "Which manager’s team and tactical system is this?",
+    "systemName": "Inverted Fullback Box Midfield (3-2-4-1)",
+    "formation": "3-2-4-1",
+    "team": "Manchester City",
+    "teamLogoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20City%20FC%20badge.svg?width=128",
+    "managerNationalityCode": "es",
+    "principles": [
+      "A fullback or defender (e.g. Stones) steps up alongside the defensive pivot to form a 3-2 rest defense box.",
+      "Extreme pitch compression pinches the opposition into their own half via immediate 5-second counter-pressing.",
+      "Wingers hug the touchlines for maximum horizontal stretching before cutbacks into the half-spaces.",
+      "Central overloads isolate elite goalscoring threats against isolated center-backs."
+    ],
+    "options": [
+      "Pep Guardiola",
+      "Diego Simeone",
+      "José Mourinho",
+      "Jürgen Klopp"
+    ],
+    "optionNationalityCodes": ["es", "ar", "pt", "de"],
+    "answer": "Pep Guardiola",
+    "explanation": "Guardiola revolutionized modern positional play by stepping central defenders like John Stones into midfield, creating a box 3-2 midfield that dominated the 2023 treble-winning campaign."
+  },
+  {
+    "id": "simeone-atletico",
+    "question": "Which manager’s team and tactical system is this?",
+    "systemName": "Low-to-Mid Compact Block (4-4-2)",
+    "formation": "4-4-2",
+    "team": "Atlético Madrid",
+    "teamLogoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Atletico%20Madrid%202017%20logo.svg?width=128",
+    "managerNationalityCode": "ar",
+    "principles": [
+      "Two extremely narrow four-man banks deny all penetration through the central half-spaces.",
+      "Aggressive touchline traps trigger simultaneous pressing once the ball enters lateral zones.",
+      "Direct vertical transitions immediately target energetic front pairs pinning opposing center-backs.",
+      "Uncompromising defensive discipline and physical duel dominance inside the penalty box."
+    ],
+    "options": [
+      "Carlo Ancelotti",
+      "Diego Simeone",
+      "Pep Guardiola",
+      "Roberto De Zerbi"
+    ],
+    "optionNationalityCodes": ["it", "ar", "es", "it"],
+    "answer": "Diego Simeone",
+    "explanation": "Simeone's 'Cholismo' at Atlético Madrid defined an era of European football with an impenetrable 4-4-2 block, ruthless defensive work rate, and lightning-quick counter-attacks."
+  },
+  {
+    "id": "klopp-liverpool",
+    "question": "Which manager’s team and tactical system is this?",
+    "systemName": "Gegenpressing Heavy Metal Football (4-3-3)",
+    "formation": "4-3-3",
+    "team": "Liverpool",
+    "teamLogoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Liverpool%20FC.svg?width=128",
+    "managerNationalityCode": "de",
+    "principles": [
+      "The counter-press is the best playmaker in the world: swarming within 3 seconds of losing possession.",
+      "Ultra-high defensive line traps opponents offside while suffocating the middle third.",
+      "Fullbacks (Alexander-Arnold & Robertson) push extremely high to provide playmaking and volume crossing.",
+      "A fluid, narrow front trio ruthlessly attacks inside channels at relentless vertical speed."
+    ],
+    "options": [
+      "Mikel Arteta",
+      "Jürgen Klopp",
+      "Unai Emery",
+      "Thomas Tuchel"
+    ],
+    "optionNationalityCodes": ["es", "de", "es", "de"],
+    "answer": "Jürgen Klopp",
+    "explanation": "Klopp brought German 'Gegenpressing' to the Premier League, turning Liverpool into European and World Champions with ferocious counter-pressing and flying wingbacks."
+  },
+  {
+    "id": "alonso-leverkusen",
+    "question": "Which manager’s team and tactical system is this?",
+    "systemName": "Fluid Possession & Half-Space Overloads (3-4-2-1)",
+    "formation": "3-4-2-1",
+    "team": "Bayer Leverkusen",
+    "teamLogoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bayer%2004%20Leverkusen%20logo.svg?width=128",
+    "managerNationalityCode": "es",
+    "principles": [
+      "Dual attacking number 10s (Wirtz & Hofmann) drift between opposition lines to create devastating half-space overloads.",
+      "Flying wing-backs (Grimaldo & Frimpong) provide direct goal threat and pin the opposing defensive line.",
+      "Patient, short-passing build-up through double pivots bait the opponent into pressing before breaking lines.",
+      "Unbeaten invincibility driven by clutch late-game pressing and tactical composure."
+    ],
+    "options": [
+      "Xabi Alonso",
+      "Julian Nagelsmann",
+      "Hansi Flick",
+      "Erik ten Hag"
+    ],
+    "optionNationalityCodes": ["es", "de", "de", "nl"],
+    "answer": "Xabi Alonso",
+    "explanation": "Xabi Alonso guided Bayer Leverkusen to an unprecedented unbeaten Bundesliga and DFB-Pokal double in 2023–24 using a mesmerizing 3-4-2-1 system of half-space dominance."
+  },
+  {
+    "id": "arteta-arsenal",
+    "question": "Which manager’s team and tactical system is this?",
+    "systemName": "Positional Rest Defense & Half-Space Rotations (4-3-3)",
+    "formation": "4-3-3",
+    "team": "Arsenal",
+    "teamLogoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arsenal%20FC.svg?width=128",
+    "managerNationalityCode": "es",
+    "principles": [
+      "A structured build-up creates numerical advantages near the ball with an inverted full-back.",
+      "Coordinated high-press triggers accompanied by an elite, physical central defensive pairing (Saliba & Gabriel).",
+      "Wide forwards (Saka & Martinelli) isolate defenders in 1v1 duels with overlapping or underlapping midfielders.",
+      "League-leading set-piece routines designed to exploit blind-spot zonal defensive areas."
+    ],
+    "options": [
+      "Mikel Arteta",
+      "Jürgen Klopp",
+      "Unai Emery",
+      "Carlo Ancelotti"
+    ],
+    "optionNationalityCodes": ["es", "de", "es", "it"],
+    "answer": "Mikel Arteta",
+    "explanation": "Arteta turned Arsenal into perennial title contenders by combining strict positional play, supreme set-piece efficiency, and Europe's stingiest rest-defense structure."
+  }
+]
+

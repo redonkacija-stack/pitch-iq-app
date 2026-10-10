@@ -47,6 +47,7 @@ export default function LineupGame({
   onBack,
   onNext,
   onComplete,
+  onProgress,
 }) {
   const { stats } = useGame();
   const playSound = useSound(stats.soundEnabled);
@@ -123,6 +124,7 @@ export default function LineupGame({
     setQuery("");
     setMessage("Correct. Added to the XI.");
     playSound("success");
+    onProgress?.(next.size, players.length);
     if (next.size === players.length) {
       const score = Math.max(
         0,

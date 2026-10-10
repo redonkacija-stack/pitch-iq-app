@@ -1,0 +1,73 @@
+[
+  {
+    "id": "offside-second-last",
+    "statement": "A player is offside if they are level with the second-last opponent when the ball is played.",
+    "answer": false,
+    "ruleCategory": "Law 11 · Offside",
+    "explanation": "Under IFAB Law 11, a player is not in an offside position if they are level with the second-last opponent (or last two opponents)."
+  },
+  {
+    "id": "throw-in-goal",
+    "statement": "A goal can be scored directly from a throw-in into the opponent's net without any touch.",
+    "answer": false,
+    "ruleCategory": "Law 15 · Throw-In",
+    "explanation": "A goal cannot be scored directly from a throw-in. If the ball enters the opponent's goal directly, a goal kick is awarded."
+  },
+  {
+    "id": "whole-ball-line",
+    "statement": "The entire circumference of the ball must cross the whole of the goal line for a goal to count.",
+    "answer": true,
+    "ruleCategory": "Law 10 · Determining Outcome",
+    "explanation": "A goal is scored only when the whole of the ball passes over the goal line, between the goalposts and under the crossbar."
+  },
+  {
+    "id": "backpass-keeper-hands",
+    "statement": "A goalkeeper can handle the ball inside their penalty box following a deliberate backpass kicked by a teammate.",
+    "answer": false,
+    "ruleCategory": "Law 12 · Fouls & Misconduct",
+    "explanation": "Handling a deliberate kick from a teammate is a back-pass violation, resulting in an indirect free kick for the attacking team."
+  },
+  {
+    "id": "direct-free-kick-score",
+    "statement": "A goal can be scored directly from a direct free kick into the opponents' goal.",
+    "answer": true,
+    "ruleCategory": "Law 13 · Free Kicks",
+    "explanation": "Under Law 13, if a direct free kick is kicked directly into the opponents' goal, a goal is awarded."
+  },
+  {
+    "id": "offside-goal-kick",
+    "statement": "A player can be penalized for offside when receiving the ball directly from a goal kick.",
+    "answer": false,
+    "ruleCategory": "Law 11 · Offside Exceptions",
+    "explanation": "There is no offside offence if a player receives the ball directly from a goal kick, corner kick, or throw-in."
+  },
+  {
+    "id": "handball-supporting-arm",
+    "statement": "If a defender falls and their supporting arm touches the ball between body and ground, it is an automatic penalty handball.",
+    "answer": false,
+    "ruleCategory": "Law 12 · Handball Interpretations",
+    "explanation": "When a player falls and their arm is used to support their body naturally on the turf, it is generally NOT an unnatural handball offence."
+  },
+  {
+    "id": "dogso-double-jeopardy",
+    "statement": "An accidental foul denying a clear goalscoring opportunity in the penalty box when making a genuine challenge for the ball is a yellow card, not a red card.",
+    "answer": true,
+    "ruleCategory": "Law 12 · DOGSO & Penalty Box",
+    "explanation": "The 'double jeopardy' rule downgrade means if a foul in the box is an attempt to play the ball, the DOGSO sanction is reduced from red to yellow card."
+  },
+  {
+    "id": "var-restart-review",
+    "statement": "VAR can intervene and overturn a goal even after the referee has blown the whistle to restart play from the center circle.",
+    "answer": false,
+    "ruleCategory": "VAR Protocol · Restarts",
+    "explanation": "Once play has restarted after a stoppage, the referee may not undertake a review or change a decision, except for mistaken identity or violent conduct."
+  },
+  {
+    "id": "penalty-rebound-post",
+    "statement": "If a penalty taker hits the post directly without the keeper touching it, they can immediately tap in the rebound themselves.",
+    "answer": false,
+    "ruleCategory": "Law 14 · The Penalty Kick",
+    "explanation": "The penalty taker cannot touch the ball a second time until it has been touched by another player. If they do, an indirect free kick is awarded."
+  }
+]
+

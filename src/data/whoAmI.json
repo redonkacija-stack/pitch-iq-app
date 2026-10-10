@@ -1,0 +1,110 @@
+[
+  {
+    "id": "messi",
+    "name": "Lionel Messi",
+    "club": "Inter Miami",
+    "country": "Argentina",
+    "nationalityCode": "ar",
+    "position": "Forward",
+    "shirt": 10,
+    "caps": 189,
+    "goals": 849,
+    "trophies": "44 Career Trophies · 8 Ballon d'Or",
+    "clues": [
+      "I am the only men's player to win eight Ballon d'Or awards.",
+      "I spent 21 glorious years in Catalonia before moving to Paris and then South Florida.",
+      "I captained my nation to Copa América glory in 2021 and the FIFA World Cup title in 2022.",
+      "Famous for wearing the #10 jersey, incredible low center of gravity, and iconic left-footed curlers."
+    ]
+  },
+  {
+    "id": "ronaldo",
+    "name": "Cristiano Ronaldo",
+    "club": "Al Nassr",
+    "country": "Portugal",
+    "nationalityCode": "pt",
+    "position": "Forward",
+    "shirt": 7,
+    "caps": 216,
+    "goals": 907,
+    "trophies": "34 Career Trophies · 5 Champions Leagues · 5 Ballon d'Or",
+    "clues": [
+      "I am the men's all-time record goalscorer in international football history.",
+      "I conquered England, Spain, and Italy by winning domestic league titles and cups in all three.",
+      "I scored 450 goals in 438 matches for Real Madrid and won 5 Champions League crowns.",
+      "Famous worldwide by my initials and shirt number: CR7."
+    ]
+  },
+  {
+    "id": "modric",
+    "name": "Luka Modrić",
+    "club": "Real Madrid",
+    "country": "Croatia",
+    "nationalityCode": "hr",
+    "position": "Midfielder",
+    "shirt": 10,
+    "caps": 182,
+    "goals": 115,
+    "trophies": "27 Trophies with Real Madrid · 2018 Ballon d'Or",
+    "clues": [
+      "I won the 2018 Ballon d'Or after orchestrating an unforgettable run to the World Cup Final in Moscow.",
+      "I spent four influential seasons at White Hart Lane in London before moving to the Spanish capital in 2012.",
+      "I have won a record 6 UEFA Champions League trophies with Real Madrid.",
+      "Famous for outside-of-the-boot 'trivela' passes and controlling midfield tempos."
+    ]
+  },
+  {
+    "id": "marta",
+    "name": "Marta",
+    "club": "Orlando Pride",
+    "country": "Brazil",
+    "nationalityCode": "br",
+    "position": "Forward",
+    "shirt": 10,
+    "caps": 185,
+    "goals": 119,
+    "trophies": "6x FIFA World Player of the Year · All-Time World Cup Scorer",
+    "clues": [
+      "I have been crowned FIFA World Player of the Year a record six times.",
+      "I hold the all-time record for most goals scored in FIFA World Cup tournaments (17 goals).",
+      "I led Brazil to multiple Olympic medals and became a global icon known simply by my first name.",
+      "Nicknamed 'Pelé in skirts' by Pelé himself."
+    ]
+  },
+  {
+    "id": "zidane",
+    "name": "Zinedine Zidane",
+    "club": "Retired",
+    "country": "France",
+    "nationalityCode": "fr",
+    "position": "Attacking Midfielder",
+    "shirt": 10,
+    "caps": 108,
+    "goals": 156,
+    "trophies": "World Cup 1998 · Euro 2000 · 3x UCL as Manager",
+    "clues": [
+      "I scored two headers in the 1998 World Cup Final to bring my country its first title.",
+      "I struck one of the greatest volleys in Champions League history in Glasgow in 2002.",
+      "As a manager, I led Real Madrid to three consecutive UEFA Champions League titles between 2016 and 2018.",
+      "Renowned for the signature 360-degree roulette turn and graceful ball mastery."
+    ]
+  },
+  {
+    "id": "haaland",
+    "name": "Erling Haaland",
+    "club": "Manchester City",
+    "country": "Norway",
+    "nationalityCode": "no",
+    "position": "Striker",
+    "shirt": 9,
+    "caps": 39,
+    "goals": 258,
+    "trophies": "European Treble 2023 · 2x Premier League Golden Boot",
+    "clues": [
+      "I broke the Premier League single-season scoring record in my debut season with 36 goals.",
+      "Before moving to England, I scored 86 goals in 89 games for Borussia Dortmund.",
+      "I scored 9 goals in a single match against Honduras at the 2019 FIFA U-20 World Cup.",
+      "A towering Scandinavian striker celebrated for meditating goal celebrations."
+    ]
+  }
+]

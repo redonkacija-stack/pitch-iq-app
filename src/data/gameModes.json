@@ -1,0 +1,93 @@
+[
+  {
+    "id": "lineup",
+    "title": "Guess the Lineup",
+    "badge": "Tactical XI",
+    "shortDesc": "Name an iconic starting XI on an interactive pitch.",
+    "description": "Fill the 11 starting positions of iconic historic and modern finals using formation, shirt numbers, and tactical clues.",
+    "players": "1 or 2–4 Players",
+    "category": "Tactical",
+    "icon": "Shield"
+  },
+  {
+    "id": "transfer",
+    "title": "Transfer Chain",
+    "badge": "Career Trail",
+    "shortDesc": "Trace a player's chronological club path across Europe.",
+    "description": "Follow the journey from academy roots to European silverware and deduce the superstar behind the transfers.",
+    "players": "1 or 2–4 Players",
+    "category": "Trivia",
+    "icon": "Link2"
+  },
+  {
+    "id": "tactics",
+    "title": "Tactical Breakdown",
+    "badge": "Mastermind",
+    "shortDesc": "Analyze formation shapes and core tactical instructions.",
+    "description": "Read pressing triggers, inverted fullback movements, and rest defense structures to identify the manager or system.",
+    "players": "1 or 2–4 Players",
+    "category": "Tactical",
+    "icon": "Crosshair"
+  },
+  {
+    "id": "market",
+    "title": "Market Value Guessr",
+    "badge": "Higher / Lower",
+    "shortDesc": "Compare valuations in a rapid streak-building showdown.",
+    "description": "Call whether the challenger is worth more or less than the benchmark player to build your market streak.",
+    "players": "1 or 2–4 Players",
+    "category": "Speed",
+    "icon": "TrendingUp"
+  },
+  {
+    "id": "grid",
+    "title": "Tic-Tac-Toe Grid",
+    "badge": "Football Matrix",
+    "shortDesc": "Claim tiles with qualifying players across club & country.",
+    "description": "Fill the 3x3 matrix by naming stars matching row and column criteria. Play solo or battle for 3-in-a-row.",
+    "players": "1v1 or 2v2",
+    "category": "Strategy",
+    "icon": "Grid3X3"
+  },
+  {
+    "id": "whoami",
+    "title": "Who Am I?",
+    "badge": "Stats & Silhouette",
+    "shortDesc": "Unmask the mystery player clue by clue.",
+    "description": "Gradually unlock masked stats, club crests, national flags, and career hints to identify the mystery legend.",
+    "players": "1 or 2–4 Players",
+    "category": "Trivia",
+    "icon": "Search"
+  },
+  {
+    "id": "var",
+    "title": "The VAR Call",
+    "badge": "60-Second Blitz",
+    "shortDesc": "Make high-speed True/False refereeing calls under the clock.",
+    "description": "Test your knowledge of IFAB rules, offside nuances, and handball controversy in a high-octane 60-second quiz.",
+    "players": "1 or 2–4 Players",
+    "category": "Speed",
+    "icon": "Zap"
+  },
+  {
+    "id": "duo",
+    "title": "Duo Link",
+    "badge": "Teammate Chain",
+    "shortDesc": "Connect two football icons through a shared dressing room.",
+    "description": "Find the common club or international squad that unites two world-class players across their careers.",
+    "players": "1 or 2–4 Players",
+    "category": "Trivia",
+    "icon": "Users"
+  },
+  {
+    "id": "invasion",
+    "title": "Trivia Invasion",
+    "badge": "3-Tier Versus",
+    "shortDesc": "Climb 3-tier trivia ladders in 1v1 and 2v2 team matches.",
+    "description": "Battle head-to-head or in co-op squads across club, continental, and international tiers.",
+    "players": "1v1 & 2v2 Squads",
+    "category": "Multiplayer",
+    "icon": "Swords"
+  }
+]
+

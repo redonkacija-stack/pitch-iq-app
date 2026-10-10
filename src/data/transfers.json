@@ -1,0 +1,107 @@
+[
+  {
+    "id": "zlatan-career",
+    "answer": "Zlatan Ibrahimović",
+    "aliases": ["zlatan", "ibrahimovic", "ibrahimović"],
+    "nationality": "🇸🇪",
+    "nationalityCode": "se",
+    "clubs": [
+      { "name": "Malmö FF", "years": "1999–2001", "country": "Sweden", "countryCode": "se", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Malm%C3%B6%20FF%20logo.svg?width=128" },
+      { "name": "Ajax", "years": "2001–2004", "country": "Netherlands", "countryCode": "nl", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AFC%20Ajax%20logo.svg?width=128" },
+      { "name": "Juventus", "years": "2004–2006", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
+      { "name": "Inter Milan", "years": "2006–2009", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Inter%20Milan.svg?width=128" },
+      { "name": "Barcelona", "years": "2009–2010", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128" },
+      { "name": "AC Milan", "years": "2010–2012", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128" },
+      { "name": "Paris Saint-Germain", "years": "2012–2016", "country": "France", "countryCode": "fr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paris%20Saint-Germain%20F.C..svg?width=128" },
+      { "name": "Manchester United", "years": "2016–2018", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
+      { "name": "LA Galaxy", "years": "2018–2019", "country": "United States", "countryCode": "us", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/LA%20Galaxy%20logo.svg?width=128" },
+      { "name": "AC Milan", "years": "2020–2023", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128" }
+    ],
+    "hints": [
+      "Scored more than 500 senior career goals for club and country.",
+      "Won domestic league titles in the Netherlands, Italy, Spain, and France.",
+      "Scored a sensational 30-yard bicycle kick against England in 2012."
+    ],
+    "fact": "Across a 24-year professional career, Ibrahimović played in 7 different countries and won 34 senior trophies."
+  },
+  {
+    "id": "cristiano-ronaldo-career",
+    "answer": "Cristiano Ronaldo",
+    "aliases": ["ronaldo", "cr7", "cristiano"],
+    "nationality": "🇵🇹",
+    "nationalityCode": "pt",
+    "clubs": [
+      { "name": "Sporting CP", "years": "2002–2003", "country": "Portugal", "countryCode": "pt", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sporting%20Clube%20de%20Portugal%20%28Logo%29.svg?width=128" },
+      { "name": "Manchester United", "years": "2003–2009", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
+      { "name": "Real Madrid", "years": "2009–2018", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128" },
+      { "name": "Juventus", "years": "2018–2021", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
+      { "name": "Manchester United", "years": "2021–2022", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
+      { "name": "Al Nassr", "years": "2023–present", "country": "Saudi Arabia", "countryCode": "sa", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Nassr%20FC%20Logo.svg?width=128" }
+    ],
+    "hints": [
+      "Won 5 UEFA Champions League titles with two different clubs.",
+      "Real Madrid's all-time leading scorer with 450 goals in 438 games.",
+      "Captained Portugal to victory at UEFA Euro 2016."
+    ],
+    "fact": "Cristiano Ronaldo is the all-time leading international goalscorer in men's football history with over 130 goals."
+  },
+  {
+    "id": "thierry-henry-career",
+    "answer": "Thierry Henry",
+    "aliases": ["henry", "thierry"],
+    "nationality": "🇫🇷",
+    "nationalityCode": "fr",
+    "clubs": [
+      { "name": "Monaco", "years": "1994–1999", "country": "France", "countryCode": "fr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AS%20Monaco%20FC.svg?width=128" },
+      { "name": "Juventus", "years": "1999", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
+      { "name": "Arsenal", "years": "1999–2007", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arsenal%20FC.svg?width=128" },
+      { "name": "Barcelona", "years": "2007–2010", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128" },
+      { "name": "New York Red Bulls", "years": "2010–2014", "country": "United States", "countryCode": "us", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Red%20Bulls%20logo.svg?width=128" }
+    ],
+    "hints": [
+      "Scored 175 Premier League goals for Arsenal and won 4 Golden Boots.",
+      "Part of the iconic 2003–04 Arsenal Invincibles squad.",
+      "Won the 1998 FIFA World Cup and UEFA Euro 2000 with France."
+    ],
+    "fact": "Henry won a historic sextuple with FC Barcelona in 2009 after cementing his status as Arsenal's greatest ever player."
+  },
+  {
+    "id": "luka-modric-career",
+    "answer": "Luka Modrić",
+    "aliases": ["modric", "modrić", "luka"],
+    "nationality": "🇭🇷",
+    "nationalityCode": "hr",
+    "clubs": [
+      { "name": "Dinamo Zagreb", "years": "2003–2008", "country": "Croatia", "countryCode": "hr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/GNK%20Dinamo%20Zagreb%20logo.svg?width=128" },
+      { "name": "Tottenham Hotspur", "years": "2008–2012", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tottenham%20Hotspur.svg?width=128" },
+      { "name": "Real Madrid", "years": "2012–present", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128" }
+    ],
+    "hints": [
+      "Won the 2018 Ballon d'Or, breaking the decade-long Messi-Ronaldo duopoly.",
+      "Captained Croatia to the 2018 FIFA World Cup Final in Moscow.",
+      "Won a record 6 UEFA Champions League trophies with Real Madrid."
+    ],
+    "fact": "Modrić has made over 180 international appearances for Croatia and won 27 trophies with Real Madrid."
+  },
+  {
+    "id": "kevin-de-bruyne-career",
+    "answer": "Kevin De Bruyne",
+    "aliases": ["de bruyne", "kdb", "bruyne"],
+    "nationality": "🇧🇪",
+    "nationalityCode": "be",
+    "clubs": [
+      { "name": "Genk", "years": "2008–2012", "country": "Belgium", "countryCode": "be", "logoUrl": null },
+      { "name": "Chelsea", "years": "2012–2014", "country": "England", "countryCode": "gb-eng", "logoUrl": null },
+      { "name": "Werder Bremen", "years": "2012–2013", "country": "Germany", "countryCode": "de", "logoUrl": null },
+      { "name": "VfL Wolfsburg", "years": "2014–2015", "country": "Germany", "countryCode": "de", "logoUrl": null },
+      { "name": "Manchester City", "years": "2015–present", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20City%20FC%20badge.svg?width=128" }
+    ],
+    "hints": [
+      "Named Bundesliga Player of the Year in 2014–15 after delivering 21 assists.",
+      "Won the UEFA Champions League and treble with Manchester City in 2023.",
+      "Twice awarded PFA Players' Player of the Year in the Premier League."
+    ],
+    "fact": "De Bruyne holds the joint-record for the most assists in a single Premier League season (20 assists in 2019–20)."
+  }
+]
+

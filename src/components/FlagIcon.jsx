@@ -12,6 +12,8 @@ import gbWls from "flag-icons/flags/4x3/gb-wls.svg";
 import hr from "flag-icons/flags/4x3/hr.svg";
 import it from "flag-icons/flags/4x3/it.svg";
 import nl from "flag-icons/flags/4x3/nl.svg";
+import no from "flag-icons/flags/4x3/no.svg";
+import eg from "flag-icons/flags/4x3/eg.svg";
 import pt from "flag-icons/flags/4x3/pt.svg";
 import sa from "flag-icons/flags/4x3/sa.svg";
 import se from "flag-icons/flags/4x3/se.svg";
@@ -23,6 +25,7 @@ const flagSources = {
   br,
   cr,
   de,
+  eg,
   es,
   fr,
   "gb-eng": gbEng,
@@ -31,6 +34,7 @@ const flagSources = {
   hr,
   it,
   nl,
+  no,
   pt,
   sa,
   se,
