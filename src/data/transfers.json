@@ -2,20 +2,84 @@
   {
     "id": "zlatan-career",
     "answer": "Zlatan Ibrahimović",
-    "aliases": ["zlatan", "ibrahimovic", "ibrahimović"],
+    "aliases": [
+      "zlatan",
+      "ibrahimovic",
+      "ibrahimović"
+    ],
     "nationality": "🇸🇪",
     "nationalityCode": "se",
     "clubs": [
-      { "name": "Malmö FF", "years": "1999–2001", "country": "Sweden", "countryCode": "se", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Malm%C3%B6%20FF%20logo.svg?width=128" },
-      { "name": "Ajax", "years": "2001–2004", "country": "Netherlands", "countryCode": "nl", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AFC%20Ajax%20logo.svg?width=128" },
-      { "name": "Juventus", "years": "2004–2006", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
-      { "name": "Inter Milan", "years": "2006–2009", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Inter%20Milan.svg?width=128" },
-      { "name": "Barcelona", "years": "2009–2010", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128" },
-      { "name": "AC Milan", "years": "2010–2012", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128" },
-      { "name": "Paris Saint-Germain", "years": "2012–2016", "country": "France", "countryCode": "fr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paris%20Saint-Germain%20F.C..svg?width=128" },
-      { "name": "Manchester United", "years": "2016–2018", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
-      { "name": "LA Galaxy", "years": "2018–2019", "country": "United States", "countryCode": "us", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/LA%20Galaxy%20logo.svg?width=128" },
-      { "name": "AC Milan", "years": "2020–2023", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128" }
+      {
+        "name": "Malmö FF",
+        "years": "1999–2001",
+        "country": "Sweden",
+        "countryCode": "se",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Malm%C3%B6%20FF%20logo.svg?width=128"
+      },
+      {
+        "name": "Ajax",
+        "years": "2001–2004",
+        "country": "Netherlands",
+        "countryCode": "nl",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AFC%20Ajax%20logo.svg?width=128"
+      },
+      {
+        "name": "Juventus",
+        "years": "2004–2006",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128"
+      },
+      {
+        "name": "Inter Milan",
+        "years": "2006–2009",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Inter%20Milan.svg?width=128"
+      },
+      {
+        "name": "Barcelona",
+        "years": "2009–2010",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128"
+      },
+      {
+        "name": "AC Milan",
+        "years": "2010–2012",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128"
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "years": "2012–2016",
+        "country": "France",
+        "countryCode": "fr",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paris%20Saint-Germain%20F.C..svg?width=128"
+      },
+      {
+        "name": "Manchester United",
+        "years": "2016–2018",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128"
+      },
+      {
+        "name": "LA Galaxy",
+        "years": "2018–2019",
+        "country": "United States",
+        "countryCode": "us",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/LA%20Galaxy%20logo.svg?width=128"
+      },
+      {
+        "name": "AC Milan",
+        "years": "2020–2023",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AC%20Milan%20logo.svg?width=128"
+      }
     ],
     "hints": [
       "Scored more than 500 senior career goals for club and country.",
@@ -27,16 +91,56 @@
   {
     "id": "cristiano-ronaldo-career",
     "answer": "Cristiano Ronaldo",
-    "aliases": ["ronaldo", "cr7", "cristiano"],
+    "aliases": [
+      "ronaldo",
+      "cr7",
+      "cristiano"
+    ],
     "nationality": "🇵🇹",
     "nationalityCode": "pt",
     "clubs": [
-      { "name": "Sporting CP", "years": "2002–2003", "country": "Portugal", "countryCode": "pt", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sporting%20Clube%20de%20Portugal%20%28Logo%29.svg?width=128" },
-      { "name": "Manchester United", "years": "2003–2009", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
-      { "name": "Real Madrid", "years": "2009–2018", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128" },
-      { "name": "Juventus", "years": "2018–2021", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
-      { "name": "Manchester United", "years": "2021–2022", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128" },
-      { "name": "Al Nassr", "years": "2023–present", "country": "Saudi Arabia", "countryCode": "sa", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Nassr%20FC%20Logo.svg?width=128" }
+      {
+        "name": "Sporting CP",
+        "years": "2002–2003",
+        "country": "Portugal",
+        "countryCode": "pt",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sporting%20Clube%20de%20Portugal%20%28Logo%29.svg?width=128"
+      },
+      {
+        "name": "Manchester United",
+        "years": "2003–2009",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128"
+      },
+      {
+        "name": "Real Madrid",
+        "years": "2009–2018",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128"
+      },
+      {
+        "name": "Juventus",
+        "years": "2018–2021",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128"
+      },
+      {
+        "name": "Manchester United",
+        "years": "2021–2022",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128"
+      },
+      {
+        "name": "Al Nassr",
+        "years": "2023–present",
+        "country": "Saudi Arabia",
+        "countryCode": "sa",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Nassr%20FC%20Logo.svg?width=128"
+      }
     ],
     "hints": [
       "Won 5 UEFA Champions League titles with two different clubs.",
@@ -48,15 +152,48 @@
   {
     "id": "thierry-henry-career",
     "answer": "Thierry Henry",
-    "aliases": ["henry", "thierry"],
+    "aliases": [
+      "henry",
+      "thierry"
+    ],
     "nationality": "🇫🇷",
     "nationalityCode": "fr",
     "clubs": [
-      { "name": "Monaco", "years": "1994–1999", "country": "France", "countryCode": "fr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AS%20Monaco%20FC.svg?width=128" },
-      { "name": "Juventus", "years": "1999", "country": "Italy", "countryCode": "it", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128" },
-      { "name": "Arsenal", "years": "1999–2007", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arsenal%20FC.svg?width=128" },
-      { "name": "Barcelona", "years": "2007–2010", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128" },
-      { "name": "New York Red Bulls", "years": "2010–2014", "country": "United States", "countryCode": "us", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Red%20Bulls%20logo.svg?width=128" }
+      {
+        "name": "Monaco",
+        "years": "1994–1999",
+        "country": "France",
+        "countryCode": "fr",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AS%20Monaco%20FC.svg?width=128"
+      },
+      {
+        "name": "Juventus",
+        "years": "1999",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128"
+      },
+      {
+        "name": "Arsenal",
+        "years": "1999–2007",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arsenal%20FC.svg?width=128"
+      },
+      {
+        "name": "Barcelona",
+        "years": "2007–2010",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128"
+      },
+      {
+        "name": "New York Red Bulls",
+        "years": "2010–2014",
+        "country": "United States",
+        "countryCode": "us",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Red%20Bulls%20logo.svg?width=128"
+      }
     ],
     "hints": [
       "Scored 175 Premier League goals for Arsenal and won 4 Golden Boots.",
@@ -68,13 +205,35 @@
   {
     "id": "luka-modric-career",
     "answer": "Luka Modrić",
-    "aliases": ["modric", "modrić", "luka"],
+    "aliases": [
+      "modric",
+      "modrić",
+      "luka"
+    ],
     "nationality": "🇭🇷",
     "nationalityCode": "hr",
     "clubs": [
-      { "name": "Dinamo Zagreb", "years": "2003–2008", "country": "Croatia", "countryCode": "hr", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/GNK%20Dinamo%20Zagreb%20logo.svg?width=128" },
-      { "name": "Tottenham Hotspur", "years": "2008–2012", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tottenham%20Hotspur.svg?width=128" },
-      { "name": "Real Madrid", "years": "2012–present", "country": "Spain", "countryCode": "es", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128" }
+      {
+        "name": "Dinamo Zagreb",
+        "years": "2003–2008",
+        "country": "Croatia",
+        "countryCode": "hr",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/GNK%20Dinamo%20Zagreb%20logo.svg?width=128"
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "years": "2008–2012",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tottenham%20Hotspur.svg?width=128"
+      },
+      {
+        "name": "Real Madrid",
+        "years": "2012–present",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128"
+      }
     ],
     "hints": [
       "Won the 2018 Ballon d'Or, breaking the decade-long Messi-Ronaldo duopoly.",
@@ -86,15 +245,49 @@
   {
     "id": "kevin-de-bruyne-career",
     "answer": "Kevin De Bruyne",
-    "aliases": ["de bruyne", "kdb", "bruyne"],
+    "aliases": [
+      "de bruyne",
+      "kdb",
+      "bruyne"
+    ],
     "nationality": "🇧🇪",
     "nationalityCode": "be",
     "clubs": [
-      { "name": "Genk", "years": "2008–2012", "country": "Belgium", "countryCode": "be", "logoUrl": null },
-      { "name": "Chelsea", "years": "2012–2014", "country": "England", "countryCode": "gb-eng", "logoUrl": null },
-      { "name": "Werder Bremen", "years": "2012–2013", "country": "Germany", "countryCode": "de", "logoUrl": null },
-      { "name": "VfL Wolfsburg", "years": "2014–2015", "country": "Germany", "countryCode": "de", "logoUrl": null },
-      { "name": "Manchester City", "years": "2015–present", "country": "England", "countryCode": "gb-eng", "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20City%20FC%20badge.svg?width=128" }
+      {
+        "name": "Genk",
+        "years": "2008–2012",
+        "country": "Belgium",
+        "countryCode": "be",
+        "logoUrl": null
+      },
+      {
+        "name": "Chelsea",
+        "years": "2012–2014",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": null
+      },
+      {
+        "name": "Werder Bremen",
+        "years": "2012–2013",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": null
+      },
+      {
+        "name": "VfL Wolfsburg",
+        "years": "2014–2015",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": null
+      },
+      {
+        "name": "Manchester City",
+        "years": "2015–present",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20City%20FC%20badge.svg?width=128"
+      }
     ],
     "hints": [
       "Named Bundesliga Player of the Year in 2014–15 after delivering 21 assists.",
@@ -102,6 +295,218 @@
       "Twice awarded PFA Players' Player of the Year in the Premier League."
     ],
     "fact": "De Bruyne holds the joint-record for the most assists in a single Premier League season (20 assists in 2019–20)."
+  },
+  {
+    "id": "erling-haaland-career",
+    "answer": "Erling Haaland",
+    "aliases": [
+      "haaland",
+      "erling"
+    ],
+    "nationality": "🇳🇴",
+    "nationalityCode": "no",
+    "clubs": [
+      {
+        "name": "Bryne FK",
+        "years": "2015–2017",
+        "country": "Norway",
+        "countryCode": "no",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bryne%20FK%20logo.svg?width=128"
+      },
+      {
+        "name": "Molde FK",
+        "years": "2017–2019",
+        "country": "Norway",
+        "countryCode": "no",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Molde%20FK%20logo.svg?width=128"
+      },
+      {
+        "name": "Red Bull Salzburg",
+        "years": "2019–2020",
+        "country": "Austria",
+        "countryCode": "at",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Red%20Bull%20Salzburg%20logo.svg?width=128"
+      },
+      {
+        "name": "Borussia Dortmund",
+        "years": "2020–2022",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Borussia%20Dortmund%20logo.svg?width=128"
+      },
+      {
+        "name": "Manchester City",
+        "years": "2022–present",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20City%20FC_badge.svg?width=128"
+      }
+    ],
+    "hints": [
+      "Broke the all-time single-season Premier League scoring record with 36 goals in his debut season.",
+      "Won the continental treble in his first year under Pep Guardiola.",
+      "Scored nine goals in a single match during the 2019 FIFA U-20 World Cup."
+    ],
+    "fact": "Erling Haaland became the fastest player in Champions League history to reach 30 goals, doing so in just 25 games."
+  },
+  {
+    "id": "jude-bellingham-career",
+    "answer": "Jude Bellingham",
+    "aliases": [
+      "bellingham",
+      "jude"
+    ],
+    "nationality": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "nationalityCode": "gb-eng",
+    "clubs": [
+      {
+        "name": "Birmingham City",
+        "years": "2019–2020",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Birmingham%20City%20FC%20logo.svg?width=128"
+      },
+      {
+        "name": "Borussia Dortmund",
+        "years": "2020–2023",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Borussia%20Dortmund%20logo.svg?width=128"
+      },
+      {
+        "name": "Real Madrid",
+        "years": "2023–present",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128"
+      }
+    ],
+    "hints": [
+      "Had his squad number #22 retired by his boyhood club when departing at age 17.",
+      "Awarded the Golden Boy and Kopa Trophy in 2023.",
+      "Scored in back-to-back El Clásico victories during his debut La Liga campaign."
+    ],
+    "fact": "Jude Bellingham won La Liga Player of the Season and the Champions League title in his very first season in Madrid."
+  },
+  {
+    "id": "robert-lewandowski-career",
+    "answer": "Robert Lewandowski",
+    "aliases": [
+      "lewandowski",
+      "lewy"
+    ],
+    "nationality": "🇵🇱",
+    "nationalityCode": "pl",
+    "clubs": [
+      {
+        "name": "Znicz Pruszków",
+        "years": "2006–2008",
+        "country": "Poland",
+        "countryCode": "pl",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Znicz%20Pruszkow%20logo.svg?width=128"
+      },
+      {
+        "name": "Lech Poznań",
+        "years": "2008–2010",
+        "country": "Poland",
+        "countryCode": "pl",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lech%20Poznan%20logo.svg?width=128"
+      },
+      {
+        "name": "Borussia Dortmund",
+        "years": "2010–2014",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Borussia%20Dortmund%20logo.svg?width=128"
+      },
+      {
+        "name": "Bayern Munich",
+        "years": "2014–2022",
+        "country": "Germany",
+        "countryCode": "de",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Bayern%20M%C3%BCnchen%20logo%20%282017%29.svg?width=128"
+      },
+      {
+        "name": "Barcelona",
+        "years": "2022–present",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/FC%20Barcelona%20%28crest%29.svg?width=128"
+      }
+    ],
+    "hints": [
+      "Scored 5 goals in 9 minutes as a substitute against Wolfsburg in 2015.",
+      "Broke Gerd Müller's 49-year record by scoring 41 Bundesliga goals in one season.",
+      "Won the Best FIFA Men's Player award in both 2020 and 2021."
+    ],
+    "fact": "Robert Lewandowski scored 344 goals in 375 appearances for Bayern Munich across eight prolific seasons."
+  },
+  {
+    "id": "angel-di-maria-career",
+    "answer": "Ángel Di María",
+    "aliases": [
+      "di maria",
+      "di maría",
+      "angel di maria"
+    ],
+    "nationality": "🇦🇷",
+    "nationalityCode": "ar",
+    "clubs": [
+      {
+        "name": "Rosario Central",
+        "years": "2005–2007",
+        "country": "Argentina",
+        "countryCode": "ar",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosario%20Central%20logo.svg?width=128"
+      },
+      {
+        "name": "Benfica",
+        "years": "2007–2010",
+        "country": "Portugal",
+        "countryCode": "pt",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/SL%20Benfica%20logo.svg?width=128"
+      },
+      {
+        "name": "Real Madrid",
+        "years": "2010–2014",
+        "country": "Spain",
+        "countryCode": "es",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Real%20Madrid%20CF.svg?width=128"
+      },
+      {
+        "name": "Manchester United",
+        "years": "2014–2015",
+        "country": "England",
+        "countryCode": "gb-eng",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Manchester%20United%20FC%20crest.svg?width=128"
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "years": "2015–2022",
+        "country": "France",
+        "countryCode": "fr",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paris%20Saint-Germain%20F.C..svg?width=128"
+      },
+      {
+        "name": "Juventus",
+        "years": "2022–2023",
+        "country": "Italy",
+        "countryCode": "it",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Juventus%20FC%202017%20logo.svg?width=128"
+      },
+      {
+        "name": "Benfica",
+        "years": "2023–present",
+        "country": "Portugal",
+        "countryCode": "pt",
+        "logoUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/SL%20Benfica%20logo.svg?width=128"
+      }
+    ],
+    "hints": [
+      "Man of the Match in the 2014 UEFA Champions League Final 'La Décima'.",
+      "Scored in the 2008 Olympics final, 2021 Copa América final, and 2022 World Cup final.",
+      "PSG's all-time assist leader with 112 assists."
+    ],
+    "fact": "Di María is the only player in football history to score in finals of the Olympics, Copa América, and FIFA World Cup."
   }
 ]
-

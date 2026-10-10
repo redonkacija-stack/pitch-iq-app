@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Activity,
+  ArrowLeft,
   ArrowRight,
   CircleHelp,
   Crosshair,
@@ -218,15 +219,22 @@ function Hub({ onSelect, stats }) {
   );
 }
 
-function ModeRouter({ mode, room, onBack, onComplete, onProgress }) {
-  // Challenge rotation index for modes with datasets
-  const [matchIdx, setMatchIdx] = useState(0);
-  const [careerIdx, setCareerIdx] = useState(0);
-  const [profileIdx, setProfileIdx] = useState(0);
+function ModeRouter({
+  mode,
+  room,
+  challengeOffset,
+  onNextChallenge,
+  onBack,
+  onComplete,
+  onProgress,
+}) {
+  const matchIdx = (challengeOffset || 0) % matches.length;
+  const careerIdx = (challengeOffset || 0) % careers.length;
+  const profileIdx = (challengeOffset || 0) % profiles.length;
 
-  const activeMatch = matches[matchIdx % matches.length];
-  const activeCareer = careers[careerIdx % careers.length];
-  const activeProfile = profiles[profileIdx % profiles.length];
+  const activeMatch = matches[matchIdx];
+  const activeCareer = careers[careerIdx];
+  const activeProfile = profiles[profileIdx];
 
   if (mode === "invasion") {
     return (
@@ -237,11 +245,11 @@ function ModeRouter({ mode, room, onBack, onComplete, onProgress }) {
   if (mode === "lineup") {
     return (
       <LineupGame
-        key={`lineup-${activeMatch.id}`}
+        key={`lineup-${activeMatch.id}-${challengeOffset}`}
         challenge={activeMatch}
         isDaily={false}
         onBack={onBack}
-        onNext={() => setMatchIdx((prev) => prev + 1)}
+        onNext={onNextChallenge}
         onComplete={onComplete}
         onProgress={onProgress}
       />
@@ -251,11 +259,11 @@ function ModeRouter({ mode, room, onBack, onComplete, onProgress }) {
   if (mode === "transfer") {
     return (
       <TransferGame
-        key={`transfer-${activeCareer.id}`}
+        key={`transfer-${activeCareer.id}-${challengeOffset}`}
         challenge={activeCareer}
         isDaily={false}
         onBack={onBack}
-        onNext={() => setCareerIdx((prev) => prev + 1)}
+        onNext={onNextChallenge}
         onComplete={onComplete}
       />
     );
@@ -264,33 +272,65 @@ function ModeRouter({ mode, room, onBack, onComplete, onProgress }) {
   if (mode === "tactics") {
     return (
       <TacticsGame
-        key={`tactics-${activeProfile.id}`}
+        key={`tactics-${activeProfile.id}-${challengeOffset}`}
         challenge={activeProfile}
         isDaily={false}
         onBack={onBack}
-        onNext={() => setProfileIdx((prev) => prev + 1)}
+        onNext={onNextChallenge}
         onComplete={onComplete}
       />
     );
   }
 
   if (mode === "market") {
-    return <MarketValueGame onBack={onBack} onComplete={onComplete} />;
+    return (
+      <MarketValueGame
+        key={`market-${challengeOffset}`}
+        onBack={onBack}
+        onComplete={onComplete}
+      />
+    );
   }
 
   if (mode === "grid") {
-    return <FootballGridGame onBack={onBack} onComplete={onComplete} />;
+    return (
+      <FootballGridGame
+        key={`grid-${challengeOffset}`}
+        initialGridIndex={challengeOffset}
+        onBack={onBack}
+        onComplete={onComplete}
+      />
+    );
   }
 
   if (mode === "whoami") {
-    return <WhoAmIGame onBack={onBack} onComplete={onComplete} />;
+    return (
+      <WhoAmIGame
+        key={`whoami-${challengeOffset}`}
+        initialIndex={challengeOffset}
+        onBack={onBack}
+        onComplete={onComplete}
+      />
+    );
   }
 
   if (mode === "var") {
-    return <VarBlitzGame onBack={onBack} onComplete={onComplete} />;
+    return (
+      <VarBlitzGame
+        key={`var-${challengeOffset}`}
+        onBack={onBack}
+        onComplete={onComplete}
+      />
+    );
   }
 
-  return <DuoLinkGame onBack={onBack} onComplete={onComplete} />;
+  return (
+    <DuoLinkGame
+      key={`duo-${challengeOffset}`}
+      onBack={onBack}
+      onComplete={onComplete}
+    />
+  );
 }
 
 function AppContent() {
@@ -302,6 +342,40 @@ function AppContent() {
   const [roomGuessed, setRoomGuessed] = useState({ A: 0, B: 0 });
   const [roomTurn, setRoomTurn] = useState(0);
 
+  // Challenge rotation tracker: ensures every visit and replay produces a brand new challenge
+  const [challengeOffsets, setChallengeOffsets] = useState(() => ({
+    lineup: Math.floor(Math.random() * matches.length),
+    transfer: Math.floor(Math.random() * careers.length),
+    tactics: Math.floor(Math.random() * profiles.length),
+    grid: Math.floor(Math.random() * 5),
+    whoami: Math.floor(Math.random() * 12),
+    market: Math.floor(Math.random() * 10),
+    var: Math.floor(Math.random() * 10),
+    duo: Math.floor(Math.random() * 10),
+  }));
+
+  function advanceChallenge(modeName) {
+    setChallengeOffsets((prev) => {
+      const getPoolSize = (m) => {
+        if (m === "lineup") return matches.length;
+        if (m === "transfer") return careers.length;
+        if (m === "tactics") return profiles.length;
+        if (m === "grid") return 5;
+        if (m === "whoami") return 12;
+        return 20;
+      };
+      const size = getPoolSize(modeName);
+      const current = prev[modeName] ?? 0;
+      // Step to next challenge + random skip so it is guaranteed different
+      const step = 1 + Math.floor(Math.random() * Math.max(1, size - 1));
+      const nextVal = (current + step) % size;
+      return {
+        ...prev,
+        [modeName]: nextVal,
+      };
+    });
+  }
+
   function enterMode(mode) {
     if (mode === "stats") {
       setShowStats(true);
@@ -311,8 +385,22 @@ function AppContent() {
       setActiveMode("lobby");
       return;
     }
+    // Advance challenge offset so selecting a game always brings up a fresh challenge!
+    advanceChallenge(mode);
     setRoom(null);
     setActiveMode(mode);
+  }
+
+  function handleBackToHub() {
+    // When exiting a challenge back to the hub, advance again so returning generates new players/clubs!
+    if (activeMode && activeMode !== "home" && activeMode !== "lobby") {
+      advanceChallenge(activeMode);
+    }
+    setActiveMode(room ? "lobby" : "home");
+  }
+
+  function handleNextChallenge() {
+    advanceChallenge(activeMode);
   }
 
   function handleStartRoom(launchedRoom) {
@@ -376,12 +464,29 @@ function AppContent() {
       {/* Primary Global Navigation */}
       <GameNavbar
         activeMode={activeMode}
-        onHome={() => enterMode("home")}
+        onHome={handleBackToHub}
         onLobby={() => enterMode("lobby")}
         onStats={() => setShowStats(true)}
         soundEnabled={stats.soundEnabled}
         onSoundChange={setSoundEnabled}
       />
+
+      {/* Persistent Quick Exit Banner: if player opens wrong challenge, one-click back */}
+      {activeMode !== "home" && activeMode !== "lobby" && !room && (
+        <div className="border-b border-white/10 bg-[#0d1527]/90 px-4 py-2.5 backdrop-blur-md">
+          <div className="mx-auto flex max-w-6xl items-center justify-between">
+            <button
+              onClick={handleBackToHub}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/40 hover:bg-lime/10 hover:text-lime active:scale-95"
+            >
+              <ArrowLeft size={14} /> Back to Hub & Pick Another Mode
+            </button>
+            <span className="text-[11px] font-medium text-slate-400">
+              New challenges re-generated automatically on return
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Top Split Scoreboard Header (when in a multiplayer room) */}
       {room && activeMode !== "lobby" && (
@@ -413,12 +518,12 @@ function AppContent() {
           />
         ) : (
           <ModeRouter
-            key={`${activeMode}-${room?.code || "solo"}`}
+            key={`${activeMode}-${challengeOffsets[activeMode] || 0}-${room?.code || "solo"}`}
             mode={activeMode}
             room={room}
-            onBack={() => {
-              setActiveMode(room ? "lobby" : "home");
-            }}
+            challengeOffset={challengeOffsets[activeMode] || 0}
+            onNextChallenge={handleNextChallenge}
+            onBack={handleBackToHub}
             onComplete={handleCompleteRound}
             onProgress={handleProgressUpdate}
           />

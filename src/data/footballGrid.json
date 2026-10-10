@@ -3,203 +3,614 @@
     {
       "id": "classic-big-three",
       "title": "League Heavyweights & Global Nations",
-      "rows": ["Premier League", "La Liga", "Serie A"],
-      "columns": ["England", "France", "Brazil"]
+      "rows": [
+        "Premier League",
+        "La Liga",
+        "Serie A"
+      ],
+      "columns": [
+        "England",
+        "France",
+        "Brazil"
+      ]
     },
     {
       "id": "continental-elites",
       "title": "Champions & Giants",
-      "rows": ["Real Madrid", "Barcelona", "Bayern Munich"],
-      "columns": ["Spain", "Germany", "Netherlands"]
+      "rows": [
+        "Real Madrid",
+        "Barcelona",
+        "Bayern Munich"
+      ],
+      "columns": [
+        "Spain",
+        "Germany",
+        "Netherlands"
+      ]
     },
     {
       "id": "trophy-titans",
       "title": "Champions League & World Champions",
-      "rows": ["Champions League Winner", "Premier League", "Serie A"],
-      "columns": ["Argentina", "Portugal", "France"]
+      "rows": [
+        "Champions League Winner",
+        "Premier League",
+        "Serie A"
+      ],
+      "columns": [
+        "Argentina",
+        "Portugal",
+        "France"
+      ]
+    },
+    {
+      "id": "german-english-giants",
+      "title": "Bundesliga & Premier League Crossfire",
+      "rows": [
+        "Bayern Munich",
+        "Manchester City",
+        "Borussia Dortmund"
+      ],
+      "columns": [
+        "Germany",
+        "England",
+        "Norway"
+      ]
+    },
+    {
+      "id": "world-cup-champions",
+      "title": "World Champions & European Kings",
+      "rows": [
+        "Champions League Winner",
+        "Real Madrid",
+        "Arsenal"
+      ],
+      "columns": [
+        "Brazil",
+        "France",
+        "Germany"
+      ]
     }
   ],
   "players": [
     {
       "name": "Thierry Henry",
-      "clubs": ["Arsenal", "Barcelona", "Monaco", "Juventus"],
-      "countries": ["France"],
-      "trophies": ["Premier League", "La Liga", "Champions League Winner"]
+      "clubs": [
+        "Arsenal",
+        "Barcelona",
+        "Monaco",
+        "Juventus"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "Premier League",
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Cesc Fàbregas",
-      "clubs": ["Arsenal", "Chelsea", "Barcelona", "Monaco"],
-      "countries": ["Spain"],
-      "trophies": ["Premier League", "La Liga"]
+      "clubs": [
+        "Arsenal",
+        "Chelsea",
+        "Barcelona",
+        "Monaco"
+      ],
+      "countries": [
+        "Spain"
+      ],
+      "trophies": [
+        "Premier League",
+        "La Liga"
+      ]
     },
     {
       "name": "N'Golo Kanté",
-      "clubs": ["Chelsea", "Leicester City"],
-      "countries": ["France"],
-      "trophies": ["Premier League", "Champions League Winner"]
+      "clubs": [
+        "Chelsea",
+        "Leicester City"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "Premier League",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Patrick Vieira",
-      "clubs": ["Arsenal", "Inter Milan", "Juventus", "Manchester City"],
-      "countries": ["France"],
-      "trophies": ["Premier League", "Serie A"]
+      "clubs": [
+        "Arsenal",
+        "Inter Milan",
+        "Juventus",
+        "Manchester City"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "Premier League",
+        "Serie A"
+      ]
     },
     {
       "name": "Zlatan Ibrahimović",
-      "clubs": ["Barcelona", "Inter Milan", "AC Milan", "Juventus", "Manchester United", "Paris Saint-Germain"],
-      "countries": ["Sweden"],
-      "trophies": ["La Liga", "Serie A"]
+      "clubs": [
+        "Barcelona",
+        "Inter Milan",
+        "AC Milan",
+        "Juventus",
+        "Manchester United",
+        "Paris Saint-Germain"
+      ],
+      "countries": [
+        "Sweden"
+      ],
+      "trophies": [
+        "La Liga",
+        "Serie A"
+      ]
     },
     {
       "name": "Kylian Mbappé",
-      "clubs": ["Real Madrid", "Paris Saint-Germain", "Monaco"],
-      "countries": ["France"],
-      "trophies": ["La Liga"]
+      "clubs": [
+        "Real Madrid",
+        "Paris Saint-Germain",
+        "Monaco"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "La Liga"
+      ]
     },
     {
       "name": "Ronaldo Nazário",
-      "clubs": ["Barcelona", "Inter Milan", "AC Milan", "Real Madrid"],
-      "countries": ["Brazil"],
-      "trophies": ["La Liga", "Serie A"]
+      "clubs": [
+        "Barcelona",
+        "Inter Milan",
+        "AC Milan",
+        "Real Madrid"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "La Liga",
+        "Serie A"
+      ]
     },
     {
       "name": "Kaká",
-      "clubs": ["AC Milan", "Real Madrid"],
-      "countries": ["Brazil"],
-      "trophies": ["Serie A", "La Liga", "Champions League Winner"]
+      "clubs": [
+        "AC Milan",
+        "Real Madrid"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "Serie A",
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Gabriel Martinelli",
-      "clubs": ["Arsenal"],
-      "countries": ["Brazil"],
-      "trophies": ["Premier League"]
+      "clubs": [
+        "Arsenal"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "Premier League"
+      ]
     },
     {
       "name": "Alisson Becker",
-      "clubs": ["Liverpool", "Roma"],
-      "countries": ["Brazil"],
-      "trophies": ["Premier League", "Champions League Winner"]
+      "clubs": [
+        "Liverpool",
+        "Roma"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "Premier League",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Wayne Rooney",
-      "clubs": ["Manchester United", "Everton"],
-      "countries": ["England"],
-      "trophies": ["Premier League", "Champions League Winner"]
+      "clubs": [
+        "Manchester United",
+        "Everton"
+      ],
+      "countries": [
+        "England"
+      ],
+      "trophies": [
+        "Premier League",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Jude Bellingham",
-      "clubs": ["Real Madrid", "Borussia Dortmund", "Birmingham City"],
-      "countries": ["England"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Borussia Dortmund",
+        "Birmingham City"
+      ],
+      "countries": [
+        "England"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Harry Kane",
-      "clubs": ["Bayern Munich", "Tottenham Hotspur"],
-      "countries": ["England"],
+      "clubs": [
+        "Bayern Munich",
+        "Tottenham Hotspur"
+      ],
+      "countries": [
+        "England"
+      ],
       "trophies": []
     },
     {
       "name": "David Beckham",
-      "clubs": ["Manchester United", "Real Madrid", "AC Milan", "Paris Saint-Germain"],
-      "countries": ["England"],
-      "trophies": ["Premier League", "La Liga", "Champions League Winner"]
+      "clubs": [
+        "Manchester United",
+        "Real Madrid",
+        "AC Milan",
+        "Paris Saint-Germain"
+      ],
+      "countries": [
+        "England"
+      ],
+      "trophies": [
+        "Premier League",
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Karim Benzema",
-      "clubs": ["Real Madrid", "Lyon", "Al-Ittihad"],
-      "countries": ["France"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Lyon",
+        "Al-Ittihad"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Antoine Griezmann",
-      "clubs": ["Barcelona", "Atlético Madrid", "Real Sociedad"],
-      "countries": ["France"],
-      "trophies": ["La Liga"]
+      "clubs": [
+        "Barcelona",
+        "Atlético Madrid",
+        "Real Sociedad"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "La Liga"
+      ]
     },
     {
       "name": "Paul Pogba",
-      "clubs": ["Manchester United", "Juventus"],
-      "countries": ["France"],
-      "trophies": ["Serie A"]
+      "clubs": [
+        "Manchester United",
+        "Juventus"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": [
+        "Serie A"
+      ]
     },
     {
       "name": "Casemiro",
-      "clubs": ["Real Madrid", "Manchester United", "Porto"],
-      "countries": ["Brazil"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Manchester United",
+        "Porto"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Vinícius Júnior",
-      "clubs": ["Real Madrid", "Flamengo"],
-      "countries": ["Brazil"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Flamengo"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Philippe Coutinho",
-      "clubs": ["Liverpool", "Barcelona", "Bayern Munich", "Inter Milan", "Aston Villa"],
-      "countries": ["Brazil"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Liverpool",
+        "Barcelona",
+        "Bayern Munich",
+        "Inter Milan",
+        "Aston Villa"
+      ],
+      "countries": [
+        "Brazil"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Arjen Robben",
-      "clubs": ["Chelsea", "Real Madrid", "Bayern Munich", "PSV"],
-      "countries": ["Netherlands"],
-      "trophies": ["Premier League", "La Liga", "Champions League Winner"]
+      "clubs": [
+        "Chelsea",
+        "Real Madrid",
+        "Bayern Munich",
+        "PSV"
+      ],
+      "countries": [
+        "Netherlands"
+      ],
+      "trophies": [
+        "Premier League",
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Toni Kroos",
-      "clubs": ["Bayern Munich", "Real Madrid", "Bayer Leverkusen"],
-      "countries": ["Germany"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Bayern Munich",
+        "Real Madrid",
+        "Bayer Leverkusen"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Mesut Özil",
-      "clubs": ["Real Madrid", "Arsenal", "Werder Bremen", "Schalke 04"],
-      "countries": ["Germany"],
-      "trophies": ["La Liga"]
+      "clubs": [
+        "Real Madrid",
+        "Arsenal",
+        "Werder Bremen",
+        "Schalke 04"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "La Liga"
+      ]
     },
     {
       "name": "Sergio Ramos",
-      "clubs": ["Real Madrid", "Sevilla", "Paris Saint-Germain"],
-      "countries": ["Spain"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Sevilla",
+        "Paris Saint-Germain"
+      ],
+      "countries": [
+        "Spain"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Xabi Alonso",
-      "clubs": ["Liverpool", "Real Madrid", "Bayern Munich", "Real Sociedad"],
-      "countries": ["Spain"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Liverpool",
+        "Real Madrid",
+        "Bayern Munich",
+        "Real Sociedad"
+      ],
+      "countries": [
+        "Spain"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Thiago Alcântara",
-      "clubs": ["Barcelona", "Bayern Munich", "Liverpool"],
-      "countries": ["Spain"],
-      "trophies": ["La Liga", "Premier League", "Champions League Winner"]
+      "clubs": [
+        "Barcelona",
+        "Bayern Munich",
+        "Liverpool"
+      ],
+      "countries": [
+        "Spain"
+      ],
+      "trophies": [
+        "La Liga",
+        "Premier League",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Cristiano Ronaldo",
-      "clubs": ["Sporting CP", "Manchester United", "Real Madrid", "Juventus", "Al Nassr"],
-      "countries": ["Portugal"],
-      "trophies": ["Premier League", "La Liga", "Serie A", "Champions League Winner"]
+      "clubs": [
+        "Sporting CP",
+        "Manchester United",
+        "Real Madrid",
+        "Juventus",
+        "Al Nassr"
+      ],
+      "countries": [
+        "Portugal"
+      ],
+      "trophies": [
+        "Premier League",
+        "La Liga",
+        "Serie A",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Lionel Messi",
-      "clubs": ["Barcelona", "Paris Saint-Germain", "Inter Miami"],
-      "countries": ["Argentina"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Barcelona",
+        "Paris Saint-Germain",
+        "Inter Miami"
+      ],
+      "countries": [
+        "Argentina"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
     },
     {
       "name": "Lautaro Martínez",
-      "clubs": ["Inter Milan", "Racing Club"],
-      "countries": ["Argentina"],
-      "trophies": ["Serie A"]
+      "clubs": [
+        "Inter Milan",
+        "Racing Club"
+      ],
+      "countries": [
+        "Argentina"
+      ],
+      "trophies": [
+        "Serie A"
+      ]
     },
     {
       "name": "Angel Di Maria",
-      "clubs": ["Real Madrid", "Manchester United", "Paris Saint-Germain", "Juventus", "Benfica"],
-      "countries": ["Argentina"],
-      "trophies": ["La Liga", "Champions League Winner"]
+      "clubs": [
+        "Real Madrid",
+        "Manchester United",
+        "Paris Saint-Germain",
+        "Juventus",
+        "Benfica"
+      ],
+      "countries": [
+        "Argentina"
+      ],
+      "trophies": [
+        "La Liga",
+        "Champions League Winner"
+      ]
+    },
+    {
+      "name": "Erling Haaland",
+      "clubs": [
+        "Manchester City",
+        "Borussia Dortmund",
+        "Red Bull Salzburg",
+        "Molde"
+      ],
+      "countries": [
+        "Norway"
+      ],
+      "trophies": [
+        "Premier League",
+        "Champions League Winner"
+      ]
+    },
+    {
+      "name": "İlkay Gündoğan",
+      "clubs": [
+        "Manchester City",
+        "Borussia Dortmund",
+        "Barcelona"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "Premier League",
+        "Champions League Winner"
+      ]
+    },
+    {
+      "name": "Manuel Neuer",
+      "clubs": [
+        "Bayern Munich",
+        "Schalke 04"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "Champions League Winner"
+      ]
+    },
+    {
+      "name": "Leroy Sané",
+      "clubs": [
+        "Bayern Munich",
+        "Manchester City",
+        "Schalke 04"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "Premier League"
+      ]
+    },
+    {
+      "name": "William Saliba",
+      "clubs": [
+        "Arsenal",
+        "Saint-Étienne",
+        "Marseille",
+        "Nice"
+      ],
+      "countries": [
+        "France"
+      ],
+      "trophies": []
+    },
+    {
+      "name": "Kai Havertz",
+      "clubs": [
+        "Arsenal",
+        "Chelsea",
+        "Bayer Leverkusen"
+      ],
+      "countries": [
+        "Germany"
+      ],
+      "trophies": [
+        "Champions League Winner"
+      ]
     }
   ]
 }
-

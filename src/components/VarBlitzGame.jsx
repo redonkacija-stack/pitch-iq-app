@@ -12,7 +12,7 @@ import confetti from "canvas-confetti";
 import { varQuestions } from "../data/arcadeData";
 
 export default function VarBlitzGame({ onBack, onComplete }) {
-  const [questions] = useState(() =>
+  const [questions, setQuestions] = useState(() =>
     [...varQuestions].sort(() => Math.random() - 0.5),
   );
   const [seconds, setSeconds] = useState(60);
@@ -99,6 +99,7 @@ export default function VarBlitzGame({ onBack, onComplete }) {
   }, [done, feedback, index, respond]);
 
   function reset() {
+    setQuestions([...varQuestions].sort(() => Math.random() - 0.5));
     setSeconds(60);
     setIndex(0);
     setScore(0);
@@ -114,12 +115,21 @@ export default function VarBlitzGame({ onBack, onComplete }) {
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-7 sm:px-7">
       <div>
-        <button
-          onClick={onBack}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft size={14} /> Back to Hub
-        </button>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <ArrowLeft size={14} /> Back to Modes
+          </button>
+          <button
+            onClick={reset}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+            title="Restart & shuffle questions"
+          >
+            <RotateCcw size={13} className="text-lime" /> Shuffle Questions
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-rose-500/30 bg-rose-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-300">
             The VAR Call

@@ -5,6 +5,7 @@ import {
   Check,
   Flame,
   Link2,
+  RotateCcw,
   Users,
   X,
 } from "lucide-react";
@@ -12,7 +13,7 @@ import confetti from "canvas-confetti";
 import { duoLinks } from "../data/arcadeData";
 
 export default function DuoLinkGame({ onBack, onComplete }) {
-  const [rounds] = useState(() =>
+  const [rounds, setRounds] = useState(() =>
     [...duoLinks].sort(() => Math.random() - 0.5),
   );
   const [index, setIndex] = useState(0);
@@ -50,28 +51,45 @@ export default function DuoLinkGame({ onBack, onComplete }) {
     }
   }
 
-  function next() {
-    if (index >= rounds.length - 1) {
-      setIndex(0);
-      setScore(0);
-      setStreak(0);
-    } else {
-      setIndex((v) => v + 1);
-    }
+  function restart() {
+    setRounds([...duoLinks].sort(() => Math.random() - 0.5));
+    setIndex(0);
+    setScore(0);
+    setStreak(0);
     setSelected(null);
     setLocked(false);
     setResult(null);
   }
 
+  function next() {
+    if (index >= rounds.length - 1) {
+      restart();
+    } else {
+      setIndex((v) => v + 1);
+      setSelected(null);
+      setLocked(false);
+      setResult(null);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-7 sm:px-7">
       <div>
-        <button
-          onClick={onBack}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft size={14} /> Back to Hub
-        </button>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <ArrowLeft size={14} /> Back to Modes
+          </button>
+          <button
+            onClick={restart}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+            title="Restart & shuffle duos"
+          >
+            <RotateCcw size={13} className="text-lime" /> Shuffle Duos
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
             Duo Link

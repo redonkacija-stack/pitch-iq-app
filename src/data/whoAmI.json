@@ -106,5 +106,152 @@
       "I scored 9 goals in a single match against Honduras at the 2019 FIFA U-20 World Cup.",
       "A towering Scandinavian striker celebrated for meditating goal celebrations."
     ]
+  },
+  {
+    "id": "mbappe",
+    "name": "Kylian Mbappé",
+    "nationality": "France",
+    "nationalityCode": "fr",
+    "flag": "🇫🇷",
+    "position": "Forward",
+    "stats": {
+      "caps": 86,
+      "goals": 48,
+      "trophies": 17,
+      "currentClub": "Real Madrid"
+    },
+    "hints": [
+      "Scored a historic World Cup final hat-trick in Lusail in 2022.",
+      "Became Paris Saint-Germain's all-time top goalscorer with 256 goals.",
+      "Won the 2018 World Cup as a teenager, scoring in the final against Croatia."
+    ],
+    "clubs": [
+      "AS Monaco",
+      "Paris Saint-Germain",
+      "Real Madrid"
+    ]
+  },
+  {
+    "id": "ronaldinho",
+    "name": "Ronaldinho",
+    "nationality": "Brazil",
+    "nationalityCode": "br",
+    "flag": "🇧🇷",
+    "position": "Attacking Midfielder",
+    "stats": {
+      "caps": 97,
+      "goals": 33,
+      "trophies": 13,
+      "currentClub": "Retired (Legend)"
+    },
+    "hints": [
+      "Received a famous standing ovation from Real Madrid fans at the Santiago Bernabéu in 2005.",
+      "Won the 2005 Ballon d'Or and the 2002 FIFA World Cup.",
+      "Famous for unmatched flair, the elastico dribble, and the 'Joga Bonito' smile."
+    ],
+    "clubs": [
+      "Grêmio",
+      "Paris Saint-Germain",
+      "Barcelona",
+      "AC Milan",
+      "Flamengo",
+      "Atlético Mineiro"
+    ]
+  },
+  {
+    "id": "iniesta",
+    "name": "Andrés Iniesta",
+    "nationality": "Spain",
+    "nationalityCode": "es",
+    "flag": "🇪🇸",
+    "position": "Central Midfielder",
+    "stats": {
+      "caps": 131,
+      "goals": 13,
+      "trophies": 38,
+      "currentClub": "Retired (Legend)"
+    },
+    "hints": [
+      "Scored the dramatic 116th-minute World Cup-winning goal in Johannesburg in 2010.",
+      "Won 4 UEFA Champions League titles and 9 La Liga trophies as Barcelona's midfield maestro.",
+      "Named Man of the Match in the 2010 World Cup Final and Euro 2012 Final."
+    ],
+    "clubs": [
+      "Barcelona",
+      "Vissel Kobe",
+      "Emirates Club"
+    ]
+  },
+  {
+    "id": "benzema",
+    "name": "Karim Benzema",
+    "nationality": "France",
+    "nationalityCode": "fr",
+    "flag": "🇫🇷",
+    "position": "Striker",
+    "stats": {
+      "caps": 97,
+      "goals": 37,
+      "trophies": 35,
+      "currentClub": "Al-Ittihad"
+    },
+    "hints": [
+      "Won the 2022 Ballon d'Or after an unforgettable 15-goal Champions League campaign.",
+      "Won 5 UEFA Champions League titles during 14 historic seasons at Real Madrid.",
+      "Real Madrid's second all-time highest goalscorer behind Cristiano Ronaldo with 354 goals."
+    ],
+    "clubs": [
+      "Lyon",
+      "Real Madrid",
+      "Al-Ittihad"
+    ]
+  },
+  {
+    "id": "neuer",
+    "name": "Manuel Neuer",
+    "nationality": "Germany",
+    "nationalityCode": "de",
+    "flag": "🇩🇪",
+    "position": "Goalkeeper",
+    "stats": {
+      "caps": 124,
+      "goals": 0,
+      "trophies": 32,
+      "currentClub": "Bayern Munich"
+    },
+    "hints": [
+      "Redefined modern goalkeeping as the iconic 'sweeper-keeper' at the 2014 World Cup.",
+      "Captained Germany and Bayern Munich to continental trebles and World Cup glory.",
+      "Kept over 220 clean sheets in the Bundesliga, an all-time record."
+    ],
+    "clubs": [
+      "Schalke 04",
+      "Bayern Munich"
+    ]
+  },
+  {
+    "id": "neymar",
+    "name": "Neymar Jr",
+    "nationality": "Brazil",
+    "nationalityCode": "br",
+    "flag": "🇧🇷",
+    "position": "Forward",
+    "stats": {
+      "caps": 128,
+      "goals": 79,
+      "trophies": 28,
+      "currentClub": "Al-Hilal"
+    },
+    "hints": [
+      "Brazil's all-time leading goalscorer, surpassing Pelé's official tally.",
+      "Part of Barcelona's immortal 'MSN' trident that swept the 2015 continental treble.",
+      "Commands the highest transfer fee in football history (€222 million)."
+    ],
+    "clubs": [
+      "Santos",
+      "Barcelona",
+      "Paris Saint-Germain",
+      "Al-Hilal"
+    ]
   }
 ]

@@ -19,7 +19,12 @@
       "José Mourinho",
       "Jürgen Klopp"
     ],
-    "optionNationalityCodes": ["es", "ar", "pt", "de"],
+    "optionNationalityCodes": [
+      "es",
+      "ar",
+      "pt",
+      "de"
+    ],
     "answer": "Pep Guardiola",
     "explanation": "Guardiola revolutionized modern positional play by stepping central defenders like John Stones into midfield, creating a box 3-2 midfield that dominated the 2023 treble-winning campaign."
   },
@@ -43,7 +48,12 @@
       "Pep Guardiola",
       "Roberto De Zerbi"
     ],
-    "optionNationalityCodes": ["it", "ar", "es", "it"],
+    "optionNationalityCodes": [
+      "it",
+      "ar",
+      "es",
+      "it"
+    ],
     "answer": "Diego Simeone",
     "explanation": "Simeone's 'Cholismo' at Atlético Madrid defined an era of European football with an impenetrable 4-4-2 block, ruthless defensive work rate, and lightning-quick counter-attacks."
   },
@@ -67,7 +77,12 @@
       "Unai Emery",
       "Thomas Tuchel"
     ],
-    "optionNationalityCodes": ["es", "de", "es", "de"],
+    "optionNationalityCodes": [
+      "es",
+      "de",
+      "es",
+      "de"
+    ],
     "answer": "Jürgen Klopp",
     "explanation": "Klopp brought German 'Gegenpressing' to the Premier League, turning Liverpool into European and World Champions with ferocious counter-pressing and flying wingbacks."
   },
@@ -91,7 +106,12 @@
       "Hansi Flick",
       "Erik ten Hag"
     ],
-    "optionNationalityCodes": ["es", "de", "de", "nl"],
+    "optionNationalityCodes": [
+      "es",
+      "de",
+      "de",
+      "nl"
+    ],
     "answer": "Xabi Alonso",
     "explanation": "Xabi Alonso guided Bayer Leverkusen to an unprecedented unbeaten Bundesliga and DFB-Pokal double in 2023–24 using a mesmerizing 3-4-2-1 system of half-space dominance."
   },
@@ -115,9 +135,73 @@
       "Unai Emery",
       "Carlo Ancelotti"
     ],
-    "optionNationalityCodes": ["es", "de", "es", "it"],
+    "optionNationalityCodes": [
+      "es",
+      "de",
+      "es",
+      "it"
+    ],
     "answer": "Mikel Arteta",
     "explanation": "Arteta turned Arsenal into perennial title contenders by combining strict positional play, supreme set-piece efficiency, and Europe's stingiest rest-defense structure."
+  },
+  {
+    "id": "ancelotti-real-madrid",
+    "title": "Fluid Diamond & Counter Elegance",
+    "question": "Which manager engineered the dynamic 4-3-1-2 diamond system optimizing transitional counter-punching for the 2023–24 European double?",
+    "formation": "4-3-1-2",
+    "answer": "Carlo Ancelotti",
+    "team": "Real Madrid",
+    "options": [
+      "Carlo Ancelotti",
+      "Zinedine Zidane",
+      "Vicente del Bosque",
+      "Unai Emery"
+    ],
+    "details": [
+      "Employs Jude Bellingham as an aggressive box-crashing attacking midfielder behind two drifting wide strikers.",
+      "Emphasizes player autonomy, tactical fluidity, and rapid transitional verticality over rigid positional play.",
+      "Maintains compact mid-block rest-defense orchestrated by Toni Kroos and Eduardo Camavinga."
+    ],
+    "context": "Carlo Ancelotti adapted Real Madrid's tactical system to capture both La Liga and the Champions League crown in 2024 without a traditional fixed number nine."
+  },
+  {
+    "id": "mourinho-inter-2010",
+    "title": "Disciplined Low-Block Counter-Punching",
+    "question": "Which manager deployed this legendary 4-2-3-1 low-block masterclass to capture the continental treble in 2010?",
+    "formation": "4-2-3-1",
+    "answer": "José Mourinho",
+    "team": "Inter Milan",
+    "options": [
+      "José Mourinho",
+      "Roberto Mancini",
+      "Rafael Benítez",
+      "Claudio Ranieri"
+    ],
+    "details": [
+      "Rigid defensive shielding by Esteban Cambiasso and Thiago Motta directly protecting Walter Samuel and Lúcio.",
+      "Sacrificial wide tracking from Samuel Eto'o and Goran Pandev pressing opposing fullbacks deep into own territory.",
+      "Devastating counter-attacks launched through playmaker Wesley Sneijder feeding Diego Milito."
+    ],
+    "context": "José Mourinho's Inter Milan mastered the tactical low block, shutting out peak Barcelona and Bayern Munich to win the 2010 European Treble."
+  },
+  {
+    "id": "conte-chelsea-2017",
+    "title": "High-Octane 3-4-3 Wingback Dominance",
+    "question": "Which manager famously switched mid-season to a relentless 3-4-3 system to produce a 13-game winning streak and clinch the Premier League?",
+    "formation": "3-4-3",
+    "answer": "Antonio Conte",
+    "team": "Chelsea",
+    "options": [
+      "Antonio Conte",
+      "Maurizio Sarri",
+      "Thomas Tuchel",
+      "Massimiliano Allegri"
+    ],
+    "details": [
+      "Exploitative width provided by high-energy wingbacks Marcos Alonso and Victor Moses stretching opposition backlines.",
+      "Unrelenting central ball-winning engine powered by N'Golo Kanté and Nemanja Matić.",
+      "Free attacking movement allowing Eden Hazard and Pedro to cut inside around target striker Diego Costa."
+    ],
+    "context": "Antonio Conte's 3-4-3 tactical revolution during 2016–17 revolutionized modern Premier League tactical setups, claiming 93 points."
   }
 ]
-

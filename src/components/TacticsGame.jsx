@@ -5,6 +5,7 @@ import {
   Check,
   Crosshair,
   Info,
+  Sparkles,
   Trophy,
   X,
 } from "lucide-react";
@@ -135,14 +136,25 @@ export default function TacticsGame({
 
   return (
     <div className="mx-auto w-full max-w-[1080px] px-4 pb-14 pt-6 sm:px-7 sm:pt-8 lg:px-9">
-      <div className="mb-6 flex items-end justify-between gap-4">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <button
-            onClick={onBack}
-            className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-          >
-            <ArrowLeft size={14} /> Back
-          </button>
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <button
+              onClick={onBack}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+            >
+              <ArrowLeft size={14} /> Back to Modes
+            </button>
+            {onNext && (
+              <button
+                onClick={onNext}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+                title="Shuffle tactic"
+              >
+                <Sparkles size={13} className="text-lime" /> Shuffle Tactic
+              </button>
+            )}
+          </div>
           <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.16em] text-orange-200">
             <Crosshair size={13} /> Tactical Breakdown{" "}
             <span className="text-white/25">/</span> Formation & System

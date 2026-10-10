@@ -4,14 +4,19 @@ import {
   ArrowRight,
   Lightbulb,
   Lock,
+  Sparkles,
   UserRound,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { mysteryPlayers } from "../data/arcadeData";
 import FlagIcon from "./FlagIcon";
 
-export default function WhoAmIGame({ onBack, onComplete }) {
-  const [index, setIndex] = useState(0);
+export default function WhoAmIGame({ onBack, onComplete, initialIndex }) {
+  const [index, setIndex] = useState(() =>
+    initialIndex !== undefined
+      ? initialIndex % mysteryPlayers.length
+      : Math.floor(Math.random() * mysteryPlayers.length),
+  );
   const [revealed, setRevealed] = useState(0);
   const [answer, setAnswer] = useState("");
   const [result, setResult] = useState(null);
@@ -47,7 +52,13 @@ export default function WhoAmIGame({ onBack, onComplete }) {
   }
 
   function next() {
-    setIndex((v) => v + 1);
+    setIndex((prev) => {
+      let nextIdx = Math.floor(Math.random() * mysteryPlayers.length);
+      if (nextIdx === prev && mysteryPlayers.length > 1) {
+        nextIdx = (prev + 1) % mysteryPlayers.length;
+      }
+      return nextIdx;
+    });
     setRevealed(0);
     setAnswer("");
     setResult(null);
@@ -71,12 +82,21 @@ export default function WhoAmIGame({ onBack, onComplete }) {
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-7 sm:px-7">
       <div>
-        <button
-          onClick={onBack}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft size={14} /> Back to Hub
-        </button>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="mb-3 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <ArrowLeft size={14} /> Back to Modes
+          </button>
+          <button
+            onClick={next}
+            className="mb-3 inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+            title="Randomize player"
+          >
+            <Sparkles size={13} className="text-lime" /> Shuffle Player
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
             Who Am I?

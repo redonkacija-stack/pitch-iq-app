@@ -21,7 +21,7 @@ function seededShuffle(items) {
 }
 
 export default function MarketValueGame({ onBack, onComplete }) {
-  const [players] = useState(() => seededShuffle(marketPlayers));
+  const [players, setPlayers] = useState(() => seededShuffle(marketPlayers));
   const [index, setIndex] = useState(0);
   const [streak, setStreak] = useState(0);
   const [best, setBest] = useState(0);
@@ -69,6 +69,7 @@ export default function MarketValueGame({ onBack, onComplete }) {
   }
 
   function restart() {
+    setPlayers(seededShuffle(marketPlayers));
     setIndex(0);
     setStreak(0);
     setCorrect(null);
@@ -80,12 +81,21 @@ export default function MarketValueGame({ onBack, onComplete }) {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-7 sm:px-7">
       <div>
-        <button
-          onClick={onBack}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft size={14} /> Back to Hub
-        </button>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <ArrowLeft size={14} /> Back to Modes
+          </button>
+          <button
+            onClick={restart}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+            title="Shuffle challenge"
+          >
+            <RotateCcw size={13} className="text-lime" /> Shuffle Pairs
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
             Market Value Guessr

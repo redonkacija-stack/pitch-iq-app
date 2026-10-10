@@ -5,6 +5,7 @@ import {
   CircleHelp,
   Grid3X3,
   RotateCcw,
+  Sparkles,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { gridGrids, gridPlayers } from "../data/arcadeData";
@@ -29,7 +30,11 @@ function qualifies(player, row, column) {
   return matchesCriterion(row) && matchesCriterion(column);
 }
 
-export default function FootballGridGame({ onBack, onComplete }) {
+export default function FootballGridGame({
+  onBack,
+  onComplete,
+  initialGridIndex,
+}) {
   const grids = gridGrids || [
     {
       id: "classic-1",
@@ -39,7 +44,11 @@ export default function FootballGridGame({ onBack, onComplete }) {
     },
   ];
 
-  const [gridIndex, setGridIndex] = useState(0);
+  const [gridIndex, setGridIndex] = useState(() =>
+    initialGridIndex !== undefined
+      ? initialGridIndex % grids.length
+      : Math.floor(Math.random() * grids.length),
+  );
   const activeGrid = grids[gridIndex % grids.length];
 
   const [cells, setCells] = useState(Array(9).fill(null));
@@ -147,15 +156,29 @@ export default function FootballGridGame({ onBack, onComplete }) {
     setFinished(false);
   }
 
+  function shuffleGrid() {
+    const nextIdx = (gridIndex + 1) % gridGrids.length;
+    changeGrid(nextIdx);
+  }
+
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-7 sm:px-7">
       <div>
-        <button
-          onClick={onBack}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft size={14} /> Back to Hub
-        </button>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <ArrowLeft size={14} /> Back to Modes
+          </button>
+          <button
+            onClick={shuffleGrid}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-lime/30 hover:bg-lime/10 hover:text-lime"
+            title="Randomize Matrix"
+          >
+            <Sparkles size={13} className="text-lime" /> Shuffle Matrix
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-lime/30 bg-lime/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-lime">
             Football Matrix
