@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -36,7 +36,7 @@ const normalize = (value) =>
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "");
 
-export default function RoomInvasionGame({ room, onBack, onComplete }) {
+export default function RoomInvasionGame({ room, onBack, onComplete, onScore, onTurn }) {
   const seats = room?.format === "2v2" ? 4 : 2;
   const pool = useMemo(
     () => makePool(room?.code || "PITCH-DEMO"),
@@ -66,14 +66,14 @@ export default function RoomInvasionGame({ room, onBack, onComplete }) {
         : 1;
   const seatName = (slot) => room?.slots?.[slot]?.name || `Player ${slot + 1}`;
 
-  function submit(eventObject) {
-    eventObject.preventDefault();
-    if (!question || !answer.trim()) return;
+  function submitAnswer(value) {
+    if (!question || !value.trim() || done) return;
     const expected = [question.answer, ...(question.accepted || [])].map(
       normalize,
     );
-    const correct = expected.includes(normalize(answer));
+    const correct = expected.includes(normalize(value));
     const nextTurn = (turn + 1) % seats;
+    onTurn?.(nextTurn);
     setAnswer("");
     setTurn(nextTurn);
     if (!correct) {
@@ -87,6 +87,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete }) {
       return;
     }
     const points = tier.points;
+    onScore?.(turn, points, tierIndex === 2);
     setScores((previous) =>
       previous.map((value, slot) => value + (slot === turn ? points : 0)),
     );
@@ -106,6 +107,27 @@ export default function RoomInvasionGame({ room, onBack, onComplete }) {
       if (playerIndex + 1 === pool.length) onComplete?.(points, true);
     } else setTierIndex((value) => value + 1);
   }
+
+  function submit(eventObject) {
+    eventObject.preventDefault();
+    submitAnswer(answer);
+  }
+
+  // Bots guess on their own turns after a short, difficulty-weighted delay.
+  useEffect(() => {
+    if (done || !room?.slots?.[turn]?.isBot || !question) return undefined;
+    const bot = room.slots[turn];
+    const accuracy = {
+      Easy: 0.32,
+      Medium: 0.58,
+      Hard: 0.82,
+    }[bot.botDifficulty] || 0.5;
+    const delay = 4000 + Math.random() * 4000 + (bot.botDifficulty === "Easy" ? 900 : 0);
+    const timerId = setTimeout(() => {
+      submitAnswer(Math.random() < accuracy ? question.answer : "Unknown Player");
+    }, delay);
+    return () => clearTimeout(timerId);
+  }, [done, room, turn, playerIndex, tierIndex, question]);
 
   function reset() {
     setTurn(0);

@@ -226,6 +226,8 @@ function ModeRouter({
   onNextChallenge,
   onBack,
   onComplete,
+  onScore,
+  onTurn,
   onProgress,
 }) {
   const matchIdx = (challengeOffset || 0) % matches.length;
@@ -238,7 +240,7 @@ function ModeRouter({
 
   if (mode === "invasion") {
     return (
-      <RoomInvasionGame room={room} onBack={onBack} onComplete={onComplete} />
+      <RoomInvasionGame room={room} onBack={onBack} onComplete={onComplete} onScore={onScore} onTurn={onTurn} />
     );
   }
 
@@ -432,31 +434,19 @@ function AppContent() {
       new Date().toISOString().slice(0, 10),
     );
 
-    if (room) {
-      const slot = roomTurn;
-      const team = room.slots?.[slot]?.team || "A";
-
-      setRoomScores((old) => {
-        const next = old.map((v, i) => (i === slot ? v + points : v));
-        return next;
-      });
-
-      if (won) {
-        setRoomGuessed((prev) => ({
-          ...prev,
-          [team]: (prev[team] || 0) + 1,
-        }));
-      }
-
-      // Rotate turn to next slot
-      const nextTurn = (roomTurn + 1) % room.capacity;
-      setRoomTurn(nextTurn);
-    }
   }
 
   function handlePassTurn() {
     if (!room) return;
     setRoomTurn((prev) => (prev + 1) % room.capacity);
+  }
+
+  function handleRoomScore(slot, points, completedPlayer) {
+    const team = room?.slots?.[slot]?.team || (slot % 2 === 0 ? "A" : "B");
+    setRoomScores((previous) => previous.map((value, index) => index === slot ? value + points : value));
+    if (completedPlayer) {
+      setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
+    }
   }
 
   return (
@@ -525,6 +515,8 @@ function AppContent() {
             onNextChallenge={handleNextChallenge}
             onBack={handleBackToHub}
             onComplete={handleCompleteRound}
+            onScore={handleRoomScore}
+            onTurn={setRoomTurn}
             onProgress={handleProgressUpdate}
           />
         )}

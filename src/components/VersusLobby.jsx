@@ -62,7 +62,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
     } catch {}
   }
 
-  // Handle URL query parameter ?room=IQ-XXXX on load
+  // Handle URL query parameter ?room=XXXX on load
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
@@ -199,16 +199,16 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
 
   function attemptJoin(codeToJoin) {
     const cleanCode = normalizeRoomCode(codeToJoin);
-    if (!cleanCode || cleanCode === "IQ") {
+    if (cleanCode.length !== 4) {
       setConnectionStatus("error");
-      setStatusMessage("Please enter a valid room code (e.g. IQ-4B9Z)");
+      setStatusMessage("Please enter a 4-character room code (e.g. 4819)");
       return;
     }
 
     syncRef.current?.destroy();
 
     setConnectionStatus("connecting");
-    setStatusMessage("Connecting to Room...");
+    setStatusMessage(`Connecting to Room ${cleanCode}...`);
 
     const guestName = nickname.trim() || "Challenger";
 
@@ -254,11 +254,13 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
       if (!s.occupied) {
         const name = botNames[botIndex % botNames.length];
         botIndex += 1;
+        const difficulty = ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)];
         return {
           ...s,
           name: `${name} (${s.role})`,
           occupied: true,
           isBot: true,
+          botDifficulty: difficulty,
         };
       }
       return s;
@@ -267,6 +269,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
     const updatedRoom = { ...room, slots: updatedSlots };
     setRoom(updatedRoom);
     syncRef.current?.updateRoom(updatedRoom);
+    setStatusMessage("Bot Joined · open seats filled with AI players");
+    setConnectionStatus("hosting");
   }
 
   async function handleCopyCode() {
@@ -508,7 +512,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
               <UserPlus size={16} className="text-lime" /> Join Existing Room
             </h3>
             <p className="mt-1 text-xs leading-relaxed text-slate-400">
-              Enter your friend's room code to connect over PeerJS WebRTC.
+              Enter your friend’s four-character code or open their invite link.
             </p>
 
             <form onSubmit={handleJoinSubmit} className="mt-4 flex gap-2">
@@ -516,8 +520,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
                 type="text"
                 value={joinInput}
                 onChange={(e) => setJoinInput(normalizeRoomCode(e.target.value))}
-                placeholder="e.g. IQ-4B9Z"
-                maxLength={8}
+                placeholder="e.g. 4819 or 7B2M"
+                maxLength={12}
                 className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/40 px-3.5 py-2.5 font-mono text-sm tracking-widest text-lime placeholder-slate-600 outline-none focus:border-lime/50 uppercase"
               />
               <button
@@ -611,9 +615,9 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
                           <Check size={13} className="text-lime" /> Link Copied
                         </>
                       ) : (
-                        <>
-                          <LinkIcon size={13} /> Link
-                        </>
+                <>
+                  <LinkIcon size={13} /> Copy Invite Link
+                </>
                       )}
                     </button>
                   </div>

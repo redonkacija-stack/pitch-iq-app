@@ -1,34 +1,28 @@
 import Peer from "peerjs";
 
-const STORAGE_PREFIX = "pitchiq:match-rooms:v3";
+const STORAGE_PREFIX = "pitchiq:match-rooms:v4";
 
 /**
  * Normalizes user input room codes:
- * Strips whitespace, non-alphanumeric characters, and formats cleanly as "IQ-XXXX".
- * e.g., "iq 4b9z", "4b9z", "IQ - 4B9Z", "PITCH-4B9Z" all become "IQ-4B9Z".
+ * Reduce room input to its four character code. Spaces and punctuation are ignored.
+ * Older IQ-XXXX links remain accepted.
  */
 export function normalizeRoomCode(input) {
   if (!input) return "";
   const raw = String(input).toUpperCase().trim();
   const clean = raw.replace(/[^A-Z0-9]/g, "");
   if (!clean) return "";
-
-  if (clean.startsWith("IQ")) {
-    const suffix = clean.slice(2, 6);
-    return suffix ? `IQ-${suffix}` : "IQ";
-  }
-  if (clean.startsWith("PITCH")) {
-    const suffix = clean.slice(5, 9);
-    return suffix ? `IQ-${suffix}` : "IQ";
-  }
-  if (clean.length <= 4) {
-    return `IQ-${clean}`;
-  }
-  return `IQ-${clean.slice(0, 4)}`;
+  const hasLegacyPrefix = /^(?:IQ|PITCH)[\s-]+/i.test(raw);
+  const legacy = hasLegacyPrefix
+    ? clean.startsWith("PITCH")
+      ? clean.slice(5)
+      : clean.slice(2)
+    : clean;
+  return legacy.slice(0, 4);
 }
 
 /**
- * Generates a clean 6-character room code in the standard format (e.g. IQ-4B9Z).
+ * Generates a four-character room code (for example 7B2M).
  * Excludes ambiguous characters (0, O, 1, I).
  */
 export function generateRoomCode() {
@@ -37,7 +31,7 @@ export function generateRoomCode() {
   for (let i = 0; i < 4; i += 1) {
     randomPart += chars[Math.floor(Math.random() * chars.length)];
   }
-  return `IQ-${randomPart}`;
+  return randomPart;
 }
 
 export function cleanCodeKey(code) {
@@ -172,7 +166,7 @@ export class PeerSyncEngine {
   }
 
   initPeerJS() {
-    const hostPeerId = `pitchiq-host-${this.codeKey}`;
+    const hostPeerId = `pitchiq-room-${this.codeKey}`;
     const guestPeerId = `pitchiq-guest-${this.codeKey}-${Math.random().toString(36).substring(2, 7)}`;
     const myId = this.isHost ? hostPeerId : guestPeerId;
 
@@ -395,7 +389,7 @@ export class PeerSyncEngine {
 
       conn.on("open", () => {
         clearTimeout(connectTimeout);
-        this.onStatusChange?.("connected", "Connected! Waiting for host...");
+        this.onStatusChange?.("connected", `Connected to Room ${this.roomCode}. Waiting for host...`);
 
         // Send Join Request with Nickname
         conn.send({
@@ -410,7 +404,7 @@ export class PeerSyncEngine {
         if (data.type === "ASSIGNED_SLOT") {
           this.localSlot = data.slotId;
           this.currentRoom = data.room;
-          this.onStatusChange?.("connected", "Connected! Waiting for host...");
+          this.onStatusChange?.("connected", `Connected to Room ${this.roomCode}`);
           this.onStateChange?.(data.room, data.slotId);
         } else if (data.type === "ROOM_STATE") {
           this.handleIncomingRoomState(data.room, this.localSlot);
@@ -446,7 +440,7 @@ export class PeerSyncEngine {
       );
       setTimeout(() => {
         if (!this.destroyed) {
-          this.connectToHost(`pitchiq-host-${this.codeKey}`);
+          this.connectToHost(`pitchiq-room-${this.codeKey}`);
         }
       }, 1500 * this.retryCount);
     } else {
