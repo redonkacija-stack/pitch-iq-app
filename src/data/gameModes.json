@@ -7,7 +7,11 @@
     "description": "Fill the 11 starting positions of iconic historic and modern finals using formation, shirt numbers, and tactical clues.",
     "players": "1 or 2–4 Players",
     "category": "Tactical",
-    "icon": "Shield"
+    "icon": "Shield",
+    "iconUrl": "lucide:Shield",
+    "difficulty": "Hard",
+    "duration": "8 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "transfer",
@@ -17,7 +21,11 @@
     "description": "Follow the journey from academy roots to European silverware and deduce the superstar behind the transfers.",
     "players": "1 or 2–4 Players",
     "category": "Trivia",
-    "icon": "Link2"
+    "icon": "Link2",
+    "iconUrl": "lucide:Link2",
+    "difficulty": "Medium",
+    "duration": "6 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "tactics",
@@ -27,7 +35,11 @@
     "description": "Read pressing triggers, inverted fullback movements, and rest defense structures to identify the manager or system.",
     "players": "1 or 2–4 Players",
     "category": "Tactical",
-    "icon": "Crosshair"
+    "icon": "Crosshair",
+    "iconUrl": "lucide:Crosshair",
+    "difficulty": "Hard",
+    "duration": "5 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "market",
@@ -37,7 +49,11 @@
     "description": "Call whether the challenger is worth more or less than the benchmark player to build your market streak.",
     "players": "1 or 2–4 Players",
     "category": "Speed",
-    "icon": "TrendingUp"
+    "icon": "TrendingUp",
+    "iconUrl": "lucide:TrendingUp",
+    "difficulty": "Easy",
+    "duration": "3 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "grid",
@@ -47,7 +63,11 @@
     "description": "Fill the 3x3 matrix by naming stars matching row and column criteria. Play solo or battle for 3-in-a-row.",
     "players": "1v1 or 2v2",
     "category": "Strategy",
-    "icon": "Grid3X3"
+    "icon": "Grid3X3",
+    "iconUrl": "lucide:Grid3X3",
+    "difficulty": "Medium",
+    "duration": "8 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "whoami",
@@ -57,7 +77,11 @@
     "description": "Gradually unlock masked stats, club crests, national flags, and career hints to identify the mystery legend.",
     "players": "1 or 2–4 Players",
     "category": "Trivia",
-    "icon": "Search"
+    "icon": "Search",
+    "iconUrl": "lucide:Search",
+    "difficulty": "Medium",
+    "duration": "4 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "var",
@@ -67,7 +91,11 @@
     "description": "Test your knowledge of IFAB rules, offside nuances, and handball controversy in a high-octane 60-second quiz.",
     "players": "1 or 2–4 Players",
     "category": "Speed",
-    "icon": "Zap"
+    "icon": "Zap",
+    "iconUrl": "lucide:Zap",
+    "difficulty": "Easy",
+    "duration": "1 min",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "duo",
@@ -77,7 +105,11 @@
     "description": "Find the common club or international squad that unites two world-class players across their careers.",
     "players": "1 or 2–4 Players",
     "category": "Trivia",
-    "icon": "Users"
+    "icon": "Users",
+    "iconUrl": "lucide:Users",
+    "difficulty": "Hard",
+    "duration": "5 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   },
   {
     "id": "invasion",
@@ -87,7 +119,11 @@
     "description": "Battle head-to-head or in co-op squads across club, continental, and international tiers.",
     "players": "1v1 & 2v2 Squads",
     "category": "Multiplayer",
-    "icon": "Swords"
+    "icon": "Swords",
+    "iconUrl": "lucide:Swords",
+    "difficulty": "Medium",
+    "duration": "10 mins",
+    "leagueMarks": ["PL", "LL", "SA", "BL", "L1"]
   }
 ]
 

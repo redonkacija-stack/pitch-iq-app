@@ -9,6 +9,10 @@ export const matchModes = gameModesData.map((m) => ({
   description: m.description,
   players: m.players,
   icon: m.icon,
+  iconUrl: m.iconUrl,
+  difficulty: m.difficulty,
+  duration: m.duration,
+  leagueMarks: m.leagueMarks,
 }));
 
 export default gameModesData;

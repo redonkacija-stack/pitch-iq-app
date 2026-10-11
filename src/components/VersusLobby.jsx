@@ -4,17 +4,24 @@ import {
   ArrowRight,
   Bot,
   Check,
+  CheckCircle2,
   Copy,
+  Crosshair,
   Gamepad2,
+  Grid3X3,
   Link as LinkIcon,
+  Link2,
   Loader2,
   Radio,
   RefreshCw,
+  Search,
   Shield,
   Sparkles,
   Swords,
+  TrendingUp,
   UserPlus,
   Users,
+  Zap,
   Wifi,
   WifiOff,
 } from "lucide-react";
@@ -27,6 +34,20 @@ import {
   PeerSyncEngine,
   saveRoom,
 } from "../utils/peerSync";
+
+const modeIcons = { Shield, Link2, Crosshair, TrendingUp, Grid3X3, Search, Zap, Users, Swords };
+const leagueLabels = {
+  PL: "Premier League",
+  LL: "La Liga",
+  SA: "Serie A",
+  BL: "Bundesliga",
+  L1: "Ligue 1",
+};
+const difficultyStyles = {
+  Easy: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  Medium: "border-amber-300/25 bg-amber-300/10 text-amber-200",
+  Hard: "border-rose-400/25 bg-rose-400/10 text-rose-300",
+};
 
 export default function VersusLobby({ onBack, onStart, initialRoom = null, syncEngine = null }) {
   const [format, setFormat] = useState(initialRoom?.format || "1v1");
@@ -423,25 +444,55 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
             </div>
 
             {/* Game Mode Selection */}
-            <div>
+            <div className="sm:col-span-2">
               <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Selected Game Mode
+                Choose a Game Mode
               </label>
-              <select
-                value={selectedMode}
-                onChange={(e) => setSelectedMode(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-3 text-sm text-white outline-none focus:border-lime/50"
-              >
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" role="group" aria-label="Game modes">
                 {matchModes.map((m) => (
-                  <option
-                    key={m.id}
-                    value={m.id}
-                    className="bg-slate-900 text-white"
-                  >
-                    {m.label} ({m.detail})
-                  </option>
+                  (() => {
+                    const ModeIcon = modeIcons[m.iconUrl?.replace("lucide:", "")] || Gamepad2;
+                    const isSelected = selectedMode === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        aria-pressed={isSelected}
+                        onClick={() => setSelectedMode(m.id)}
+                        className={`group relative flex min-h-[190px] flex-col rounded-2xl border p-4 text-left backdrop-blur transition-all duration-300 active:scale-[.98] ${
+                          isSelected
+                            ? "border-emerald-400/80 bg-emerald-500/[.09] shadow-[0_0_22px_rgba(16,185,129,0.2)]"
+                            : "border-slate-800/80 bg-slate-900/60 hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                        }`}
+                      >
+                        <div className="flex w-full items-start justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-3">
+                            <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${isSelected ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" : "border-slate-700 bg-slate-950/70 text-slate-300 group-hover:text-emerald-300"}`}>
+                              <ModeIcon size={21} strokeWidth={1.8} aria-hidden="true" />
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-extrabold uppercase tracking-wide text-white">{m.label}</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-[.14em] text-slate-500">{m.badge}</p>
+                            </div>
+                          </div>
+                          {isSelected && <CheckCircle2 className="shrink-0 text-emerald-300" size={19} aria-label="Selected" />}
+                        </div>
+                        <p className="mt-4 flex-1 text-xs leading-relaxed text-slate-300">{m.detail}</p>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          <span className={`rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider ${difficultyStyles[m.difficulty] || difficultyStyles.Medium}`}>{m.difficulty}</span>
+                          <span className="rounded-full border border-slate-700 bg-slate-950/60 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-300">{m.duration}</span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-1.5 border-t border-white/[.06] pt-3" aria-label="Top five European leagues">
+                          {m.leagueMarks?.map((mark) => (
+                            <span key={mark} title={leagueLabels[mark]} aria-label={leagueLabels[mark]} className="inline-flex h-6 min-w-7 items-center justify-center rounded-md border border-slate-700/80 bg-slate-950/70 px-1.5 text-[8px] font-black tracking-tight text-slate-300">{mark}</span>
+                          ))}
+                          <span className="ml-auto text-[9px] font-semibold uppercase tracking-wider text-slate-500">{m.category}</span>
+                        </div>
+                      </button>
+                    );
+                  })()
                 ))}
-              </select>
+              </div>
             </div>
 
             {/* Pool Difficulty */}
