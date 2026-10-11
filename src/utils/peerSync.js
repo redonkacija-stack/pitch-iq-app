@@ -241,8 +241,15 @@ export class PeerSyncEngine {
       } else if (data.type === "CLAIM_SLOT") {
         this.handleGuestClaimSlot(conn, data);
       } else if (data.type === "GAME_ACTION") {
-        this.broadcastAction(data.action, conn.peer);
-        this.onGameAction?.(data.action);
+        // Resolve the sender's slot from the host-owned room state. Never trust a
+        // slot ID supplied by a client when accepting turn or score actions.
+        const senderSlot = this.currentRoom?.slots?.find(
+          (slot) => slot.peerId === conn.peer && slot.occupied && !slot.isBot,
+        )?.id;
+        if (senderSlot === undefined) return;
+        // The host validates the action and broadcasts only the authoritative
+        // result (TURN_SWITCH / ROOM_SCORE) after accepting it.
+        this.onGameAction?.({ ...data.action, senderSlot });
       }
     });
 

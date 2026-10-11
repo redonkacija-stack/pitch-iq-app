@@ -461,7 +461,7 @@ function AppContent() {
             const team = launchedRoom.slots?.[action.slot]?.team || (action.slot % 2 === 0 ? "A" : "B");
             setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
           }
-        } else if (action?.type === "ROOM_SCORE_REQUEST" && syncEngine.isHost && action.slot === activePlayerRef.current) {
+        } else if (action?.type === "ROOM_SCORE_REQUEST" && syncEngine.isHost && action.senderSlot === action.slot && action.slot === activePlayerRef.current) {
           const team = launchedRoom.slots?.[action.slot]?.team || (action.slot % 2 === 0 ? "A" : "B");
           setRoomScores((previous) => previous.map((value, index) => index === action.slot ? value + action.points : value));
           if (action.completedPlayer) {
@@ -471,7 +471,7 @@ function AppContent() {
         } else if (action?.type === "TURN_REQUEST" && syncEngine.isHost) {
           const currentPlayerId = activePlayerRef.current;
           const expectedNext = (currentPlayerId + 1) % (launchedRoom.capacity || 2);
-          if (action.playerId === currentPlayerId && action.nextPlayerId === expectedNext && action.reason !== "timeout") {
+          if (action.senderSlot === currentPlayerId && action.playerId === currentPlayerId && action.nextPlayerId === expectedNext && action.reason !== "timeout") {
             applyTurnSwitch(expectedNext);
           }
         } else if ((action?.type === "TURN_SWITCH" || action?.type === "TURN_TIMEOUT") && !syncEngine.isHost) {

@@ -196,7 +196,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
           <span className={`h-2.5 w-2.5 rounded-full ${isMyTurn ? "animate-pulse bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.8)]" : "bg-sky-300"}`} />
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[.12em]">
-              {isMyTurn ? "Your Turn — Make your guess!" : `Opponent's Turn — Waiting for ${seatName(activePlayerId)} to answer...`}
+              {turnPending ? "Guess sent — waiting for host confirmation" : isMyTurn ? "Your Turn — Make your guess!" : `Opponent's Turn — Waiting for ${seatName(activePlayerId)} to answer...`}
             </p>
             <p className="mt-0.5 text-[11px] text-slate-300">
               {turnPending ? "Guess submitted · waiting for turn confirmation" : isMyTurn ? "Your answer is the only one enabled" : "Inputs are locked until the active player finishes"}
