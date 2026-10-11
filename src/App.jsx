@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Activity,
   ArrowLeft,
@@ -343,6 +343,7 @@ function AppContent() {
   const [roomScores, setRoomScores] = useState([0, 0, 0, 0]);
   const [roomGuessed, setRoomGuessed] = useState({ A: 0, B: 0 });
   const [roomTurn, setRoomTurn] = useState(0);
+  const roomSyncRef = useRef(null);
 
   // Challenge rotation tracker: ensures every visit and replay produces a brand new challenge
   const [challengeOffsets, setChallengeOffsets] = useState(() => ({
@@ -405,7 +406,21 @@ function AppContent() {
     advanceChallenge(activeMode);
   }
 
-  function handleStartRoom(launchedRoom) {
+  function handleStartRoom(launchedRoom, syncEngine) {
+    roomSyncRef.current = syncEngine || null;
+    if (syncEngine) {
+      syncEngine.onGameAction = (action) => {
+        if (action?.type === "ROOM_SCORE") {
+          setRoomScores((previous) => previous.map((value, index) => index === action.slot ? value + action.points : value));
+          if (action.completedPlayer) {
+            const team = launchedRoom.slots?.[action.slot]?.team || (action.slot % 2 === 0 ? "A" : "B");
+            setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
+          }
+        } else if (action?.type === "ROOM_TURN") {
+          setRoomTurn(action.turn);
+        }
+      };
+    }
     setRoom(launchedRoom);
     setRoomScores(Array(launchedRoom.capacity).fill(0));
     setRoomGuessed({ A: 0, B: 0 });
@@ -447,6 +462,12 @@ function AppContent() {
     if (completedPlayer) {
       setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
     }
+    roomSyncRef.current?.broadcastAction({ type: "ROOM_SCORE", slot, points, completedPlayer });
+  }
+
+  function handleRoomTurn(turn) {
+    setRoomTurn(turn);
+    roomSyncRef.current?.broadcastAction({ type: "ROOM_TURN", turn });
   }
 
   return (
@@ -487,6 +508,8 @@ function AppContent() {
           activeTurn={roomTurn}
           onPassTurn={handlePassTurn}
           onExitRoom={() => {
+            roomSyncRef.current?.destroy();
+            roomSyncRef.current = null;
             setRoom(null);
             setActiveMode("lobby");
           }}
@@ -500,6 +523,7 @@ function AppContent() {
         ) : activeMode === "lobby" ? (
           <MatchLobby
             initialRoom={room}
+            syncEngine={roomSyncRef.current}
             onBack={() => {
               setRoom(null);
               setActiveMode("home");
@@ -516,7 +540,7 @@ function AppContent() {
             onBack={handleBackToHub}
             onComplete={handleCompleteRound}
             onScore={handleRoomScore}
-            onTurn={setRoomTurn}
+            onTurn={handleRoomTurn}
             onProgress={handleProgressUpdate}
           />
         )}

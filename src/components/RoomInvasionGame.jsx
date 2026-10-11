@@ -115,7 +115,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
 
   // Bots guess on their own turns after a short, difficulty-weighted delay.
   useEffect(() => {
-    if (done || !room?.slots?.[turn]?.isBot || !question) return undefined;
+    if (done || room?.localSlot !== 0 || !room?.slots?.[turn]?.isBot || !question) return undefined;
     const bot = room.slots[turn];
     const accuracy = {
       Easy: 0.32,

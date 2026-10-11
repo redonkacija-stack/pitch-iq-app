@@ -28,7 +28,7 @@ import {
   saveRoom,
 } from "../utils/peerSync";
 
-export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
+export default function VersusLobby({ onBack, onStart, initialRoom = null, syncEngine = null }) {
   const [format, setFormat] = useState(initialRoom?.format || "1v1");
   const [selectedMode, setSelectedMode] = useState(
     initialRoom?.mode || "invasion",
@@ -49,7 +49,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
   const [statusMessage, setStatusMessage] = useState("");
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const syncRef = useRef(null);
+  const syncRef = useRef(syncEngine);
+  const handedOffRef = useRef(false);
 
   const capacity = format === "2v2" ? 4 : 2;
 
@@ -78,6 +79,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
   // Cleanup sync engine on unmount
   useEffect(() => {
     return () => {
+      if (handedOffRef.current) return;
       syncRef.current?.destroy();
       syncRef.current = null;
     };
@@ -228,7 +230,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
         setStatusMessage(msg);
       },
       onGameStart: (launchedRoom) => {
-        onStart?.(launchedRoom, syncRef.current);
+        handedOffRef.current = true;
+        onStart?.({ ...launchedRoom, localSlot: syncRef.current?.localSlot ?? launchedRoom.localSlot }, syncRef.current);
       },
       onGameAction: () => {},
     });
@@ -313,6 +316,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null }) {
 
     saveRoom(launchedRoom);
     syncRef.current?.broadcastStartGame(launchedRoom);
+    handedOffRef.current = true;
     onStart?.(launchedRoom, syncRef.current);
   }
 

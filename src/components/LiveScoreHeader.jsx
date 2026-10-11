@@ -27,6 +27,10 @@ export default function LiveScoreHeader({
 
   const currentSlot = room.slots?.[activeTurn] || room.slots?.[0];
   const activeTeam = currentSlot?.team || "A";
+  const teamRoster = (team) => (room.slots || [])
+    .filter((slot) => slot.team === team)
+    .map((slot) => `${slot.name}${slot.isBot ? ` (${slot.botDifficulty || "AI"})` : ""}`)
+    .join(" & ");
 
   async function copyCode() {
     try {
@@ -143,7 +147,7 @@ export default function LiveScoreHeader({
                   )}
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  {is2v2 ? "Slot 1 (Host) & Slot 2 (Partner)" : "Slot 1 (Host)"}
+                  {teamRoster("A") || (is2v2 ? "Slot 1 & Slot 2" : "Slot 1")}
                 </p>
                 <p className="mt-0.5 text-[10px] text-slate-500">
                   Guessed:{" "}
@@ -187,9 +191,7 @@ export default function LiveScoreHeader({
                   )}
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  {is2v2
-                    ? "Slot 3 (Opponent 1) & Slot 4 (Opponent 2)"
-                    : "Slot 2 (Opponent)"}
+                  {teamRoster("B") || (is2v2 ? "Slot 3 & Slot 4" : "Slot 2")}
                 </p>
                 <p className="mt-0.5 text-[10px] text-slate-500">
                   Guessed:{" "}
