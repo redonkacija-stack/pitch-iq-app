@@ -112,7 +112,7 @@ export default function MarketValueGame({ onBack, onComplete }) {
       </div>
 
       {/* Streak Header Bar */}
-      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#141f34] px-6 py-4">
+      <div className="flex items-center justify-between rounded-2xl border border-white/10 glass-surface px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-lime/10 text-lime">
             <Flame size={20} />
@@ -137,7 +137,7 @@ export default function MarketValueGame({ onBack, onComplete }) {
       </div>
 
       {/* Head to Head Duel Cards */}
-      <section className="grid overflow-hidden rounded-2xl border border-white/10 bg-[#141f34] md:grid-cols-2">
+      <section className="grid overflow-hidden rounded-2xl border border-white/10 glass-surface md:grid-cols-2">
         {/* Left Benchmark Player */}
         <div className="border-b border-white/10 p-6 sm:p-8 md:border-b-0 md:border-r">
           <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
@@ -148,7 +148,7 @@ export default function MarketValueGame({ onBack, onComplete }) {
 
         {/* Right Challenger Player */}
         <div className="relative p-6 sm:p-8">
-          <div className="absolute -top-5 left-1/2 grid h-10 w-10 -translate-x-1/2 place-items-center rounded-full border border-white/10 bg-[#0d1524] font-display text-xs font-black text-lime shadow-lg md:left-0 md:top-1/2 md:-translate-y-1/2">
+          <div className="absolute -top-5 left-1/2 grid h-10 w-10 -translate-x-1/2 place-items-center rounded-full border border-white/10 bg-slate-950/80 font-display text-xs font-black text-lime shadow-lg md:left-0 md:top-1/2 md:-translate-y-1/2">
             VS
           </div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-300">

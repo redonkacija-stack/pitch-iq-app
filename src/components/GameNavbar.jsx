@@ -9,7 +9,7 @@ export default function GameNavbar({
   onSoundChange,
 }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-white/[.07] bg-ink/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/75 shadow-lg shadow-black/20 backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between gap-3 px-4 sm:px-7 lg:px-9">
         <button
           onClick={onHome}

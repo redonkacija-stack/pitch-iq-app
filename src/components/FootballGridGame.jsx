@@ -195,7 +195,7 @@ export default function FootballGridGame({
       </div>
 
       {/* Matrix Selector */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#141f34] p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 glass-surface p-4">
         <div className="flex items-center gap-2">
           <Grid3X3 size={16} className="text-lime" />
           <span className="text-xs font-bold text-white">Grid Challenge:</span>
@@ -227,7 +227,7 @@ export default function FootballGridGame({
       </div>
 
       {/* The 3x3 Grid Matrix */}
-      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#141f34] p-5">
+      <div className="overflow-x-auto rounded-2xl border border-white/10 glass-surface p-5">
         <div className="min-w-[580px]">
           <div className="grid grid-cols-4 gap-3">
             {/* Top-left corner */}
@@ -310,7 +310,7 @@ export default function FootballGridGame({
 
       {/* Selected Tile Input with Search Auto-complete */}
       {selected !== null && !finished && (
-        <div className="rounded-2xl border border-lime/40 bg-[#111a2d] p-4">
+        <div className="rounded-2xl border border-lime/40 glass-surface p-4">
           <div className="mb-2 text-xs font-bold text-lime">
             Claiming: {rowLabels[Math.floor(selected / 3)]} +{" "}
             {columnLabels[selected % 3]}
@@ -335,7 +335,7 @@ export default function FootballGridGame({
 
               {/* Suggestions Dropdown */}
               {suggestions.length > 0 && (
-                <div className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-xl border border-white/10 bg-[#0d1524] shadow-2xl">
+                <div className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-xl border border-white/10 bg-slate-950/80 shadow-2xl">
                   {suggestions.map((p) => (
                     <button
                       key={p.name}

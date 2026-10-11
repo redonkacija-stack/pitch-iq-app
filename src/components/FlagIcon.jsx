@@ -65,7 +65,7 @@ export default function FlagIcon({ code, label, className = "h-4 w-6" }) {
       src={source}
       alt={label || `${normalizedCode.toUpperCase()} flag`}
       title={label || `${normalizedCode.toUpperCase()} flag`}
-      className={`inline-block shrink-0 rounded-sm object-cover ${className}`}
+      className={`inline-block shrink-0 rounded-sm border border-slate-700/80 object-cover shadow-sm shadow-black/20 ${className}`}
       onError={() => setFailedCode(normalizedCode)}
     />
   );

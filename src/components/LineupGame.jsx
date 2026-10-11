@@ -335,12 +335,12 @@ export default function LineupGame({
                   autoComplete="off"
                   aria-label="Search player name"
                 />
-                <button className="m-1 rounded-md bg-lime px-3 text-xs font-bold text-ink transition hover:bg-[#4ade80]">
+                <button className="m-1 rounded-md bg-lime px-3 text-xs font-bold text-ink transition hover:bg-emerald-400">
                   Enter
                 </button>
               </div>
               {options.length > 0 && (
-                <div className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-lg border border-white/10 bg-[#172338] shadow-xl">
+                <div className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-lg border border-white/10 bg-slate-900/95 shadow-xl">
                   {options.map((player) => (
                     <button
                       type="button"
@@ -432,7 +432,7 @@ export default function LineupGame({
               </div>
               <button
                 onClick={isDaily ? onNext : onBack}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-lime py-2.5 text-sm font-bold text-ink transition hover:bg-[#4ade80]"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-lime py-2.5 text-sm font-bold text-ink transition hover:bg-emerald-400"
               >
                 {isDaily ? "Continue daily set" : "Back to hub"}{" "}
                 <ArrowRight size={15} />

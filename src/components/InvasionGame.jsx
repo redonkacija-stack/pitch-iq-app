@@ -224,7 +224,7 @@ export default function InvasionGame({ onBack }) {
 
       {phase === "lobby" ? (
         <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-          <section className="relative overflow-hidden rounded-2xl border border-white/[.08] bg-[#141f34] p-5 sm:p-8">
+          <section className="relative overflow-hidden rounded-2xl border border-white/[.08] glass-surface p-5 sm:p-8">
             <div className="absolute -right-8 -top-12 h-60 w-60 rounded-full border border-emerald-200/[.06]" />
             <div className="relative max-w-2xl">
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-300/10 text-emerald-200">
@@ -249,7 +249,7 @@ export default function InvasionGame({ onBack }) {
                   Join a room
                 </p>
                 <form onSubmit={joinRoom} className="mt-2 flex max-w-md gap-2">
-                  <label className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-white/10 bg-[#0c1424] px-3 focus-within:border-emerald-200/40">
+                  <label className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-white/10 bg-slate-950/80 px-3 focus-within:border-emerald-200/40">
                     <Hash size={15} className="shrink-0 text-slate-500" />
                     <input
                       value={roomInput}
@@ -274,7 +274,7 @@ export default function InvasionGame({ onBack }) {
               </div>
             </div>
           </section>
-          <aside className="space-y-3 rounded-2xl border border-white/[.08] bg-[#131e32] p-5">
+          <aside className="space-y-3 rounded-2xl border border-white/[.08] glass-surface p-5">
             <p className="text-[10px] font-bold uppercase tracking-[.15em] text-slate-500">
               Three-round progression
             </p>
@@ -312,7 +312,7 @@ export default function InvasionGame({ onBack }) {
         </div>
       ) : (
         <>
-          <section className="overflow-hidden rounded-2xl border border-white/[.08] bg-[#131e32]">
+          <section className="overflow-hidden rounded-2xl border border-white/[.08] glass-surface">
             <div className="grid sm:grid-cols-2">
               {[0, 1].map((index) => (
                 <div
@@ -406,7 +406,7 @@ export default function InvasionGame({ onBack }) {
             </section>
           ) : (
             <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_330px]">
-              <section className="relative overflow-hidden rounded-2xl border border-white/[.08] bg-[#131e32] p-5 sm:p-7">
+              <section className="relative overflow-hidden rounded-2xl border border-white/[.08] glass-surface p-5 sm:p-7">
                 <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/[.08] bg-black/10 px-2.5 py-1">
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${tierIndex === 0 ? "bg-emerald-300" : tierIndex === 1 ? "bg-amber-200" : "bg-rose-200"}`}
@@ -434,7 +434,7 @@ export default function InvasionGame({ onBack }) {
                     </p>
                   </div>
                 </div>
-                <div className="mt-7 rounded-xl border border-emerald-200/10 bg-[#0c1424] p-5 sm:p-7">
+                <div className="mt-7 rounded-xl border border-emerald-200/10 bg-slate-950/80 p-5 sm:p-7">
                   <div className="flex items-center gap-2 text-emerald-200">
                     <CircleHelp size={17} />
                     <span className="text-[10px] font-bold uppercase tracking-[.13em]">
@@ -452,7 +452,7 @@ export default function InvasionGame({ onBack }) {
                       value={answerInput}
                       onChange={(event) => setAnswerInput(event.target.value)}
                       placeholder="Type your answer..."
-                      className="min-w-0 flex-1 rounded-lg border border-white/10 bg-[#111c2e] px-3.5 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-200/40"
+                      className="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/75 px-3.5 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-200/40"
                       aria-label="Answer"
                       autoComplete="off"
                     />
@@ -465,7 +465,7 @@ export default function InvasionGame({ onBack }) {
                   </form>
                   {feedback && (
                     <div
-                      className={`mt-4 flex items-start gap-2 rounded-lg border p-3 text-xs leading-relaxed ${feedback.correct ? "border-emerald-200/15 bg-emerald-200/[.05] text-emerald-100" : "border-amber-200/15 bg-amber-200/[.04] text-amber-100"}`}
+                      className={`mt-4 flex items-start gap-2 rounded-lg border p-3 text-xs leading-relaxed ${feedback.correct ? "feedback-correct border-emerald-400/30 bg-emerald-400/[.06] text-emerald-100" : "feedback-wrong border-rose-400/30 bg-rose-400/[.06] text-rose-100"}`}
                     >
                       <span className="mt-0.5">
                         {feedback.correct ? (
@@ -485,7 +485,7 @@ export default function InvasionGame({ onBack }) {
                 </div>
               </section>
               <aside className="space-y-4">
-                <section className="rounded-2xl border border-white/[.08] bg-[#131e32] p-5">
+                <section className="rounded-2xl border border-white/[.08] glass-surface p-5">
                   <p className="text-[10px] font-bold uppercase tracking-[.14em] text-slate-500">
                     Progress this match
                   </p>
@@ -520,7 +520,7 @@ export default function InvasionGame({ onBack }) {
                     />
                   </div>
                 </section>
-                <section className="rounded-2xl border border-white/[.08] bg-[#131e32] p-5">
+                <section className="rounded-2xl border border-white/[.08] glass-surface p-5">
                   <p className="text-[10px] font-bold uppercase tracking-[.14em] text-slate-500">
                     Match activity
                   </p>

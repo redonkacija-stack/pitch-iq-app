@@ -114,7 +114,7 @@ export default function WhoAmIGame({ onBack, onComplete, initialIndex }) {
         </p>
       </div>
 
-      <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141f34] p-6 sm:p-8">
+      <section className="relative overflow-hidden rounded-2xl border border-white/10 glass-surface p-6 sm:p-8">
         {/* Silhouette & Mystery Avatar */}
         <div className="relative mx-auto flex flex-col items-center">
           <div

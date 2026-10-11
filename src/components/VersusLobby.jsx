@@ -354,7 +354,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
 
       <div className="grid gap-6 lg:grid-cols-[1fr_390px]">
         {/* Left Column: Room Settings & Parameter Controls */}
-        <section className="space-y-6 rounded-2xl border border-white/10 bg-[#141f34] p-6 sm:p-8">
+        <section className="space-y-6 rounded-2xl border border-white/10 glass-surface p-6 sm:p-8">
           <div>
             <h2 className="flex items-center gap-2 font-display text-lg font-bold text-white">
               <Gamepad2 size={18} className="text-lime" /> Room Settings & Game
@@ -511,7 +511,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
         {/* Right Column: Join Room Form & Live Slots */}
         <aside className="space-y-6">
           {/* Join Existing Room Card */}
-          <div className="rounded-2xl border border-white/10 bg-[#141f34] p-5 sm:p-6">
+          <div className="rounded-2xl border border-white/10 glass-surface p-5 sm:p-6">
             <h3 className="flex items-center gap-2 text-sm font-bold text-white">
               <UserPlus size={16} className="text-lime" /> Join Existing Room
             </h3>
@@ -581,7 +581,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
 
           {/* Active Room Card & Live Slot Allocation */}
           {room && (
-            <div className="rounded-2xl border border-lime/30 bg-[#111a2d] p-5 sm:p-6 shadow-xl">
+            <div className="rounded-2xl border border-lime/30 glass-surface p-5 sm:p-6 shadow-xl">
               {/* Room Code & Quick Share Buttons */}
               <div className="border-b border-white/10 pb-4">
                 <div className="flex items-center justify-between">

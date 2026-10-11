@@ -250,7 +250,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
                 {tier.label} · +{tier.points}
               </span>
             </div>
-            <div className="mt-6 rounded-xl border border-white/[.07] bg-[#0c1424] p-5">
+            <div className="mt-6 rounded-xl border border-white/[.07] bg-slate-950/80 p-5">
               <div className="flex items-center gap-2 text-lime">
                 <CircleHelp size={16} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">
@@ -268,7 +268,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   placeholder="Your answer"
-                  className="min-w-0 flex-1 rounded-lg border border-white/10 bg-[#111c2e] px-3 py-3 text-sm outline-none focus:border-lime/40"
+                  className="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/75 px-3 py-3 text-sm outline-none focus:border-lime/40"
                 />
                 <button
                   disabled={!answer.trim()}
@@ -279,7 +279,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
               </form>
               {feedback && (
                 <p
-                  className={`mt-3 flex items-center gap-2 rounded-lg border p-3 text-xs ${feedback.correct ? "border-emerald-200/15 text-emerald-100" : "border-amber-200/15 text-amber-100"}`}
+                  className={`mt-3 flex items-center gap-2 rounded-lg border p-3 text-xs ${feedback.correct ? "feedback-correct border-emerald-400/30 bg-emerald-400/[.06] text-emerald-100" : "feedback-wrong border-rose-400/30 bg-rose-400/[.06] text-rose-100"}`}
                 >
                   {feedback.correct ? <Check size={14} /> : <X size={14} />}{" "}
                   {feedback.text}

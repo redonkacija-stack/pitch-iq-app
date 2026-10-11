@@ -4,17 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#0f172a",
-        panel: "#172338",
-        pitch: "#14532d",
-        lime: "#22c55e",
+        ink: "#020617",
+        panel: "#0f172a",
+        pitch: "#064e3b",
+        lime: "#10b981",
         mist: "#94a3b8",
       },
       fontFamily: {
         display: ["Barlow Condensed", "Arial Narrow", "sans-serif"],
         sans: ["DM Sans", "Segoe UI", "sans-serif"],
       },
-      boxShadow: { glow: "0 0 32px rgba(34, 197, 94, 0.18)" },
+      boxShadow: { glow: "0 0 32px rgba(16, 185, 129, 0.2)" },
       keyframes: {
         "pop-in": {
           "0%": { opacity: "0", transform: "scale(.88) translateY(8px)" },

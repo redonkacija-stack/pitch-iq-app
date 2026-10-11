@@ -125,7 +125,7 @@ function Hub({ onSelect, stats }) {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-white/10 bg-[#121c2e] p-1.5">
+          <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-white/10 glass-surface p-1.5">
             <Filter size={14} className="ml-2 mr-1 text-slate-500" />
             {categories.map((cat) => (
               <button
@@ -151,7 +151,7 @@ function Hub({ onSelect, stats }) {
               <button
                 key={mode.id}
                 onClick={() => onSelect(mode.id)}
-                className="group flex min-h-[200px] flex-col justify-between rounded-2xl border border-white/10 bg-[#141f34] p-5 text-left transition hover:-translate-y-1 hover:border-lime/40 hover:bg-[#1a2740] hover:shadow-xl"
+                className="sport-card group flex min-h-[200px] flex-col justify-between rounded-2xl border border-slate-800/80 bg-slate-900/60 p-5 text-left backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:bg-slate-800/80 hover:shadow-[0_0_25px_rgba(16,185,129,0.2)]"
               >
                 <div>
                   <div className="flex items-center justify-between">
@@ -204,7 +204,7 @@ function Hub({ onSelect, stats }) {
         ].map((item) => (
           <div
             key={item.title}
-            className="rounded-2xl border border-white/10 bg-[#121c2e]/60 p-5"
+            className="rounded-2xl border border-white/10 glass-surface p-5"
           >
             <h3 className="font-display text-sm font-bold text-white">
               {item.title}
@@ -471,7 +471,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-ink text-white font-sans selection:bg-lime selection:text-ink">
+    <div className="min-h-screen bg-transparent text-white font-sans selection:bg-emerald-400 selection:text-slate-950">
       {/* Primary Global Navigation */}
       <GameNavbar
         activeMode={activeMode}
@@ -484,7 +484,7 @@ function AppContent() {
 
       {/* Persistent Quick Exit Banner: if player opens wrong challenge, one-click back */}
       {activeMode !== "home" && activeMode !== "lobby" && !room && (
-        <div className="border-b border-white/10 bg-[#0d1527]/90 px-4 py-2.5 backdrop-blur-md">
+        <div className="border-b border-white/10 bg-slate-950/85 px-4 py-2.5 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
             <button
               onClick={handleBackToHub}

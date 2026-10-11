@@ -105,7 +105,7 @@ export default function DuoLinkGame({ onBack, onComplete }) {
         </p>
       </div>
 
-      <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141f34] p-6 sm:p-8">
+      <section className="relative overflow-hidden rounded-2xl border border-white/10 glass-surface p-6 sm:p-8">
         {/* Progress & Streak Bar */}
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <span className="font-mono text-xs text-slate-400">

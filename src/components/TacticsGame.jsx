@@ -174,7 +174,7 @@ export default function TacticsGame({
 
       <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
         {/* Left Column: Tactical Principles */}
-        <section className="relative overflow-hidden rounded-2xl border border-white/[.09] bg-[#141f34] p-5 sm:p-7">
+        <section className="relative overflow-hidden rounded-2xl border border-white/[.09] glass-surface p-5 sm:p-7">
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-lime">
@@ -254,7 +254,7 @@ export default function TacticsGame({
 
         {/* Right Column: Tactical Pitch Setup Display */}
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-white/10 bg-[#141f34] p-5">
+          <div className="rounded-2xl border border-white/10 glass-surface p-5">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Tactical Pitch Layout

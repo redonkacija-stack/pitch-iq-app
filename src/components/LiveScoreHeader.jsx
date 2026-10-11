@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Copy, Link as LinkIcon, RotateCcw, Shield, Swords } from "lucide-react";
+import { Check, Copy, Link as LinkIcon, RotateCcw, Swords } from "lucide-react";
 import { getShareableRoomUrl } from "../utils/peerSync";
 
 export default function LiveScoreHeader({
@@ -50,7 +50,7 @@ export default function LiveScoreHeader({
   }
 
   return (
-    <div className="sticky top-16 z-20 border-b border-white/10 bg-[#0c1424]/95 backdrop-blur-md">
+    <div className="sticky top-16 z-20 border-b border-slate-800/80 bg-slate-950/80 shadow-xl shadow-black/25 backdrop-blur-2xl">
       <div className="mx-auto flex max-w-[1360px] flex-col gap-3 px-4 py-3 sm:px-7 sm:py-3.5 lg:px-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Room info pill */}
@@ -128,12 +128,16 @@ export default function LiveScoreHeader({
             className={`flex items-center justify-between rounded-xl border p-3 sm:px-5 sm:py-3.5 transition ${
               activeTeam === "A"
                 ? "border-emerald-500/40 bg-emerald-950/20 shadow-md shadow-emerald-950/30"
-                : "border-white/10 bg-[#121c2e]"
+                : "border-white/10 glass-surface"
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className="grid h-9 w-9 place-items-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-                <Shield size={18} />
+              <div className="flex -space-x-2">
+                {(room.slots || []).filter((slot) => slot.team === "A").map((slot) => (
+                  <span key={slot.id} title={slot.name} className="grid h-9 w-9 place-items-center rounded-full border-2 border-slate-900 bg-emerald-500/20 text-[10px] font-extrabold uppercase text-emerald-200 shadow-md shadow-emerald-950/40">
+                    {slot.isBot ? "AI" : (slot.name || "P").slice(0, 1)}
+                  </span>
+                ))}
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
@@ -158,7 +162,7 @@ export default function LiveScoreHeader({
               </div>
             </div>
             <div className="text-right">
-              <div className="font-display text-2xl font-black text-white sm:text-3xl">
+              <div className="score-glow font-display text-2xl font-black tabular-nums text-white sm:text-3xl">
                 {teamAScore}
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-500">
@@ -172,12 +176,16 @@ export default function LiveScoreHeader({
             className={`flex items-center justify-between rounded-xl border p-3 sm:px-5 sm:py-3.5 transition ${
               activeTeam === "B"
                 ? "border-sky-500/40 bg-sky-950/20 shadow-md shadow-sky-950/30"
-                : "border-white/10 bg-[#121c2e]"
+                : "border-white/10 glass-surface"
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className="grid h-9 w-9 place-items-center rounded-lg border border-sky-500/30 bg-sky-500/10 text-sky-400">
-                <Shield size={18} />
+              <div className="flex -space-x-2">
+                {(room.slots || []).filter((slot) => slot.team === "B").map((slot) => (
+                  <span key={slot.id} title={slot.name} className="grid h-9 w-9 place-items-center rounded-full border-2 border-slate-900 bg-sky-500/20 text-[10px] font-extrabold uppercase text-sky-200 shadow-md shadow-sky-950/40">
+                    {slot.isBot ? "AI" : (slot.name || "P").slice(0, 1)}
+                  </span>
+                ))}
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
@@ -202,7 +210,7 @@ export default function LiveScoreHeader({
               </div>
             </div>
             <div className="text-right">
-              <div className="font-display text-2xl font-black text-white sm:text-3xl">
+              <div className="score-glow font-display text-2xl font-black tabular-nums text-white sm:text-3xl">
                 {teamBScore}
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-500">

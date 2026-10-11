@@ -231,7 +231,7 @@ export default function TransferGame({
             />
             <button
               disabled={Boolean(result)}
-              className="rounded-lg bg-lime px-4 text-sm font-bold text-ink transition hover:bg-[#4ade80] disabled:opacity-50"
+              className="rounded-lg bg-lime px-4 text-sm font-bold text-ink transition hover:bg-emerald-400 disabled:opacity-50"
             >
               Lock in
             </button>
@@ -333,7 +333,7 @@ export default function TransferGame({
           </p>
           <button
             onClick={isDaily ? onNext : onBack}
-            className="inline-flex items-center gap-2 rounded-lg bg-lime px-4 py-2.5 text-sm font-bold text-ink transition hover:bg-[#4ade80]"
+            className="inline-flex items-center gap-2 rounded-lg bg-lime px-4 py-2.5 text-sm font-bold text-ink transition hover:bg-emerald-400"
           >
             {isDaily ? "Continue daily set" : "Back to hub"}{" "}
             <ArrowRight size={15} />

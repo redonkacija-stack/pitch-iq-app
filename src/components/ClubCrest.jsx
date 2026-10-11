@@ -12,7 +12,7 @@ export default function ClubCrest({
 
   return (
     <span
-      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-slate-900/70 ${className}`}
+      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-700/80 bg-slate-800/80 shadow-md shadow-black/20 ${className}`}
       role="img"
       aria-label={alt}
       title={alt}

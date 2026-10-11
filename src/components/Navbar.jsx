@@ -17,7 +17,7 @@ export default function Navbar({
   onSoundChange,
 }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-white/[.07] bg-ink/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/75 shadow-lg shadow-black/20 backdrop-blur-2xl">
       <div className="mx-auto flex h-[62px] max-w-[1280px] items-center justify-between px-4 sm:px-7 lg:px-10">
         <button
           onClick={onHome}
