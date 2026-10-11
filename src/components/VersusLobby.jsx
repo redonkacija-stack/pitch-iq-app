@@ -311,6 +311,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
       ...room,
       slots: finalizedSlots,
       localSlot,
+      activePlayerId: room.slots.find((slot) => slot.host)?.id ?? 0,
+      turnDeadline: Date.now() + 15000,
       status: "in-game",
     };
 

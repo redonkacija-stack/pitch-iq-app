@@ -36,7 +36,7 @@ const normalize = (value) =>
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "");
 
-export default function RoomInvasionGame({ room, onBack, onComplete, onScore, onTurn }) {
+export default function RoomInvasionGame({ room, onBack, onComplete, onScore, onTurn, activePlayerId = 0, turnDeadline, turnNotice }) {
   const seats = room?.format === "2v2" ? 4 : 2;
   const pool = useMemo(
     () => makePool(room?.code || "PITCH-DEMO"),
@@ -49,6 +49,8 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
   const [guessed, setGuessed] = useState(() => Array(seats).fill(0));
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState(null);
+  const [turnPending, setTurnPending] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(15);
   const [event, setEvent] = useState(
     `Room ${room?.code} is ready. ${room?.slots?.[0]?.name || "Player 1"} has the first turn.`,
   );
@@ -65,42 +67,64 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
         ? 0
         : 1;
   const seatName = (slot) => room?.slots?.[slot]?.name || `Player ${slot + 1}`;
+  const currentUserId = room?.localSlot ?? 0;
+  const isMyTurn = !room || currentUserId === activePlayerId;
 
-  function submitAnswer(value) {
-    if (!question || !value.trim() || done) return;
+  useEffect(() => {
+    setTurn(activePlayerId);
+    setTurnPending(false);
+  }, [activePlayerId]);
+
+  useEffect(() => {
+    if (!turnDeadline) {
+      setRemainingSeconds(15);
+      return undefined;
+    }
+    const updateClock = () => setRemainingSeconds(Math.max(0, Math.ceil((turnDeadline - Date.now()) / 1000)));
+    updateClock();
+    const interval = setInterval(updateClock, 250);
+    return () => clearInterval(interval);
+  }, [turnDeadline]);
+
+  function submitAnswer(value, { botAction = false } = {}) {
+    if (!question || !value.trim() || done || (!botAction && (!isMyTurn || turnPending))) return;
+    if (!botAction) setTurnPending(true);
     const expected = [question.answer, ...(question.accepted || [])].map(
       normalize,
     );
     const correct = expected.includes(normalize(value));
-    const nextTurn = (turn + 1) % seats;
-    onTurn?.(nextTurn);
+    const playerSlot = room ? activePlayerId : turn;
+    const nextTurn = (playerSlot + 1) % seats;
     setAnswer("");
-    setTurn(nextTurn);
     if (!correct) {
       setFeedback({
         correct: false,
         text: `Incorrect. The clue passes to ${seatName(nextTurn)}.`,
       });
       setEvent(
-        `${seatName(turn)} missed the ${tier.label} clue; ${seatName(nextTurn)} is up.`,
+        `${seatName(playerSlot)} missed the ${tier.label} clue; ${seatName(nextTurn)} is up.`,
       );
+      if (room) onTurn?.(nextTurn, playerSlot, "guess");
+      else setTurn(nextTurn);
       return;
     }
     const points = tier.points;
-    onScore?.(turn, points, tierIndex === 2);
+    onScore?.(playerSlot, points, tierIndex === 2);
     setScores((previous) =>
-      previous.map((value, slot) => value + (slot === turn ? points : 0)),
+      previous.map((value, slot) => value + (slot === playerSlot ? points : 0)),
     );
+    if (room) onTurn?.(nextTurn, playerSlot, "guess");
+    else setTurn(nextTurn);
     setFeedback({
       correct: true,
-      text: `Correct. ${points} points for ${seatName(turn)}.`,
+      text: `Correct. ${points} points for ${seatName(playerSlot)}.`,
     });
     setEvent(
-      `${seatName(turn)} identified ${current.name} on the ${tier.label} clue.`,
+      `${seatName(playerSlot)} identified ${current.name} on the ${tier.label} clue.`,
     );
     if (tierIndex === 2) {
       setGuessed((previous) =>
-        previous.map((value, slot) => value + (slot === turn ? 1 : 0)),
+        previous.map((value, slot) => value + (slot === playerSlot ? 1 : 0)),
       );
       setPlayerIndex((value) => value + 1);
       setTierIndex(0);
@@ -110,13 +134,14 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
 
   function submit(eventObject) {
     eventObject.preventDefault();
-    submitAnswer(answer);
+    if (isMyTurn && !turnPending) submitAnswer(answer);
   }
 
   // Bots guess on their own turns after a short, difficulty-weighted delay.
   useEffect(() => {
-    if (done || room?.localSlot !== 0 || !room?.slots?.[turn]?.isBot || !question) return undefined;
-    const bot = room.slots[turn];
+    const botSlot = room ? activePlayerId : turn;
+    if (done || room?.localSlot !== 0 || !room?.slots?.[botSlot]?.isBot || !question) return undefined;
+    const bot = room.slots[botSlot];
     const accuracy = {
       Easy: 0.32,
       Medium: 0.58,
@@ -124,7 +149,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
     }[bot.botDifficulty] || 0.5;
     const delay = 4000 + Math.random() * 4000 + (bot.botDifficulty === "Easy" ? 900 : 0);
     const timerId = setTimeout(() => {
-      submitAnswer(Math.random() < accuracy ? question.answer : "Unknown Player");
+      submitAnswer(Math.random() < accuracy ? question.answer : "Unknown Player", { botAction: true });
     }, delay);
     return () => clearTimeout(timerId);
   }, [done, room, turn, playerIndex, tierIndex, question]);
@@ -162,6 +187,31 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
           {room?.code}
         </span>
       </div>
+      <section
+        role="status"
+        aria-live="polite"
+        className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur-xl ${isMyTurn ? "border-emerald-400/35 bg-emerald-400/10 text-emerald-100 shadow-emerald-950/30" : "border-sky-300/20 bg-slate-800/75 text-sky-100 shadow-black/20"}`}
+      >
+        <div className="flex items-center gap-3">
+          <span className={`h-2.5 w-2.5 rounded-full ${isMyTurn ? "animate-pulse bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.8)]" : "bg-sky-300"}`} />
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[.12em]">
+              {isMyTurn ? "Your Turn — Make your guess!" : `Opponent's Turn — Waiting for ${seatName(activePlayerId)} to answer...`}
+            </p>
+            <p className="mt-0.5 text-[11px] text-slate-300">
+              {turnPending ? "Guess submitted · waiting for turn confirmation" : isMyTurn ? "Your answer is the only one enabled" : "Inputs are locked until the active player finishes"}
+            </p>
+          </div>
+        </div>
+        <span className={`font-display text-xl font-black tabular-nums tracking-wider ${remainingSeconds <= 5 ? "text-amber-300" : "text-white"}`}>
+          00:{String(remainingSeconds).padStart(2, "0")}
+        </span>
+      </section>
+      {turnNotice && (
+        <div role="alert" className="animate-fade-in rounded-xl border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-amber-100">
+          {turnNotice}
+        </div>
+      )}
       <section className="overflow-hidden rounded-xl border border-white/[.08] bg-panel">
         <div
           className={`grid ${seats === 4 ? "sm:grid-cols-2" : "sm:grid-cols-2"}`}
@@ -267,11 +317,12 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
                 <input
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
+                  disabled={!isMyTurn || turnPending}
                   placeholder="Your answer"
-                  className="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/75 px-3 py-3 text-sm outline-none focus:border-lime/40"
+                  className="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/75 px-3 py-3 text-sm outline-none focus:border-lime/40 disabled:cursor-not-allowed disabled:opacity-45"
                 />
                 <button
-                  disabled={!answer.trim()}
+                  disabled={!answer.trim() || !isMyTurn || turnPending}
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-lime px-4 py-3 text-xs font-bold text-ink disabled:opacity-40"
                 >
                   Lock answer <ArrowRight size={14} />
@@ -311,8 +362,9 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
               <p className="mt-3 text-xs text-slate-400">{event}</p>
             </section>
             <button
-              onClick={() => setTurn((value) => (value + 1) % seats)}
-              className="w-full rounded-lg border border-white/10 py-2.5 text-xs font-semibold text-slate-400 hover:text-white"
+              onClick={() => room ? onTurn?.((activePlayerId + 1) % seats, activePlayerId, "pass") : setTurn((value) => (value + 1) % seats)}
+              disabled={(!!room && !isMyTurn) || turnPending}
+              className="w-full rounded-lg border border-white/10 py-2.5 text-xs font-semibold text-slate-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
             >
               Pass turn
             </button>

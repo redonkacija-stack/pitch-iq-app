@@ -228,6 +228,9 @@ function ModeRouter({
   onComplete,
   onScore,
   onTurn,
+  activePlayerId,
+  turnDeadline,
+  turnNotice,
   onProgress,
 }) {
   const matchIdx = (challengeOffset || 0) % matches.length;
@@ -240,7 +243,7 @@ function ModeRouter({
 
   if (mode === "invasion") {
     return (
-      <RoomInvasionGame room={room} onBack={onBack} onComplete={onComplete} onScore={onScore} onTurn={onTurn} />
+      <RoomInvasionGame room={room} onBack={onBack} onComplete={onComplete} onScore={onScore} onTurn={onTurn} activePlayerId={activePlayerId} turnDeadline={turnDeadline} turnNotice={turnNotice} />
     );
   }
 
@@ -342,8 +345,50 @@ function AppContent() {
   const [showStats, setShowStats] = useState(false);
   const [roomScores, setRoomScores] = useState([0, 0, 0, 0]);
   const [roomGuessed, setRoomGuessed] = useState({ A: 0, B: 0 });
-  const [roomTurn, setRoomTurn] = useState(0);
+  const [activePlayerId, setActivePlayerId] = useState(0);
+  const [turnDeadline, setTurnDeadline] = useState(0);
+  const [turnNotice, setTurnNotice] = useState("");
   const roomSyncRef = useRef(null);
+  const activePlayerRef = useRef(0);
+  const turnNoticeTimerRef = useRef(null);
+
+  function applyTurnSwitch(nextPlayerId, type = "TURN_SWITCH", deadline = Date.now() + 15000) {
+    activePlayerRef.current = nextPlayerId;
+    setActivePlayerId(nextPlayerId);
+    setTurnDeadline(deadline);
+    setRoom((current) => current ? { ...current, activePlayerId: nextPlayerId, turnDeadline: deadline } : current);
+    setTurnNotice(type === "TURN_TIMEOUT" ? "Time's Up! Turn Passed" : "");
+    clearTimeout(turnNoticeTimerRef.current);
+    if (type === "TURN_TIMEOUT") {
+      turnNoticeTimerRef.current = setTimeout(() => setTurnNotice(""), 4000);
+    }
+    roomSyncRef.current?.broadcastAction({ type, activePlayerId: nextPlayerId, turnDeadline: deadline });
+  }
+
+  function handleRoomTurn(nextPlayerId, playerId = activePlayerRef.current, reason = "guess") {
+    if (!room || playerId !== activePlayerRef.current) return;
+    const engine = roomSyncRef.current;
+    if (engine?.isHost) {
+      applyTurnSwitch(nextPlayerId, reason === "timeout" ? "TURN_TIMEOUT" : "TURN_SWITCH");
+    } else if (engine) {
+      engine.broadcastAction({ type: "TURN_REQUEST", playerId, nextPlayerId, reason });
+    } else {
+      applyTurnSwitch(nextPlayerId, reason === "timeout" ? "TURN_TIMEOUT" : "TURN_SWITCH");
+    }
+  }
+
+  useEffect(() => {
+    if (!room || activeMode === "lobby" || room.localSlot !== 0 || !turnDeadline) return undefined;
+    const scheduledPlayerId = activePlayerRef.current;
+    const timeout = setTimeout(() => {
+      if (activePlayerRef.current !== scheduledPlayerId) return;
+      const nextPlayerId = (scheduledPlayerId + 1) % (room.capacity || 2);
+      handleRoomTurn(nextPlayerId, scheduledPlayerId, "timeout");
+    }, Math.max(0, turnDeadline - Date.now()));
+    return () => clearTimeout(timeout);
+  }, [room?.code, room?.localSlot, room?.capacity, activeMode, activePlayerId, turnDeadline]);
+
+  useEffect(() => () => clearTimeout(turnNoticeTimerRef.current), []);
 
   // Challenge rotation tracker: ensures every visit and replay produces a brand new challenge
   const [challengeOffsets, setChallengeOffsets] = useState(() => ({
@@ -416,21 +461,49 @@ function AppContent() {
             const team = launchedRoom.slots?.[action.slot]?.team || (action.slot % 2 === 0 ? "A" : "B");
             setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
           }
-        } else if (action?.type === "ROOM_TURN") {
-          setRoomTurn(action.turn);
+        } else if (action?.type === "ROOM_SCORE_REQUEST" && syncEngine.isHost && action.slot === activePlayerRef.current) {
+          const team = launchedRoom.slots?.[action.slot]?.team || (action.slot % 2 === 0 ? "A" : "B");
+          setRoomScores((previous) => previous.map((value, index) => index === action.slot ? value + action.points : value));
+          if (action.completedPlayer) {
+            setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
+          }
+          syncEngine.broadcastAction({ type: "ROOM_SCORE", slot: action.slot, points: action.points, completedPlayer: action.completedPlayer });
+        } else if (action?.type === "TURN_REQUEST" && syncEngine.isHost) {
+          const currentPlayerId = activePlayerRef.current;
+          const expectedNext = (currentPlayerId + 1) % (launchedRoom.capacity || 2);
+          if (action.playerId === currentPlayerId && action.nextPlayerId === expectedNext && action.reason !== "timeout") {
+            applyTurnSwitch(expectedNext);
+          }
+        } else if ((action?.type === "TURN_SWITCH" || action?.type === "TURN_TIMEOUT") && !syncEngine.isHost) {
+          activePlayerRef.current = action.activePlayerId;
+          setActivePlayerId(action.activePlayerId);
+          const deadline = action.turnDeadline || Date.now() + 15000;
+          setTurnDeadline(deadline);
+          setRoom((current) => current ? { ...current, activePlayerId: action.activePlayerId, turnDeadline: deadline } : current);
+          setTurnNotice(action.type === "TURN_TIMEOUT" ? "Time's Up! Turn Passed" : "");
+          clearTimeout(turnNoticeTimerRef.current);
+          if (action.type === "TURN_TIMEOUT") {
+            turnNoticeTimerRef.current = setTimeout(() => setTurnNotice(""), 4000);
+          }
         }
       };
     }
+    const hostPlayerId = launchedRoom.slots?.find((slot) => slot.host)?.id ?? 0;
+    const firstPlayerId = launchedRoom.activePlayerId ?? hostPlayerId;
+    const firstDeadline = launchedRoom.turnDeadline || Date.now() + 15000;
+    activePlayerRef.current = firstPlayerId;
+    setActivePlayerId(firstPlayerId);
+    setTurnDeadline(firstDeadline);
+    setTurnNotice("");
     setRoom(launchedRoom);
     setRoomScores(Array(launchedRoom.capacity).fill(0));
     setRoomGuessed({ A: 0, B: 0 });
-    setRoomTurn(launchedRoom.localSlot || 0);
     setActiveMode(launchedRoom.mode);
   }
 
   function handleProgressUpdate(_count) {
     if (room) {
-      const activeSlot = roomTurn;
+      const activeSlot = activePlayerId;
       const team = room.slots?.[activeSlot]?.team || "A";
       setRoomGuessed((prev) => {
         const next = { ...prev, [team]: (prev[team] || 0) + 1 };
@@ -452,22 +525,20 @@ function AppContent() {
   }
 
   function handlePassTurn() {
-    if (!room) return;
-    setRoomTurn((prev) => (prev + 1) % room.capacity);
+    if (!room || room.localSlot !== activePlayerId) return;
+    handleRoomTurn((activePlayerId + 1) % room.capacity, activePlayerId, "pass");
   }
 
   function handleRoomScore(slot, points, completedPlayer) {
     const team = room?.slots?.[slot]?.team || (slot % 2 === 0 ? "A" : "B");
-    setRoomScores((previous) => previous.map((value, index) => index === slot ? value + points : value));
-    if (completedPlayer) {
-      setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
+    const engine = roomSyncRef.current;
+    if (engine && !engine.isHost) {
+      engine.broadcastAction({ type: "ROOM_SCORE_REQUEST", slot, points, completedPlayer });
+      return;
     }
-    roomSyncRef.current?.broadcastAction({ type: "ROOM_SCORE", slot, points, completedPlayer });
-  }
-
-  function handleRoomTurn(turn) {
-    setRoomTurn(turn);
-    roomSyncRef.current?.broadcastAction({ type: "ROOM_TURN", turn });
+    setRoomScores((previous) => previous.map((value, index) => index === slot ? value + points : value));
+    if (completedPlayer) setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
+    engine?.broadcastAction({ type: "ROOM_SCORE", slot, points, completedPlayer });
   }
 
   return (
@@ -505,8 +576,8 @@ function AppContent() {
           room={room}
           scores={roomScores}
           guessedCounts={roomGuessed}
-          activeTurn={roomTurn}
-          onPassTurn={handlePassTurn}
+          activeTurn={activePlayerId}
+          onPassTurn={room.localSlot === activePlayerId ? handlePassTurn : undefined}
           onExitRoom={() => {
             roomSyncRef.current?.destroy();
             roomSyncRef.current = null;
@@ -541,6 +612,9 @@ function AppContent() {
             onComplete={handleCompleteRound}
             onScore={handleRoomScore}
             onTurn={handleRoomTurn}
+            activePlayerId={activePlayerId}
+            turnDeadline={turnDeadline}
+            turnNotice={turnNotice}
             onProgress={handleProgressUpdate}
           />
         )}
