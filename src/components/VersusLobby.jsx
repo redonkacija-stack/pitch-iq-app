@@ -498,19 +498,36 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
             {/* Pool Difficulty */}
             <div>
               <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Player Pool Difficulty
+                Player Pool
               </label>
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-3 text-sm text-white outline-none focus:border-lime/50"
-              >
-                <option className="bg-slate-900">Top 5 European Leagues</option>
-                <option className="bg-slate-900">All Leagues (Worldwide)</option>
-                <option className="bg-slate-900">
-                  UCL Champions & International Giants
-                </option>
-              </select>
+              <div className="mt-2 grid gap-2" role="group" aria-label="Player pool">
+                {[
+                  { label: "Top 5 European Leagues", detail: "Premier League, La Liga, Serie A, Bundesliga, Ligue 1" },
+                  { label: "All Leagues (Worldwide)", detail: "Clubs and players from across the global game" },
+                  { label: "UCL Champions & International Giants", detail: "Elite European clubs and national teams" },
+                ].map((poolOption) => {
+                  const isSelected = difficulty === poolOption.label;
+                  return (
+                    <button
+                      key={poolOption.label}
+                      type="button"
+                      aria-pressed={isSelected}
+                      onClick={() => setDifficulty(poolOption.label)}
+                      className={`flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 text-left transition-all active:scale-[.99] ${
+                        isSelected
+                          ? "border-emerald-400/70 bg-emerald-500/[.08] text-white shadow-[0_0_14px_rgba(16,185,129,0.12)]"
+                          : "border-slate-800 bg-slate-900/50 text-slate-300 hover:border-emerald-500/40"
+                      }`}
+                    >
+                      <span className="min-w-0">
+                        <span className="block text-xs font-bold">{poolOption.label}</span>
+                        <span className="mt-0.5 block text-[10px] leading-relaxed text-slate-500">{poolOption.detail}</span>
+                      </span>
+                      {isSelected && <CheckCircle2 className="shrink-0 text-emerald-300" size={17} aria-label="Selected" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Timer Clock */}
