@@ -33,6 +33,7 @@ import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
 import { matchModes } from "./data/gameModes";
+import { gridPlayers, leagueOptions, playerMatchesGridCell } from "./data/gridData";
 import { saveRoom } from "./utils/lobbySync";
 
 const modeIcons = {
@@ -232,6 +233,9 @@ function ModeRouter({
   turnDeadline,
   turnNotice,
   onProgress,
+  onGridStart,
+  onGridClaim,
+  roomGridState,
 }) {
   const matchIdx = (challengeOffset || 0) % matches.length;
   const careerIdx = (challengeOffset || 0) % careers.length;
@@ -301,6 +305,12 @@ function ModeRouter({
     return (
       <TicTacToeGrid
         key={`grid-${challengeOffset}`}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnNotice={turnNotice}
+        roomGridState={roomGridState || room?.gridState || null}
+        onGridStart={onGridStart}
+        onGridClaim={onGridClaim}
         onBack={onBack}
         onComplete={onComplete}
       />
@@ -349,10 +359,12 @@ function AppContent() {
   const [showStats, setShowStats] = useState(false);
   const [roomScores, setRoomScores] = useState([0, 0, 0, 0]);
   const [roomGuessed, setRoomGuessed] = useState({ A: 0, B: 0 });
+  const [roomGridState, setRoomGridState] = useState(null);
   const [activePlayerId, setActivePlayerId] = useState(0);
   const [turnDeadline, setTurnDeadline] = useState(0);
   const [turnNotice, setTurnNotice] = useState("");
   const roomSyncRef = useRef(null);
+  const roomGridStateRef = useRef(null);
   const activePlayerRef = useRef(0);
   const turnNoticeTimerRef = useRef(null);
 
@@ -379,6 +391,69 @@ function AppContent() {
     } else {
       applyTurnSwitch(nextPlayerId, reason === "timeout" ? "TURN_TIMEOUT" : "TURN_SWITCH");
     }
+  }
+
+  function commitRoomGridState(nextState, targetRoom = room, engine = roomSyncRef.current) {
+    roomGridStateRef.current = nextState;
+    setRoomGridState(nextState);
+    if (targetRoom) {
+      const updatedRoom = { ...targetRoom, gridState: nextState };
+      saveRoom(updatedRoom);
+      setRoom((current) => current ? { ...current, gridState: nextState } : current);
+    }
+    engine?.broadcastAction({ type: "GRID_STATE", gridState: nextState });
+  }
+
+  function acceptRoomGridStart(leagueId, targetRoom = room, engine = roomSyncRef.current) {
+    if (!targetRoom || !engine?.isHost || !leagueOptions.some((league) => league.id === leagueId)) return;
+    commitRoomGridState({
+      leagueId,
+      cells: Array(9).fill(null),
+      finished: false,
+      message: "",
+    }, targetRoom, engine);
+  }
+
+  function acceptRoomGridClaim(payload, senderSlot, targetRoom = room, engine = roomSyncRef.current) {
+    if (!targetRoom || !engine?.isHost || senderSlot !== activePlayerRef.current) return;
+    const current = roomGridStateRef.current;
+    const league = leagueOptions.find((item) => item.id === payload?.leagueId);
+    const index = Number(payload?.index);
+    if (!current || !league || current.leagueId !== league.id || current.finished || !Number.isInteger(index) || index < 0 || index > 8 || current.cells[index]) return;
+    const player = gridPlayers.find((item) => item.name === payload.playerName);
+    if (!player || !playerMatchesGridCell(player, league, index) || current.cells.some((cell) => cell?.name === player.name)) return;
+
+    const team = targetRoom.slots?.[senderSlot]?.team === "B" ? 1 : 0;
+    const cells = [...current.cells];
+    cells[index] = { name: player.name, clubs: player.clubs, team };
+    const winningLines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    const won = winningLines.some((line) => line.every((cellIndex) => cells[cellIndex]?.team === team));
+    const draw = !won && cells.every(Boolean);
+    const nextState = {
+      ...current,
+      cells,
+      finished: won || draw,
+      message: won ? `Team ${team + 1} wins the matrix.` : draw ? "Full time: the matrix ended in a draw." : `${player.name} claimed a tile for Team ${team + 1}.`,
+    };
+    commitRoomGridState(nextState, targetRoom, engine);
+    setRoomScores((previous) => previous.map((score, slot) => slot === senderSlot ? score + 10 : score));
+    engine.broadcastAction({ type: "ROOM_SCORE", slot: senderSlot, points: 10, completedPlayer: false });
+    if (!won && !draw) applyTurnSwitch((senderSlot + 1) % (targetRoom.capacity || 2));
+    else applyTurnSwitch(senderSlot, "TURN_SWITCH", 0);
+  }
+
+  function handleGridStart(leagueId) {
+    if (!room) return;
+    const engine = roomSyncRef.current;
+    if (engine?.isHost) acceptRoomGridStart(leagueId, room, engine);
+    else engine?.broadcastAction({ type: "GRID_START_REQUEST", leagueId });
+  }
+
+  function handleGridClaim(payload) {
+    if (!room || room.localSlot !== activePlayerRef.current) return;
+    const engine = roomSyncRef.current;
+    if (engine?.isHost) acceptRoomGridClaim(payload, room.localSlot, room, engine);
+    else engine?.broadcastAction({ type: "GRID_CLAIM_REQUEST", ...payload });
   }
 
   useEffect(() => {
@@ -472,6 +547,15 @@ function AppContent() {
             setRoomGuessed((previous) => ({ ...previous, [team]: (previous[team] || 0) + 1 }));
           }
           syncEngine.broadcastAction({ type: "ROOM_SCORE", slot: action.slot, points: action.points, completedPlayer: action.completedPlayer });
+        } else if (action?.type === "GRID_START_REQUEST" && syncEngine.isHost) {
+          const hostSlot = launchedRoom.slots?.find((slot) => slot.host)?.id ?? 0;
+          if (action.senderSlot === hostSlot) acceptRoomGridStart(action.leagueId, launchedRoom, syncEngine);
+        } else if (action?.type === "GRID_CLAIM_REQUEST" && syncEngine.isHost) {
+          acceptRoomGridClaim(action, action.senderSlot, launchedRoom, syncEngine);
+        } else if (action?.type === "GRID_STATE" && !syncEngine.isHost) {
+          roomGridStateRef.current = action.gridState;
+          setRoomGridState(action.gridState);
+          setRoom((current) => current ? { ...current, gridState: action.gridState } : current);
         } else if (action?.type === "TURN_REQUEST" && syncEngine.isHost) {
           const currentPlayerId = activePlayerRef.current;
           const expectedNext = (currentPlayerId + 1) % (launchedRoom.capacity || 2);
@@ -481,7 +565,7 @@ function AppContent() {
         } else if ((action?.type === "TURN_SWITCH" || action?.type === "TURN_TIMEOUT") && !syncEngine.isHost) {
           activePlayerRef.current = action.activePlayerId;
           setActivePlayerId(action.activePlayerId);
-          const deadline = action.turnDeadline || Date.now() + 15000;
+          const deadline = action.turnDeadline ?? Date.now() + 15000;
           setTurnDeadline(deadline);
           setRoom((current) => current ? { ...current, activePlayerId: action.activePlayerId, turnDeadline: deadline } : current);
           setTurnNotice(action.type === "TURN_TIMEOUT" ? "Time's Up! Turn Passed" : "");
@@ -500,6 +584,8 @@ function AppContent() {
     setTurnDeadline(firstDeadline);
     setTurnNotice("");
     setRoom(launchedRoom);
+    roomGridStateRef.current = launchedRoom.gridState || null;
+    setRoomGridState(launchedRoom.gridState || null);
     setRoomScores(Array(launchedRoom.capacity).fill(0));
     setRoomGuessed({ A: 0, B: 0 });
     setActiveMode(launchedRoom.mode);
@@ -620,6 +706,9 @@ function AppContent() {
             turnDeadline={turnDeadline}
             turnNotice={turnNotice}
             onProgress={handleProgressUpdate}
+            onGridStart={handleGridStart}
+            onGridClaim={handleGridClaim}
+            roomGridState={roomGridState}
           />
         )}
       </main>

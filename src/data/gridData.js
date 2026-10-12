@@ -91,6 +91,30 @@ export const gridPlayers = stampDataset([
 
 const leagueRows = (teams) => teams.map((team) => club(team));
 
+export function gridCriteriaForCell(league, index) {
+  if (!league || index < 0 || index > 8) return null;
+  return {
+    row: league.rows[Math.floor(index / 3)],
+    column: league.columns[index % 3],
+  };
+}
+
+export function playerMatchesGridCriterion(player, criterion) {
+  if (!player || !criterion) return false;
+  const values = criterion.type === "club" ? player.clubs || []
+    : criterion.type === "country" ? player.countries || []
+      : criterion.type === "manager" ? player.managers || []
+        : criterion.type === "trophy" ? [...(player.trophies || []), ...(player.honors || [])]
+          : criterion.type === "league" ? player.leagues || [] : [];
+  const normalizeValue = (value) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  return values.some((value) => normalizeValue(value) === normalizeValue(criterion.value));
+}
+
+export function playerMatchesGridCell(player, league, index) {
+  const criteria = gridCriteriaForCell(league, index);
+  return Boolean(criteria && playerMatchesGridCriterion(player, criteria.row) && playerMatchesGridCriterion(player, criteria.column));
+}
+
 export const leagueOptions = [
   {
     id: "global", name: "Global", emblem: "WORLD", flag: null,
