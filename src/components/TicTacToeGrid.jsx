@@ -95,8 +95,6 @@ function LeagueSelection({ onSelect, onBack, waitingForHost = false }) {
             <span className="text-lg font-black uppercase tracking-[.12em] text-amber-200 group-hover:text-emerald-200">{league.name}</span>
             <span className="mt-1 rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-slate-300" style={{ borderColor: "rgba(148,163,184,.2)" }}>{league.emblem} · {league.season}</span>
             <span className="mt-3 flex-1 text-xs leading-relaxed text-slate-400">{league.description}</span>
-            <span className="mt-3 text-[9px] font-extrabold uppercase tracking-wider text-slate-500">All {league.teams.length} clubs in the pool</span>
-            <span className="mt-1 max-h-20 w-full overflow-y-auto rounded-lg border border-white/5 bg-black/20 p-2 text-left text-[9px] leading-relaxed text-slate-400">{league.teams.join(" · ")}</span>
             <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">Enter matrix <ChevronRight size={13} /></span>
           </button>
         ))}
