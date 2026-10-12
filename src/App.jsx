@@ -32,7 +32,6 @@ import RoomInvasionGame from "./components/RoomInvasionGame";
 import StatsModal from "./components/StatsModal";
 import FeedbackForm from "./components/FeedbackForm";
 import CareerMode from "./components/CareerMode";
-import PlayerCareer from "./components/PlayerCareer";
 import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
@@ -52,7 +51,6 @@ const modeIcons = {
   duo: Users,
   invasion: Swords,
   career: Trophy,
-  "player-career": Users,
 };
 
 function Hub({ onSelect, stats }) {
@@ -75,13 +73,6 @@ function Hub({ onSelect, stats }) {
       label: "Career Mode",
       category: "Strategy",
       detail: "Lead a lower-league club through matchday challenges, promotion races, and European glory.",
-      players: "1 Player",
-    },
-    {
-      id: "player-career",
-      label: "Player Career",
-      category: "Strategy",
-      detail: "Create a wonderkid or choose a real pro and build a career across Europe's top five leagues.",
       players: "1 Player",
     },
   ];
@@ -598,11 +589,6 @@ function AppContent() {
       setActiveMode("career");
       return;
     }
-    if (mode === "player-career") {
-      setRoom(null);
-      setActiveMode("player-career");
-      return;
-    }
     // Advance challenge offset so selecting a game always brings up a fresh challenge!
     advanceChallenge(mode);
     setRoom(null);
@@ -730,7 +716,6 @@ function AppContent() {
         onHome={handleBackToHub}
         onLobby={() => enterMode("lobby")}
         onCareerMode={() => enterMode("career")}
-        onPlayerCareer={() => enterMode("player-career")}
         onStats={() => setShowStats(true)}
         soundEnabled={stats.soundEnabled}
         onSoundChange={setSoundEnabled}
@@ -776,8 +761,6 @@ function AppContent() {
           <Hub onSelect={enterMode} stats={stats} />
         ) : activeMode === "career" ? (
           <CareerMode onBack={handleBackToHub} />
-        ) : activeMode === "player-career" ? (
-          <PlayerCareer onBack={handleBackToHub} />
         ) : activeMode === "lobby" ? (
           <MatchLobby
             initialRoom={room}

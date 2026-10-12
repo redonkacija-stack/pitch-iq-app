@@ -1,4 +1,4 @@
-import { Award, Home, Swords, Trophy, UserRound, Volume2, VolumeX } from "lucide-react";
+import { Award, Home, Swords, Trophy, Volume2, VolumeX } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import { i18n, useLanguage } from "../i18n";
 
@@ -7,7 +7,6 @@ export default function GameNavbar({
   onHome,
   onLobby,
   onCareerMode,
-  onPlayerCareer,
   onStats,
   soundEnabled,
   onSoundChange,
@@ -51,12 +50,6 @@ export default function GameNavbar({
             <Trophy size={15} /> Career
           </button>
           <button
-            onClick={onPlayerCareer}
-            className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold ${activeMode === "player-career" ? "bg-lime/10 text-lime" : "text-mist hover:bg-white/[.04] hover:text-white"}`}
-          >
-            <UserRound size={15} /> Player Career
-          </button>
-          <button
             onClick={onStats}
             className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-mist hover:bg-white/[.04] hover:text-white"
           >
@@ -98,12 +91,6 @@ export default function GameNavbar({
           className={`flex min-w-20 flex-1 justify-center rounded-md px-2 py-2 text-xs ${activeMode === "career" ? "bg-lime/10 text-lime" : "text-slate-300"}`}
         >
           Career
-        </button>
-        <button
-          onClick={onPlayerCareer}
-          className={`flex min-w-28 flex-1 justify-center rounded-md px-2 py-2 text-xs ${activeMode === "player-career" ? "bg-lime/10 text-lime" : "text-slate-300"}`}
-        >
-          Player
         </button>
         <button
           onClick={onStats}
