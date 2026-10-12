@@ -1,6 +1,7 @@
 import footballGridJson from "./footballGrid.json";
 import { DATA_AS_OF, DATA_SEASON, stampDataset } from "./seasonConfig";
 import { leagueTeams } from "./leagueTeams";
+import { allLeaguePlayers } from "./leagues2026_2027";
 
 const criterion = (type, value, label = value) => ({ type, value, label });
 const club = (value) => criterion("club", value, `Played for ${value}`);
@@ -92,9 +93,17 @@ const basePlayers = footballGridJson.players.map((player) => ({
 }));
 
 const existingNames = new Set(basePlayers.map((player) => player.name.toLowerCase()));
+const normalizedExistingNames = new Set(basePlayers.map((player) => player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()));
 export const gridPlayers = stampDataset([
   ...basePlayers,
   ...additionalPlayers.filter((player) => !existingNames.has(player.name.toLowerCase())),
+  ...allLeaguePlayers.filter((player) => !normalizedExistingNames.has(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())).map((player) => ({
+    name: player.name,
+    clubs: [player.club],
+    countries: [player.nationality],
+    leagues: [player.league],
+    trophies: [], managers: [], honors: [], currentClub: player.club,
+  })),
 ]);
 
 // Build nationality challenges from the full player dataset, rather than a

@@ -2,6 +2,7 @@ import { matches as originalMatches } from "./matchData.js";
 import { careers as originalCareers } from "./transferData.js";
 import { profiles as originalProfiles } from "./tacticsData.js";
 import { DATA_SEASON, DATA_AS_OF, stampDataset } from "./seasonConfig";
+import { allLeaguePlayers } from "./leagues2026_2027";
 
 export { DATA_SEASON, DATA_AS_OF };
 
@@ -333,12 +334,21 @@ function deduplicate(list) {
   return Array.from(map.values());
 }
 
+const currentRosterByName = new Map(allLeaguePlayers.map((player) => [
+  player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), player,
+]));
+
 export const matches = stampDataset(deduplicate(rawMatches).map((match) => ({
   ...match,
   teamLogoUrl: match.teamLogoUrl || clubLogoUrl(match.team),
   opponentLogoUrl: match.opponentLogoUrl || clubLogoUrl(match.opponent),
   players: match.players.map((player) => ({
     ...player,
+    ...(currentRosterByName.get(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()) ? {
+      currentClub: currentRosterByName.get(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()).club,
+      currentLeague: currentRosterByName.get(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()).league,
+      currentClubCrestUrl: currentRosterByName.get(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()).clubCrestUrl,
+    } : {}),
     nationalityCode:
       player.nationalityCode || nationalityCodeByEmoji[player.flag] || null,
     clubLogoUrl: player.clubLogoUrl || clubLogoUrl(match.team),
@@ -393,7 +403,17 @@ const careerSeasonSnapshot = {
   },
 };
 
-export const careers = stampDataset(deduplicate(rawCareers).map((career) => ({
+const currentCareerNames = new Set(rawCareers.map((career) => career.answer.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()));
+const rosterCareerRecords = allLeaguePlayers.filter((player) => !currentCareerNames.has(player.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())).map((player) => ({
+  id: `squad-${player.id}`,
+  answer: player.name,
+  aliases: [player.name],
+  nationalityName: player.nationality,
+  currentClub: player.club,
+  clubs: [{ name: player.club, years: "2026/27", country: player.country, league: player.league, logoUrl: player.clubCrestUrl }],
+}));
+
+export const careers = stampDataset(deduplicate([...rawCareers, ...rosterCareerRecords]).map((career) => ({
   ...career,
   ...(careerSeasonSnapshot[career.id] ? {
     currentClub: careerSeasonSnapshot[career.id].club,
