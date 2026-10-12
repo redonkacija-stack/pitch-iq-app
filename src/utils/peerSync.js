@@ -211,10 +211,10 @@ export class PeerSyncEngine {
         } else if (!this.isHost) {
           this.onStatusChange?.("error", "Room connection failed. Check your network and retry.");
         } else if (["network", "socket-error", "socket-closed", "server-error"].includes(err.type)) {
-          this.onStatusChange?.("hosting", "Reconnecting to the room service...");
+          this.onStatusChange?.("connecting", `Room service connection failed (${err.type}). Reconnecting...`);
           if (this.peer?.disconnected) this.peer.reconnect();
         } else {
-          this.onStatusChange?.("error", "Could not open this room. Create a new room code and retry.");
+          this.onStatusChange?.("error", `Could not register this room (${err.type || "unknown PeerJS error"}). Create a new room and retry.`);
         }
       });
 
@@ -224,15 +224,21 @@ export class PeerSyncEngine {
         }
       });
 
-      if (!this.isHost) {
-        this.peerOpenTimer = setTimeout(() => {
-          if (!this.destroyed && !this.peer?.open) this.handleGuestConnectionFailure();
-        }, 15000);
-      }
+      this.peerOpenTimer = setTimeout(() => {
+        if (this.destroyed || this.peer?.open) return;
+        if (this.isHost) {
+          this.onStatusChange?.("error", "Room service did not register this room. Check the host connection and retry.");
+        } else {
+          this.handleGuestConnectionFailure("signaling-timeout");
+        }
+      }, 15000);
     } catch (err) {
       console.warn("PeerJS creation failed, running on local sync:", err);
       if (!this.isHost) {
+        this.lastConnectionError = "peer-constructor-error";
         this.checkLocalFallback();
+      } else {
+        this.onStatusChange?.("error", "Could not start the room connection service. Reload and create a new room.");
       }
     }
   }
@@ -523,6 +529,8 @@ export class PeerSyncEngine {
 
     if (this.lastConnectionError === "peer-unavailable") {
       this.onStatusChange?.("error", `Host for Room ${this.roomCode} was not found. Ask the host to keep the lobby open and confirm it says Hosting Room.`);
+    } else if (this.lastConnectionError === "signaling-timeout") {
+      this.onStatusChange?.("error", "Could not connect to the room signaling service. Reload and retry; if it persists, the room service is unreachable on this network.");
     } else if (["network", "socket-error", "socket-closed", "server-error"].includes(this.lastConnectionError)) {
       this.onStatusChange?.("error", "Could not reach the room signaling service. Check both players' internet connections and retry.");
     } else if (this.lastConnectionError === "webrtc") {

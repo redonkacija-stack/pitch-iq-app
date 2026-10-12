@@ -198,8 +198,8 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
 
     setRoom(newRoom);
     setLocalSlot(0);
-    setConnectionStatus("hosting");
-    setStatusMessage("Hosting Room. Waiting for players to connect...");
+    setConnectionStatus("connecting");
+    setStatusMessage("Registering room with the connection service...");
     saveRoom(newRoom);
 
     // Initialize PeerJS Host
