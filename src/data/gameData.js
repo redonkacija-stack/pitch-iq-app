@@ -1,6 +1,9 @@
 import { matches as originalMatches } from "./matchData.js";
 import { careers as originalCareers } from "./transferData.js";
 import { profiles as originalProfiles } from "./tacticsData.js";
+import { DATA_SEASON, DATA_AS_OF, stampDataset } from "./seasonConfig";
+
+export { DATA_SEASON, DATA_AS_OF };
 
 const rawMatches = [
   ...originalMatches,
@@ -330,7 +333,7 @@ function deduplicate(list) {
   return Array.from(map.values());
 }
 
-export const matches = deduplicate(rawMatches).map((match) => ({
+export const matches = stampDataset(deduplicate(rawMatches).map((match) => ({
   ...match,
   teamLogoUrl: match.teamLogoUrl || clubLogoUrl(match.team),
   opponentLogoUrl: match.opponentLogoUrl || clubLogoUrl(match.opponent),
@@ -340,22 +343,75 @@ export const matches = deduplicate(rawMatches).map((match) => ({
       player.nationalityCode || nationalityCodeByEmoji[player.flag] || null,
     clubLogoUrl: player.clubLogoUrl || clubLogoUrl(match.team),
   })),
-}));
+})));
 
-export const careers = deduplicate(rawCareers).map((career) => ({
+const careerSeasonSnapshot = {
+  "cristiano-ronaldo-career": {
+    club: "Al Nassr",
+    source: "https://www.spl.com.sa/en/players/cristiano-ronaldo/index",
+    clubs: [{ name: "Al Nassr", years: "2023–2026/27", country: "Saudi Arabia" }],
+  },
+  "luka-modric-career": {
+    club: "AC Milan",
+    contractThrough: "2027-06-30",
+    source: "https://www.acmilan.com/en/news/articles/media/2026-07-23/official-statement-luka-modric",
+    clubs: [
+      { name: "Real Madrid", years: "2012–2025", country: "Spain" },
+      { name: "AC Milan", years: "2025–2027", country: "Italy" },
+    ],
+  },
+  "neymar-career": {
+    club: "Santos",
+    contractThrough: "2026-12-31",
+    source: "https://www.santosfc.com.br/santos-fc-e-neymar-jr-renovam-contrato-ate-o-fim-de-2026/",
+    clubs: [{ name: "Santos", years: "2025–2026", country: "Brazil" }],
+  },
+  "kevin-de-bruyne-career": {
+    club: "Napoli",
+    source: "https://www.uefa.com/uefachampionsleague/clubs/50136--napoli/squad/",
+    clubs: [{ name: "Manchester City", years: "2015–2025", country: "England" }, { name: "Napoli", years: "2025–2026/27", country: "Italy" }],
+  },
+  "angel-di-maria-career": {
+    club: "Rosario Central",
+    source: "https://www.rosariocentral.com/",
+    clubs: [{ name: "Benfica", years: "2023–2025", country: "Portugal" }, { name: "Rosario Central", years: "2025–2026", country: "Argentina" }],
+  },
+  "robert-lewandowski-career": {
+    club: null,
+    source: "https://www.fcbarcelona.com/en/football/first-team/players",
+    clubs: [{ name: "Barcelona", years: "2022–2026", country: "Spain" }],
+  },
+  "erling-haaland-career": {
+    club: "Manchester City",
+    source: "https://www.mancity.com/players/mens/erling-haaland",
+    clubs: [{ name: "Manchester City", years: "2022–2026/27", country: "England" }],
+  },
+  "jude-bellingham-career": {
+    club: "Real Madrid",
+    source: "https://www.realmadrid.com/en-US/football/first-team/players/jude-bellingham",
+    clubs: [{ name: "Real Madrid", years: "2023–2026/27", country: "Spain" }],
+  },
+};
+
+export const careers = stampDataset(deduplicate(rawCareers).map((career) => ({
   ...career,
+  ...(careerSeasonSnapshot[career.id] ? {
+    currentClub: careerSeasonSnapshot[career.id].club,
+    contractThrough: careerSeasonSnapshot[career.id].contractThrough,
+    currentClubSource: careerSeasonSnapshot[career.id].source,
+  } : {}),
   nationalityCode:
     career.nationalityCode ||
     nationalityCodeByEmoji[career.nationality] ||
     null,
-  clubs: career.clubs.map((club) => ({
+  clubs: (careerSeasonSnapshot[career.id]?.clubs || career.clubs).map((club) => ({
     ...club,
     countryCode: club.countryCode || countryCodeByName[club.country] || null,
     logoUrl: club.logoUrl || clubLogoUrl(club.name),
   })),
-}));
+})));
 
-export const profiles = deduplicate(rawProfiles).map((profile) => ({
+export const profiles = stampDataset(deduplicate(rawProfiles).map((profile) => ({
   ...profile,
   team: profile.team || tacticalTeamByManager[profile.answer] || null,
   teamLogoUrl:
@@ -368,4 +424,4 @@ export const profiles = deduplicate(rawProfiles).map((profile) => ({
   optionNationalityCodes: profile.options.map(
     (manager) => managerNationalityCodes[manager] || null,
   ),
-}));
+})));

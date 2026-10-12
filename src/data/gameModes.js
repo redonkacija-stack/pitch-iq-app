@@ -1,6 +1,8 @@
 import gameModesData from "./gameModes.json";
+import { DATA_SEASON, DATA_AS_OF, stampDataset } from "./seasonConfig";
 
-export const matchModes = gameModesData.map((m) => ({
+export { DATA_SEASON, DATA_AS_OF };
+export const matchModes = stampDataset(gameModesData.map((m) => ({
   id: m.id,
   label: m.title,
   detail: m.shortDesc,
@@ -13,6 +15,6 @@ export const matchModes = gameModesData.map((m) => ({
   difficulty: m.difficulty,
   duration: m.duration,
   leagueMarks: m.leagueMarks,
-}));
+})));
 
-export default gameModesData;
+export default matchModes;

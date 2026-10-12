@@ -1,4 +1,5 @@
 import { careers, matches, profiles } from "./gameData";
+import { DATA_SEASON, DATA_AS_OF, DATA_REVISION } from "./seasonConfig";
 
 function dateKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
@@ -13,7 +14,7 @@ function hashDate(value) {
 
 export function getDailySet(date = new Date()) {
   const key = dateKey(date);
-  const storageKey = `pitchiq:daily-set:${key}`;
+  const storageKey = `pitchiq:daily-set:${DATA_REVISION}:${key}`;
   const datasets = { lineup: matches, transfer: careers, tactics: profiles };
   let indices;
   try {
@@ -46,6 +47,8 @@ export function getDailySet(date = new Date()) {
   }
   return {
     date: key,
+    dataSeason: DATA_SEASON,
+    dataAsOf: DATA_AS_OF,
     lineup: matches[indices.lineup],
     transfer: careers[indices.transfer],
     tactics: profiles[indices.tactics],

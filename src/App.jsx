@@ -23,7 +23,7 @@ import LineupGame from "./components/LineupGame";
 import TransferGame from "./components/TransferGame";
 import TacticsGame from "./components/TacticsGame";
 import MarketValueGame from "./components/MarketValueGame";
-import FootballGridGame from "./components/FootballGridGame";
+import TicTacToeGrid from "./components/TicTacToeGrid";
 import WhoAmIGame from "./components/WhoAmIGame";
 import VarBlitzGame from "./components/VarBlitzGame";
 import DuoLinkGame from "./components/DuoLinkGame";
@@ -299,9 +299,8 @@ function ModeRouter({
 
   if (mode === "grid") {
     return (
-      <FootballGridGame
+      <TicTacToeGrid
         key={`grid-${challengeOffset}`}
-        initialGridIndex={challengeOffset}
         onBack={onBack}
         onComplete={onComplete}
       />
