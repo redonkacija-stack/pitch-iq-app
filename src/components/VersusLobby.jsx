@@ -639,7 +639,7 @@ export default function VersusLobby({ onBack, onStart, initialRoom = null, syncE
                 <span className="flex-1 font-medium">{statusMessage}</span>
                 {connectionStatus === "error" && (
                   <button
-                    onClick={() => attemptJoin(joinInput)}
+                    onClick={() => syncRef.current?.isHost ? handleCreateRoom() : attemptJoin(joinInput)}
                     className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-200 underline"
                   >
                     <RefreshCw size={11} /> Retry

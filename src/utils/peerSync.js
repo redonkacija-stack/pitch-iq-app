@@ -119,6 +119,10 @@ export class PeerSyncEngine {
     this.destroyed = false;
     this.retryCount = 0;
     this.maxRetries = 3;
+    this.retrying = false;
+    this.retryTimer = null;
+    this.peerOpenTimer = null;
+    this.hostConnectTimer = null;
     this.channel = null;
     this.storageListener = null;
 
@@ -175,11 +179,13 @@ export class PeerSyncEngine {
 
       this.peer.on("open", (id) => {
         if (this.destroyed) return;
+        clearTimeout(this.peerOpenTimer);
+        this.peerOpenTimer = null;
         if (this.isHost) {
           this.onStatusChange?.("hosting", "Hosting Room. Waiting for players...");
         } else {
           this.onStatusChange?.("connecting", "Connecting to Room...");
-          this.connectToHost(hostPeerId);
+          if (!this.hostConnection?.open) this.connectToHost(hostPeerId);
         }
       });
 
@@ -192,17 +198,19 @@ export class PeerSyncEngine {
         if (this.destroyed) return;
         console.warn("PeerJS error:", err?.type || err);
 
-        if (err.type === "unavailable-id") {
-          if (this.isHost) {
-            // Another host exists or previous session hasn't released ID on broker
-            this.onStatusChange?.("hosting", "Room active. Reconnecting...");
-          }
+        if (err.type === "unavailable-id" && this.isHost) {
+          this.onStatusChange?.("error", "This room code is already active. Create a new room code.");
         } else if (err.type === "peer-unavailable") {
           this.handleGuestConnectionFailure();
+        } else if (!this.isHost && ["network", "socket-error", "socket-closed", "server-error", "webrtc"].includes(err.type)) {
+          this.handleGuestConnectionFailure();
+        } else if (!this.isHost) {
+          this.onStatusChange?.("error", "Room connection failed. Check your network and retry.");
+        } else if (["network", "socket-error", "socket-closed", "server-error"].includes(err.type)) {
+          this.onStatusChange?.("hosting", "Reconnecting to the room service...");
+          if (this.peer?.disconnected) this.peer.reconnect();
         } else {
-          if (!this.isHost && this.retryCount >= this.maxRetries) {
-            this.onStatusChange?.("error", "Invalid Room Code or Host Disconnected");
-          }
+          this.onStatusChange?.("error", "Could not open this room. Create a new room code and retry.");
         }
       });
 
@@ -211,6 +219,12 @@ export class PeerSyncEngine {
           this.peer.reconnect();
         }
       });
+
+      if (!this.isHost) {
+        this.peerOpenTimer = setTimeout(() => {
+          if (!this.destroyed && !this.peer?.open) this.handleGuestConnectionFailure();
+        }, 8000);
+      }
     } catch (err) {
       console.warn("PeerJS creation failed, running on local sync:", err);
       if (!this.isHost) {
@@ -268,6 +282,13 @@ export class PeerSyncEngine {
     if (!this.currentRoom) return;
 
     const guestName = data.nickname?.trim() || "Challenger";
+    const existingSlot = this.currentRoom.slots.find(
+      (slot) => slot.peerId === conn.peer && slot.occupied && !slot.isBot,
+    );
+    if (existingSlot) {
+      conn.send({ type: "ASSIGNED_SLOT", slotId: existingSlot.id, room: this.currentRoom });
+      return;
+    }
     const openSlot = this.currentRoom.slots.find((s) => !s.occupied);
 
     if (!openSlot) {
@@ -382,20 +403,21 @@ export class PeerSyncEngine {
 
   // GUEST: Connect to Host
   connectToHost(hostPeerId) {
-    if (this.destroyed || !this.peer) return;
+    if (this.destroyed || !this.peer || this.hostConnection?.open) return;
 
     try {
       const conn = this.peer.connect(hostPeerId, { reliable: true });
       this.hostConnection = conn;
 
-      const connectTimeout = setTimeout(() => {
+      clearTimeout(this.hostConnectTimer);
+      this.hostConnectTimer = setTimeout(() => {
         if (!conn.open && !this.destroyed) {
           this.handleGuestConnectionFailure();
         }
       }, 6000);
 
       conn.on("open", () => {
-        clearTimeout(connectTimeout);
+        clearTimeout(this.hostConnectTimer);
         this.onStatusChange?.("connected", `Connected to Room ${this.roomCode}. Waiting for host...`);
 
         // Send Join Request with Nickname
@@ -403,12 +425,23 @@ export class PeerSyncEngine {
           type: "JOIN_REQUEST",
           nickname: this.nickname,
         });
+        this.hostConnectTimer = setTimeout(() => {
+          if (!this.destroyed && (this.localSlot === null || this.localSlot === undefined)) {
+            this.handleGuestConnectionFailure();
+          }
+        }, 8000);
       });
 
       conn.on("data", (data) => {
         if (!data || typeof data !== "object") return;
 
         if (data.type === "ASSIGNED_SLOT") {
+          this.retryCount = 0;
+          this.retrying = false;
+          clearTimeout(this.retryTimer);
+          this.retryTimer = null;
+          clearTimeout(this.hostConnectTimer);
+          this.hostConnectTimer = null;
           this.localSlot = data.slotId;
           this.currentRoom = data.room;
           this.onStatusChange?.("connected", `Connected to Room ${this.roomCode}`);
@@ -416,6 +449,8 @@ export class PeerSyncEngine {
         } else if (data.type === "ROOM_STATE") {
           this.handleIncomingRoomState(data.room, this.localSlot);
         } else if (data.type === "ROOM_FULL") {
+          clearTimeout(this.hostConnectTimer);
+          this.hostConnectTimer = null;
           this.onStatusChange?.("error", data.message || "Room is already full.");
         } else if (data.type === "START_MATCH") {
           this.onGameStart?.(data.config || data.room);
@@ -437,7 +472,14 @@ export class PeerSyncEngine {
   }
 
   handleGuestConnectionFailure() {
-    if (this.destroyed) return;
+    if (this.destroyed || this.retryTimer || this.retrying) return;
+    this.retrying = true;
+    clearTimeout(this.hostConnectTimer);
+    this.hostConnectTimer = null;
+    if (this.hostConnection) {
+      try { this.hostConnection.close(); } catch {}
+      this.hostConnection = null;
+    }
 
     if (this.retryCount < this.maxRetries) {
       this.retryCount += 1;
@@ -445,18 +487,24 @@ export class PeerSyncEngine {
         "connecting",
         `Connecting to Room... (Attempt ${this.retryCount + 1}/${this.maxRetries + 1})`,
       );
-      setTimeout(() => {
+      this.retryTimer = setTimeout(() => {
+        this.retryTimer = null;
+        this.retrying = false;
         if (!this.destroyed) {
+          if (this.peer?.disconnected) this.peer.reconnect();
           this.connectToHost(`pitchiq-room-${this.codeKey}`);
         }
       }, 1500 * this.retryCount);
     } else {
       // Check local storage fallback before showing error
+      this.retrying = false;
       this.checkLocalFallback();
     }
   }
 
   checkLocalFallback() {
+    clearTimeout(this.peerOpenTimer);
+    clearTimeout(this.hostConnectTimer);
     const localFound = getRoom(this.roomCode);
     if (localFound) {
       this.onStatusChange?.("connected", "Connected via Local Sync! Waiting for host...");
@@ -608,6 +656,12 @@ export class PeerSyncEngine {
 
   destroy() {
     this.destroyed = true;
+    clearTimeout(this.retryTimer);
+    clearTimeout(this.peerOpenTimer);
+    clearTimeout(this.hostConnectTimer);
+    this.retryTimer = null;
+    this.peerOpenTimer = null;
+    this.hostConnectTimer = null;
 
     // Close all host connections
     for (const conn of this.connections.values()) {
