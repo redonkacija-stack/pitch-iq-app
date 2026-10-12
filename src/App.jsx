@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   ArrowLeft,
@@ -340,7 +340,12 @@ function ModeRouter({
 
 function AppContent() {
   const { stats, recordRound, setSoundEnabled } = useGame();
-  const [activeMode, setActiveMode] = useState("home");
+  const [activeMode, setActiveMode] = useState(() => {
+    if (typeof window === "undefined") return "home";
+    return new URLSearchParams(window.location.search).has("room")
+      ? "lobby"
+      : "home";
+  });
   const [room, setRoom] = useState(null);
   const [showStats, setShowStats] = useState(false);
   const [roomScores, setRoomScores] = useState([0, 0, 0, 0]);
