@@ -33,7 +33,7 @@ import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
 import { matchModes } from "./data/gameModes";
-import { gridPlayers, leagueOptions, leagueRows, pickLeagueRows, playerMatchesGridCell } from "./data/gridData";
+import { gridCompetitionRows, gridPlayers, leagueOptions, pickLeagueColumns, pickLeagueRows, playerMatchesGridCell } from "./data/gridData";
 import { saveRoom } from "./utils/lobbySync";
 import { i18n, useLanguage } from "./i18n";
 
@@ -446,16 +446,17 @@ function AppContent() {
   function acceptRoomGridStart(leagueId, rowTeamNames, targetRoom = room, engine = roomSyncRef.current) {
     const league = leagueOptions.find((item) => item.id === leagueId);
     if (!targetRoom || !engine?.isHost || !league) return;
-    const validTeamNames = Array.isArray(rowTeamNames)
-      ? [...new Set(rowTeamNames)].filter((name) => league.teams.includes(name))
+    const validCompetitionNames = Array.isArray(rowTeamNames)
+      ? [...new Set(rowTeamNames)].filter((name) => gridCompetitionRows.some((row) => row.value === name))
       : [];
-    const rows = validTeamNames.length === 3
-      ? leagueRows(validTeamNames)
+    const rows = validCompetitionNames.length === 3
+      ? gridCompetitionRows.filter((row) => validCompetitionNames.includes(row.value))
       : pickLeagueRows(league, 0.42);
     if (rows.length !== 3) return;
     commitRoomGridState({
       leagueId,
       rows,
+      columns: pickLeagueColumns(league),
       cells: Array(9).fill(null),
       finished: false,
       message: "",

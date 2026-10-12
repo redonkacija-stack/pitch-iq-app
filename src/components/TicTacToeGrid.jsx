@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   Check,
@@ -20,6 +20,7 @@ import FlagIcon from "./FlagIcon";
 import { DATA_AS_OF, DATA_SEASON } from "../data/seasonConfig";
 import {
   gridCriteriaForCell,
+  pickLeagueColumns,
   gridPlayers,
   leagueOptions,
   pickLeagueRows,
@@ -63,7 +64,7 @@ function CriterionIcon({ criterion, league }) {
     return logoName ? <ClubCrest src={clubCrests[logoName]} alt={`${criterion.value} crest`} className="h-9 w-9" /> : <ClubCrest alt={`${criterion.value} crest`} className="h-9 w-9" />;
   }
   if (criterion.type === "country") {
-    const flags = { Argentina: "ar", Brazil: "br", England: "gb-eng", France: "fr", Germany: "de", Netherlands: "nl", Norway: "no", Portugal: "pt", Spain: "es", Sweden: "se" };
+    const flags = { Argentina: "ar", Belgium: "be", Brazil: "br", Cameroon: "cm", Croatia: "hr", Egypt: "eg", England: "gb-eng", France: "fr", Germany: "de", "Ivory Coast": "ci", Netherlands: "nl", Norway: "no", Poland: "pl", Portugal: "pt", Senegal: "sn", Spain: "es", Sweden: "se", Uruguay: "uy" };
     return <FlagIcon code={flags[criterion.value]} label={`${criterion.value} flag`} className="h-6 w-9 rounded border border-white/15 shadow-lg" />;
   }
   if (criterion.type === "league") {
@@ -123,8 +124,12 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
   const currentLeague = useMemo(() => {
     if (!isRoomMatch) return selectedLeague;
     const league = leagueOptions.find((item) => item.id === roomGridState?.leagueId);
-    return league ? { ...league, rows: roomGridState?.rows?.length === 3 ? roomGridState.rows : league.rows.slice(0, 3) } : null;
-  }, [isRoomMatch, roomGridState?.leagueId, roomGridState?.rows, selectedLeague]);
+    return league ? {
+      ...league,
+      rows: roomGridState?.rows?.length === 3 ? roomGridState.rows : league.rows.slice(0, 3),
+      columns: roomGridState?.columns?.length === 3 ? roomGridState.columns : league.columns,
+    } : null;
+  }, [isRoomMatch, roomGridState?.leagueId, roomGridState?.rows, roomGridState?.columns, selectedLeague]);
   const matchFinished = isRoomMatch ? Boolean(roomGridState?.finished) : finished;
   const matchMessage = isRoomMatch ? roomGridState?.message || "" : message;
 
@@ -185,7 +190,7 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
       if (isRoomHost) onGridStart?.(league.id, rows.map((row) => row.value));
       return;
     }
-    setSelectedLeague({ ...league, rows });
+    setSelectedLeague({ ...league, rows, columns: pickLeagueColumns(league) });
     setLocalCells(Array(9).fill(null));
     setSelected(null);
     setQuery("");
@@ -272,45 +277,42 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
           {isRoomMatch && <p role="status" className={`rounded-xl border px-4 py-3 text-center text-xs font-extrabold uppercase tracking-wider ${isMyTurn ? "border-emerald-300/25 bg-emerald-300/10 text-emerald-100" : "border-sky-300/25 bg-sky-300/10 text-sky-100"}`}>{isMyTurn ? "Your turn — make a claim" : `Opponent's turn — waiting for ${room.slots?.[activePlayerId]?.name || "player"}`}</p>}
 
           <section className="mx-auto max-w-3xl rounded-3xl border border-slate-700/70 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,.10),transparent_55%),linear-gradient(145deg,rgba(15,23,42,.98),rgba(2,6,23,.98))] p-3 shadow-[0_20px_70px_rgba(0,0,0,.45)] sm:p-5" aria-label={`${currentLeague.name} 3 by 3 football matrix`}>
-            <div className="grid grid-cols-3 gap-2 md:gap-4">
+            <div className="grid grid-cols-[minmax(76px,.85fr)_repeat(3,minmax(0,1fr))] gap-1.5 sm:grid-cols-[minmax(120px,.9fr)_repeat(3,minmax(0,1fr))] sm:gap-2 md:gap-4">
+              <div className="flex min-h-[78px] items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/[.07] px-1.5 text-center text-[8px] font-black uppercase tracking-wider text-emerald-100 sm:min-h-[90px] sm:px-3 sm:text-[10px]">League / Cup</div>
               {currentLeague.columns.map((criterion, index) => (
-                <div key={`${criterion.type}-${criterion.value}`} className="flex min-h-[78px] items-center gap-2 rounded-2xl border border-slate-700/80 bg-slate-900/80 p-2.5 shadow-lg backdrop-blur-xl sm:min-h-[90px] sm:gap-3 sm:p-3.5">
+                <div key={`${criterion.type}-${criterion.value}`} className="flex min-h-[78px] flex-col items-center justify-center gap-1 rounded-2xl border border-slate-700/80 bg-slate-900/80 p-1.5 text-center shadow-lg backdrop-blur-xl sm:min-h-[90px] sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left">
                   <CriterionIcon criterion={criterion} league={currentLeague} />
-                  <span className="text-[9px] font-extrabold uppercase leading-tight tracking-wide text-slate-100 sm:text-xs">{criterion.label}</span>
+                  <span className="text-[8px] font-extrabold uppercase leading-tight tracking-wide text-slate-100 sm:text-xs">{criterion.label}</span>
                   <span className="sr-only">Column {index + 1}</span>
                 </div>
               ))}
-            </div>
-            <div className="mt-3 space-y-4 md:mt-4 md:space-y-5">
               {currentLeague.rows.map((row, rowIndex) => (
-                <div key={`${row.type}-${row.value}`}>
-                  <div className="mb-2 flex items-center gap-2 rounded-xl border border-slate-700/70 bg-slate-950/75 px-3 py-2 sm:mb-3 sm:px-4">
+                <Fragment key={`${row.type}-${row.value}`}>
+                  <div className="flex min-h-[110px] flex-col items-center justify-center gap-1 rounded-2xl border border-amber-300/20 bg-slate-950/85 p-1.5 text-center sm:min-h-[155px] sm:flex-row sm:gap-2 sm:p-3 sm:text-left">
                     <CriterionIcon criterion={row} league={currentLeague} />
-                    <span className="text-[9px] font-extrabold uppercase tracking-[.13em] text-amber-100 sm:text-xs">{row.label}</span>
-                    <span className="ml-auto text-[8px] font-bold uppercase tracking-wider text-slate-500">Row {rowIndex + 1}</span>
+                    <span className="text-[8px] font-extrabold uppercase leading-tight tracking-wide text-amber-100 sm:text-[10px]">{row.label}</span>
+                    <span className="sr-only">Row {rowIndex + 1}</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 md:gap-4">
-                    {[0,1,2].map((columnIndex) => {
-                      const index = rowIndex * 3 + columnIndex;
-                      const cell = cells[index];
-                      const active = selected === index;
-                      const clubName = cell?.clubs?.find((name) => clubCrests[normalize(name)]) || cell?.clubs?.[0];
-                      return (
-                        <button key={index} type="button" onClick={() => { if (!cell && isMyTurn && !matchFinished) { setSelected(index); setQuery(""); setMessage(""); } }} disabled={Boolean(cell) || !isMyTurn || matchFinished} aria-label={cell ? `Claimed by ${cell.name}, Team ${cell.team + 1}` : `Open tile: ${row.label} and ${currentLeague.columns[columnIndex].label}`} className={`group relative flex min-h-[126px] flex-col items-center justify-center overflow-hidden rounded-2xl border p-2 text-center transition-all duration-200 sm:min-h-[155px] sm:p-3 ${cell ? cell.team === 0 ? "border-emerald-400/70 bg-gradient-to-br from-emerald-500/15 to-slate-950 shadow-[0_0_24px_rgba(16,185,129,.18)]" : "border-sky-400/70 bg-gradient-to-br from-sky-500/15 to-slate-950 shadow-[0_0_24px_rgba(56,189,248,.16)]" : active ? "scale-[1.02] border-emerald-400 bg-emerald-400/10 shadow-[0_0_22px_rgba(16,185,129,.22)]" : "border-slate-700/80 bg-slate-950/75 hover:scale-[1.02] hover:border-emerald-500/80 hover:bg-slate-900 hover:shadow-[0_0_20px_rgba(16,185,129,.18)]"}`}>
-                          {cell ? <>
-                            <span className={`absolute right-2 top-2 inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[8px] font-extrabold uppercase ${cell.team === 0 ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-100" : "border-sky-400/25 bg-sky-400/10 text-sky-100"}`}><Check size={10} /> Team {cell.team + 1}</span>
-                            <span className={`mb-2 grid h-10 w-10 place-items-center rounded-full border text-xs font-black ${cell.team === 0 ? "border-emerald-300/40 bg-emerald-400/20 text-emerald-50" : "border-sky-300/40 bg-sky-400/20 text-sky-50"}`}>{initials(cell.name)}</span>
-                            <span className="max-w-full truncate text-[10px] font-extrabold text-white sm:text-xs">{cell.name}</span>
-                            {clubName && <span className="mt-1 inline-flex max-w-full items-center gap-1 truncate text-[8px] text-slate-400"><ClubCrest src={clubCrests[normalize(clubName)]} alt={`${clubName} crest`} className="h-5 w-5" fallbackClassName="h-3 w-3" /><span className="truncate">{clubName}</span></span>}
-                          </> : <>
-                            <span className={`grid h-9 w-9 place-items-center rounded-xl border transition ${active ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-200" : "border-slate-700 bg-slate-900 text-slate-500 group-hover:border-emerald-400/35 group-hover:text-emerald-200"}`}><CircleHelp size={18} /></span>
-                            <span className="mt-2 text-[9px] font-extrabold uppercase tracking-[.1em] text-slate-400 group-hover:text-white sm:text-[10px]">{active ? "Selected" : "Open tile"}</span>
-                          </>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                  {[0,1,2].map((columnIndex) => {
+                    const index = rowIndex * 3 + columnIndex;
+                    const cell = cells[index];
+                    const active = selected === index;
+                    const clubName = cell?.clubs?.find((name) => clubCrests[normalize(name)]) || cell?.clubs?.[0];
+                    return (
+                      <button key={index} type="button" onClick={() => { if (!cell && isMyTurn && !matchFinished) { setSelected(index); setQuery(""); setMessage(""); } }} disabled={Boolean(cell) || !isMyTurn || matchFinished} aria-label={cell ? `Claimed by ${cell.name}, Team ${cell.team + 1}` : `Open tile: ${row.label} and ${currentLeague.columns[columnIndex].label}`} className={`group relative flex min-h-[110px] flex-col items-center justify-center overflow-hidden rounded-2xl border p-1.5 text-center transition-all duration-200 sm:min-h-[155px] sm:p-3 ${cell ? cell.team === 0 ? "border-emerald-400/70 bg-gradient-to-br from-emerald-500/15 to-slate-950 shadow-[0_0_24px_rgba(16,185,129,.18)]" : "border-sky-400/70 bg-gradient-to-br from-sky-500/15 to-slate-950 shadow-[0_0_24px_rgba(56,189,248,.16)]" : active ? "scale-[1.02] border-emerald-400 bg-emerald-400/10 shadow-[0_0_22px_rgba(16,185,129,.22)]" : "border-slate-700/80 bg-slate-950/75 hover:scale-[1.02] hover:border-emerald-500/80 hover:bg-slate-900 hover:shadow-[0_0_20px_rgba(16,185,129,.18)]"}`}>
+                        {cell ? <>
+                          <span className={`absolute right-1 top-1 inline-flex items-center gap-1 rounded-full border px-1 py-0.5 text-[7px] font-extrabold uppercase sm:right-2 sm:top-2 sm:px-1.5 sm:text-[8px] ${cell.team === 0 ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-100" : "border-sky-400/25 bg-sky-400/10 text-sky-100"}`}><Check size={9} /> T{cell.team + 1}</span>
+                          <span className={`mb-1 grid h-8 w-8 place-items-center rounded-full border text-[10px] font-black sm:mb-2 sm:h-10 sm:w-10 sm:text-xs ${cell.team === 0 ? "border-emerald-300/40 bg-emerald-400/20 text-emerald-50" : "border-sky-300/40 bg-sky-400/20 text-sky-50"}`}>{initials(cell.name)}</span>
+                          <span className="max-w-full truncate text-[9px] font-extrabold text-white sm:text-xs">{cell.name}</span>
+                          {clubName && <span className="mt-1 inline-flex max-w-full items-center gap-1 truncate text-[7px] text-slate-400 sm:text-[8px]"><ClubCrest src={clubCrests[normalize(clubName)]} alt={`${clubName} crest`} className="h-4 w-4 sm:h-5 sm:w-5" fallbackClassName="h-3 w-3" /><span className="truncate">{clubName}</span></span>}
+                        </> : <>
+                          <span className={`grid h-7 w-7 place-items-center rounded-xl border transition sm:h-9 sm:w-9 ${active ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-200" : "border-slate-700 bg-slate-900 text-slate-500 group-hover:border-emerald-400/35 group-hover:text-emerald-200"}`}><CircleHelp size={16} /></span>
+                          <span className="mt-1.5 text-[7px] font-extrabold uppercase tracking-[.08em] text-slate-400 group-hover:text-white sm:mt-2 sm:text-[10px]">{active ? "Selected" : "Open tile"}</span>
+                        </>}
+                      </button>
+                    );
+                  })}
+                </Fragment>
               ))}
             </div>
           </section>

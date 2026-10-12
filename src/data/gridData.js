@@ -67,6 +67,13 @@ const additionalPlayers = [
   { name: "Alfredo Di Stéfano", clubs: ["River Plate", "Real Madrid"], countries: ["Argentina", "Spain"], trophies: ["Champions League Winner", "La Liga"], honors: ["Ballon d'Or Winner"] },
   { name: "Enzo Fernández", clubs: ["River Plate", "Benfica", "Chelsea"], countries: ["Argentina"], trophies: ["FIFA World Cup Winner"], managers: [] },
   { name: "Dani Alves", clubs: ["Barcelona", "Juventus", "Paris Saint-Germain"], countries: ["Brazil"], trophies: ["Champions League Winner", "La Liga"], managers: ["Pep Guardiola", "Luis Enrique"] },
+  { name: "Mohamed Salah", clubs: ["Liverpool", "Chelsea", "Roma", "Basel"], countries: ["Egypt"], trophies: ["Champions League Winner", "Premier League"], managers: ["Jürgen Klopp"] },
+  { name: "Sadio Mané", clubs: ["Liverpool", "Bayern Munich", "Southampton", "Salzburg"], countries: ["Senegal"], trophies: ["Champions League Winner", "Premier League", "Bundesliga"], managers: ["Jürgen Klopp"] },
+  { name: "Yaya Touré", clubs: ["Barcelona", "Manchester City", "Monaco"], countries: ["Ivory Coast"], trophies: ["Champions League Winner", "La Liga", "Premier League"], managers: ["Pep Guardiola"] },
+  { name: "Samuel Eto'o", clubs: ["Barcelona", "Inter Milan", "Real Madrid", "Chelsea", "Mallorca"], countries: ["Cameroon"], trophies: ["Champions League Winner", "La Liga", "Serie A"], managers: ["José Mourinho"] },
+  { name: "Kevin De Bruyne", clubs: ["Manchester City", "Chelsea", "Wolfsburg", "Napoli"], countries: ["Belgium"], trophies: ["Champions League Winner", "Premier League"], managers: ["Pep Guardiola"] },
+  { name: "Luka Modrić", clubs: ["Real Madrid", "AC Milan", "Tottenham", "Dinamo Zagreb"], countries: ["Croatia"], trophies: ["Champions League Winner", "La Liga"], honors: ["Ballon d'Or Winner"], managers: ["Carlo Ancelotti"] },
+  { name: "Luis Suárez", clubs: ["Ajax", "Liverpool", "Barcelona", "Atletico Madrid"], countries: ["Uruguay"], trophies: ["Champions League Winner", "La Liga", "Eredivisie"], managers: ["Luis Enrique"] },
 ];
 
 function findRecords(records, name) {
@@ -90,10 +97,53 @@ export const gridPlayers = stampDataset([
   ...additionalPlayers.filter((player) => !existingNames.has(player.name.toLowerCase())),
 ]);
 
+// Build nationality challenges from the full player dataset, rather than a
+// hand-picked list of the most common footballing countries.
+export const gridCountries = [...new Set(
+  gridPlayers.flatMap((player) => player.countries || []).filter(Boolean),
+)].sort((a, b) => a.localeCompare(b));
+
+// Matrix rows use competitions and honors, so the left axis asks players to
+// match a league/cup achievement against the country or challenge at the top.
+export const gridCompetitionRows = [...new Set(
+  gridPlayers.flatMap((player) => [...(player.trophies || []), ...(player.honors || [])]).filter(Boolean),
+)].sort((a, b) => a.localeCompare(b)).map((value) => {
+  const labels = {
+    "Champions League Winner": "Won Champions League",
+    "FIFA World Cup Winner": "Won World Cup",
+    "Ballon d'Or Winner": "Ballon d'Or Winner",
+  };
+  return trophy(value, labels[value] || `Won ${value}`);
+});
+
+const seededRandom = (seed, salt = "") => {
+  let state = (Math.floor(seed * 0xffffffff) ^ [...salt].reduce((sum, char) => sum + char.charCodeAt(0), 0)) >>> 0;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
+};
+
+export function pickLeagueColumns(league, seed = Math.random()) {
+  if (!league) return [];
+  const random = seededRandom(seed, `${league.id}-countries`);
+  const countries = [...gridCountries];
+  for (let index = countries.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(random() * (index + 1));
+    [countries[index], countries[swap]] = [countries[swap], countries[index]];
+  }
+  const countryColumns = countries.slice(0, 2).map((name) => country(name));
+  const otherColumns = (league.columns || []).filter((item) => item.type !== "country");
+  const otherColumn = otherColumns.length
+    ? otherColumns[Math.floor(random() * otherColumns.length)]
+    : trophy("Champions League Winner", "Won Champions League");
+  return [...countryColumns, otherColumn];
+}
+
 export const leagueRows = (teams) => teams.map((team) => club(team));
 
 export function pickLeagueRows(league, seed = Math.random()) {
-  const pool = league?.teams?.length ? league.teams : league?.rows?.map((row) => row.value) || [];
+  const pool = gridCompetitionRows;
   let state = (Math.floor(seed * 0xffffffff) ^ league.id.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0)) >>> 0;
   const random = () => {
     state = (state * 1664525 + 1013904223) >>> 0;
@@ -104,7 +154,7 @@ export function pickLeagueRows(league, seed = Math.random()) {
     const swap = Math.floor(random() * (index + 1));
     [shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]];
   }
-  return leagueRows(shuffled.slice(0, 3));
+  return shuffled.slice(0, 3);
 }
 
 export function gridCriteriaForCell(league, index) {
@@ -242,4 +292,4 @@ export const gridGrids = stampDataset(footballGridJson.grids);
 export const gridRows = gridGrids[0]?.rows || [];
 export const gridColumns = gridGrids[0]?.columns || [];
 
-export default { leagueOptions, gridGrids, gridPlayers, dataSeason: DATA_SEASON, dataAsOf: DATA_AS_OF };
+export default { leagueOptions, gridGrids, gridPlayers, gridCountries, gridCompetitionRows, dataSeason: DATA_SEASON, dataAsOf: DATA_AS_OF };

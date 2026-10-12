@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Globe2 } from "lucide-react";
 import ar from "flag-icons/flags/4x3/ar.svg";
+import be from "flag-icons/flags/4x3/be.svg";
 import br from "flag-icons/flags/4x3/br.svg";
+import ci from "flag-icons/flags/4x3/ci.svg";
+import cm from "flag-icons/flags/4x3/cm.svg";
 import cr from "flag-icons/flags/4x3/cr.svg";
 import de from "flag-icons/flags/4x3/de.svg";
 import es from "flag-icons/flags/4x3/es.svg";
@@ -13,16 +16,21 @@ import hr from "flag-icons/flags/4x3/hr.svg";
 import it from "flag-icons/flags/4x3/it.svg";
 import nl from "flag-icons/flags/4x3/nl.svg";
 import no from "flag-icons/flags/4x3/no.svg";
+import pl from "flag-icons/flags/4x3/pl.svg";
 import eg from "flag-icons/flags/4x3/eg.svg";
 import pt from "flag-icons/flags/4x3/pt.svg";
 import sa from "flag-icons/flags/4x3/sa.svg";
+import sn from "flag-icons/flags/4x3/sn.svg";
 import se from "flag-icons/flags/4x3/se.svg";
 import us from "flag-icons/flags/4x3/us.svg";
 import uy from "flag-icons/flags/4x3/uy.svg";
 
 const flagSources = {
   ar,
+  be,
   br,
+  ci,
+  cm,
   cr,
   de,
   eg,
@@ -35,8 +43,10 @@ const flagSources = {
   it,
   nl,
   no,
+  pl,
   pt,
   sa,
+  sn,
   se,
   us,
   uy,
