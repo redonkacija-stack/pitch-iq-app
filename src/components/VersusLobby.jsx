@@ -52,7 +52,7 @@ const difficultyStyles = {
 export default function VersusLobby({ onBack, onStart, initialRoom = null, syncEngine = null }) {
   const [format, setFormat] = useState(initialRoom?.format || "1v1");
   const [selectedMode, setSelectedMode] = useState(
-    initialRoom?.mode || "invasion",
+    initialRoom?.mode || "lineup",
   );
   const [difficulty, setDifficulty] = useState("Top 5 European Leagues");
   const [timer, setTimer] = useState("Standard · 30 sec");

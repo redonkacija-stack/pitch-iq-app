@@ -26,7 +26,6 @@ import MarketValueGame from "./components/MarketValueGame";
 import TicTacToeGrid from "./components/TicTacToeGrid";
 import WhoAmIGame from "./components/WhoAmIGame";
 import VarBlitzGame from "./components/VarBlitzGame";
-import RoomInvasionGame from "./components/RoomInvasionGame";
 import StatsModal from "./components/StatsModal";
 import FeedbackForm from "./components/FeedbackForm";
 import CareerMode from "./components/CareerMode";
@@ -46,7 +45,6 @@ const modeIcons = {
   grid: Grid3X3,
   whoami: Search,
   var: Zap,
-  invasion: Swords,
   career: Trophy,
 };
 
@@ -255,12 +253,6 @@ function ModeRouter({
   const activeMatch = matches[matchIdx];
   const activeCareer = careers[careerIdx];
   const activeProfile = profiles[profileIdx];
-
-  if (mode === "invasion") {
-    return (
-      <RoomInvasionGame room={room} onBack={onBack} onComplete={onComplete} onScore={onScore} onTurn={onTurn} activePlayerId={activePlayerId} turnDeadline={turnDeadline} turnNotice={turnNotice} />
-    );
-  }
 
   if (mode === "lineup") {
     return (

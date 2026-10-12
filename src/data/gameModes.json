@@ -138,25 +138,5 @@
                             "BL",
                             "L1"
                         ]
-    },
-    {
-        "id":  "invasion",
-        "title":  "Trivia Invasion",
-        "badge":  "3-Tier Versus",
-        "shortDesc":  "Climb 3-tier trivia ladders in 1v1 and 2v2 team matches.",
-        "description":  "Battle head-to-head or in co-op squads across club, continental, and international tiers.",
-        "players":  "1v1 \u0026 2v2 Squads",
-        "category":  "Multiplayer",
-        "icon":  "Swords",
-        "iconUrl":  "lucide:Swords",
-        "difficulty":  "Medium",
-        "duration":  "10 mins",
-        "leagueMarks":  [
-                            "PL",
-                            "LL",
-                            "SA",
-                            "BL",
-                            "L1"
-                        ]
     }
 ]
