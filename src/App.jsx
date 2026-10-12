@@ -786,7 +786,7 @@ function AppContent() {
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3">
           <span>PitchIQ • Football Knowledge in Play</span>
           <span>1v1 & 2v2 Versus Room Code Engine</span>
-          <span>© 2026 PitchIQ</span>
+          <span>© 2026 PitchIQ. All rights reserved.</span>
         </div>
       </footer>
     </div>
