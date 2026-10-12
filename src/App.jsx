@@ -13,6 +13,7 @@ import {
   Sparkles,
   Swords,
   TrendingUp,
+  Trophy,
   Users,
   Zap,
 } from "lucide-react";
@@ -30,6 +31,7 @@ import DuoLinkGame from "./components/DuoLinkGame";
 import RoomInvasionGame from "./components/RoomInvasionGame";
 import StatsModal from "./components/StatsModal";
 import FeedbackForm from "./components/FeedbackForm";
+import CareerMode from "./components/CareerMode";
 import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
@@ -48,6 +50,7 @@ const modeIcons = {
   var: Zap,
   duo: Users,
   invasion: Swords,
+  career: Trophy,
 };
 
 function Hub({ onSelect, stats }) {
@@ -63,7 +66,17 @@ function Hub({ onSelect, stats }) {
     "Multiplayer",
   ];
 
-  const filteredModes = matchModes.filter((m) => {
+  const availableModes = [
+    ...matchModes,
+    {
+      id: "career",
+      label: "Career Mode",
+      category: "Strategy",
+      detail: "Lead a lower-league club through matchday challenges, promotion races, and European glory.",
+      players: "1 Player",
+    },
+  ];
+  const filteredModes = availableModes.filter((m) => {
     if (activeCategory === "All") return true;
     return m.category === activeCategory;
   });
@@ -166,7 +179,7 @@ function Hub({ onSelect, stats }) {
                   </div>
 
                   <h3 className="mt-4 font-display text-xl font-bold text-white transition group-hover:text-lime">
-                    {i18n.t(`mode_${mode.id}`)}
+                    {mode.id === "career" ? mode.label : i18n.t(`mode_${mode.id}`)}
                   </h3>
 
                   <p className="mt-1 text-xs leading-relaxed text-slate-400">
@@ -571,6 +584,11 @@ function AppContent() {
       setActiveMode("lobby");
       return;
     }
+    if (mode === "career") {
+      setRoom(null);
+      setActiveMode("career");
+      return;
+    }
     // Advance challenge offset so selecting a game always brings up a fresh challenge!
     advanceChallenge(mode);
     setRoom(null);
@@ -697,6 +715,7 @@ function AppContent() {
         activeMode={activeMode}
         onHome={handleBackToHub}
         onLobby={() => enterMode("lobby")}
+        onCareerMode={() => enterMode("career")}
         onStats={() => setShowStats(true)}
         soundEnabled={stats.soundEnabled}
         onSoundChange={setSoundEnabled}
@@ -740,6 +759,8 @@ function AppContent() {
       <main>
         {activeMode === "home" ? (
           <Hub onSelect={enterMode} stats={stats} />
+        ) : activeMode === "career" ? (
+          <CareerMode onBack={handleBackToHub} />
         ) : activeMode === "lobby" ? (
           <MatchLobby
             initialRoom={room}
