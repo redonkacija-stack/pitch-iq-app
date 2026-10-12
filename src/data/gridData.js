@@ -202,6 +202,15 @@ export function playerMatchesGridCell(player, league, index) {
 
 export const leagueOptions = [
   {
+    id: "champions-league", name: "Champions League", emblem: "UCL", flag: null,
+    description: "The complete 36-club UEFA Champions League league-phase field.",
+    competition: "UEFA Champions League", season: DATA_SEASON,
+    teams: leagueTeams.global,
+    sourceUrl: "https://www.uefa.com/uefachampionsleague/news/02a8-2171a88881a0-c70193b972c6-1000--meet-the-2026-27-champions-league-league-phase-teams/",
+    rows: leagueRows(leagueTeams.global),
+    columns: [country("Spain"), country("France"), trophy("Champions League Winner", "Won Champions League")],
+  },
+  {
     id: "global", name: "Global", emblem: "WORLD", flag: null,
     description: "World football, continental champions and international icons.",
     competition: "Global / UEFA Champions League", season: DATA_SEASON,

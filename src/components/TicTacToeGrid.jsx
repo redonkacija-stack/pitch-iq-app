@@ -41,6 +41,7 @@ const clubCrests = {
 };
 
 const leagueStyle = {
+  UCL: "border-amber-300/25 bg-amber-400/10 text-amber-100",
   PL: "border-violet-300/25 bg-violet-400/10 text-violet-100",
   LL: "border-orange-300/25 bg-orange-400/10 text-orange-100",
   SA: "border-sky-300/25 bg-sky-400/10 text-sky-100",
@@ -91,7 +92,7 @@ function LeagueSelection({ onSelect, onBack, waitingForHost = false }) {
         {leagueOptions.map((league) => (
           <button key={league.id} type="button" disabled={waitingForHost} onClick={() => onSelect(league)} className="group flex min-h-[230px] flex-col items-center rounded-2xl border border-slate-800 bg-slate-900/80 p-5 text-center shadow-xl backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/80 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-60">
             <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/80 shadow-inner transition group-hover:border-emerald-400/30 group-hover:bg-emerald-400/[.08]">
-              {league.flag ? <FlagIcon code={league.flag} label={`${league.name} flag`} className="h-8 w-12 rounded border border-white/10" /> : <Globe2 className="text-emerald-300" size={32} />}
+              {league.flag ? <FlagIcon code={league.flag} label={`${league.name} flag`} className="h-8 w-12 rounded border border-white/10" /> : league.id === "champions-league" ? <Trophy className="text-amber-200" size={32} /> : <Globe2 className="text-emerald-300" size={32} />}
             </span>
             <span className="text-lg font-black uppercase tracking-[.12em] text-amber-200 group-hover:text-emerald-200">{league.name}</span>
             <span className="mt-1 rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-slate-300" style={{ borderColor: "rgba(148,163,184,.2)" }}>{league.emblem} · {league.season}</span>
