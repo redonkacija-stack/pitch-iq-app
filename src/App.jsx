@@ -14,7 +14,6 @@ import {
   Swords,
   TrendingUp,
   Trophy,
-  Users,
   Zap,
 } from "lucide-react";
 import GameNavbar from "./components/GameNavbar";
@@ -27,7 +26,6 @@ import MarketValueGame from "./components/MarketValueGame";
 import TicTacToeGrid from "./components/TicTacToeGrid";
 import WhoAmIGame from "./components/WhoAmIGame";
 import VarBlitzGame from "./components/VarBlitzGame";
-import DuoLinkGame from "./components/DuoLinkGame";
 import RoomInvasionGame from "./components/RoomInvasionGame";
 import StatsModal from "./components/StatsModal";
 import FeedbackForm from "./components/FeedbackForm";
@@ -48,7 +46,6 @@ const modeIcons = {
   grid: Grid3X3,
   whoami: Search,
   var: Zap,
-  duo: Users,
   invasion: Swords,
   career: Trophy,
 };
@@ -382,18 +379,7 @@ function ModeRouter({
     );
   }
 
-  return (
-    <DuoLinkGame
-      key={`duo-${challengeOffset}`}
-      onBack={onBack}
-      onComplete={onComplete}
-      room={room}
-      activePlayerId={activePlayerId}
-      turnDeadline={turnDeadline}
-      onTurn={onTurn}
-      onScore={onScore}
-    />
-  );
+  return null;
 }
 
 function AppContent() {
@@ -550,7 +536,6 @@ function AppContent() {
     whoami: Math.floor(Math.random() * 12),
     market: Math.floor(Math.random() * 10),
     var: Math.floor(Math.random() * 10),
-    duo: Math.floor(Math.random() * 10),
   }));
 
   function advanceChallenge(modeName) {
