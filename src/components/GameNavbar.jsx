@@ -1,4 +1,6 @@
 import { Award, Home, Swords, Volume2, VolumeX } from "lucide-react";
+import LanguageSelector from "./LanguageSelector";
+import { i18n, useLanguage } from "../i18n";
 
 export default function GameNavbar({
   activeMode,
@@ -8,8 +10,9 @@ export default function GameNavbar({
   soundEnabled,
   onSoundChange,
 }) {
+  useLanguage();
   return (
-      <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/75 shadow-lg shadow-black/20 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 shadow-lg shadow-black/20 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between gap-3 px-4 sm:px-7 lg:px-9">
         <button
           onClick={onHome}
@@ -31,26 +34,27 @@ export default function GameNavbar({
             onClick={onHome}
             className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold ${activeMode === "home" ? "bg-white/[.08] text-white" : "text-mist hover:bg-white/[.04] hover:text-white"}`}
           >
-            <Home size={15} /> Hub
+            <Home size={15} /> {i18n.t("hub")}
           </button>
           <button
             onClick={onLobby}
             className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold ${activeMode === "lobby" ? "bg-white/[.08] text-white" : "text-mist hover:bg-white/[.04] hover:text-white"}`}
           >
-            <Swords size={15} /> Versus lobby
+            <Swords size={15} /> {i18n.t("versusLobby")}
           </button>
           <button
             onClick={onStats}
             className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-mist hover:bg-white/[.04] hover:text-white"
           >
-            <Award size={15} /> Stats
+            <Award size={15} /> {i18n.t("stats")}
           </button>
         </nav>
         <div className="flex items-center gap-2">
+          <LanguageSelector />
           <button
             onClick={() => onSoundChange(!soundEnabled)}
             className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-mist hover:text-lime"
-            aria-label={soundEnabled ? "Mute sound" : "Enable sound"}
+            aria-label={soundEnabled ? i18n.t("soundOn") : i18n.t("soundOff")}
           >
             {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
@@ -58,7 +62,7 @@ export default function GameNavbar({
             onClick={onLobby}
             className="inline-flex items-center gap-2 rounded-lg bg-lime px-3 py-2.5 text-xs font-bold text-ink hover:bg-lime/90 md:hidden"
           >
-            <Swords size={14} /> Versus
+            <Swords size={14} /> {i18n.t("versusLobby")}
           </button>
         </div>
       </div>
@@ -67,19 +71,19 @@ export default function GameNavbar({
           onClick={onHome}
           className="flex min-w-16 flex-1 justify-center rounded-md px-2 py-2 text-xs text-slate-300"
         >
-          Hub
+          {i18n.t("hub")}
         </button>
         <button
           onClick={onLobby}
           className="flex min-w-24 flex-1 justify-center rounded-md px-2 py-2 text-xs text-slate-300"
         >
-          Versus lobby
+          {i18n.t("versusLobby")}
         </button>
         <button
           onClick={onStats}
           className="flex min-w-16 flex-1 justify-center rounded-md px-2 py-2 text-xs text-slate-300"
         >
-          Stats
+          {i18n.t("stats")}
         </button>
       </nav>
     </header>

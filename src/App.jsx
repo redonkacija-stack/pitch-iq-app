@@ -35,6 +35,7 @@ import { careers, matches, profiles } from "./data/gameData";
 import { matchModes } from "./data/gameModes";
 import { gridPlayers, leagueOptions, playerMatchesGridCell } from "./data/gridData";
 import { saveRoom } from "./utils/lobbySync";
+import { i18n, useLanguage } from "./i18n";
 
 const modeIcons = {
   lineup: Shield,
@@ -49,6 +50,7 @@ const modeIcons = {
 };
 
 function Hub({ onSelect, stats }) {
+  useLanguage();
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = [
@@ -74,19 +76,17 @@ function Hub({ onSelect, stats }) {
 
         <div className="relative max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-lime/30 bg-lime/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-lime">
-            <Sparkles size={14} /> The Ultimate Football IQ Arcade
+            <Sparkles size={14} /> {i18n.t("heroEyebrow")}
           </div>
 
           <h1 className="mt-5 font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-            Every Era. Every Angle.
+            {i18n.t("heroTitle")}
             <br />
-            <span className="text-lime">One More Game.</span>
+            <span className="text-lime">{i18n.t("heroSubtitle")}</span>
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-            Test your football tactical intuition, trace world-class career
-            paths, decode managerial philosophies, and battle friends in 1v1
-            and 2v2 multiplayer lobby rooms.
+            {i18n.t("heroDescription")}
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -94,7 +94,7 @@ function Hub({ onSelect, stats }) {
               onClick={() => onSelect("lobby")}
               className="inline-flex items-center gap-2 rounded-xl bg-lime px-5 py-3.5 text-sm font-bold text-ink shadow-lg shadow-lime/20 transition hover:bg-lime/90 active:scale-95"
             >
-              <Swords size={18} /> Versus Lobby (1v1 & 2v2)
+              <Swords size={18} /> {i18n.t("versusCta")}
               <ArrowRight size={16} />
             </button>
 
@@ -102,12 +102,12 @@ function Hub({ onSelect, stats }) {
               onClick={() => onSelect("lineup")}
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              <Shield size={16} className="text-lime" /> Quick Starting XI
+              <Shield size={16} className="text-lime" /> {i18n.t("quickXI")}
             </button>
 
             <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-3.5 py-3.5 text-xs text-slate-400">
               <Activity size={15} className="text-emerald-400" />
-              {stats.totalGames} Rounds Completed
+              {stats.totalGames} {i18n.t("roundsCompleted")}
             </span>
           </div>
         </div>
@@ -118,10 +118,10 @@ function Hub({ onSelect, stats }) {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-lime">
-              Game Mode Suite
+              {i18n.t("modeSuite")}
             </p>
             <h2 className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              Choose Your Challenge
+              {i18n.t("chooseChallenge")}
             </h2>
           </div>
 
@@ -138,7 +138,7 @@ function Hub({ onSelect, stats }) {
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {cat}
+                {i18n.t(cat.toLowerCase())}
               </button>
             ))}
           </div>
@@ -165,7 +165,7 @@ function Hub({ onSelect, stats }) {
                   </div>
 
                   <h3 className="mt-4 font-display text-xl font-bold text-white transition group-hover:text-lime">
-                    {mode.label}
+                    {i18n.t(`mode_${mode.id}`)}
                   </h3>
 
                   <p className="mt-1 text-xs leading-relaxed text-slate-400">
@@ -178,7 +178,7 @@ function Hub({ onSelect, stats }) {
                     {mode.players || "1–4 Players"}
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs font-bold text-lime transition group-hover:translate-x-0.5">
-                    Launch <ArrowRight size={13} />
+                    {i18n.t("play")} <ArrowRight size={13} />
                   </span>
                 </div>
               </button>
@@ -348,7 +348,11 @@ function ModeRouter({
 }
 
 function AppContent() {
+  const language = useLanguage();
   const { stats, recordRound, setSoundEnabled } = useGame();
+  useEffect(() => {
+    i18n.syncDocumentLanguage();
+  }, [language]);
   const [activeMode, setActiveMode] = useState(() => {
     if (typeof window === "undefined") return "home";
     return new URLSearchParams(window.location.search).has("room")
