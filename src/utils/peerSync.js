@@ -118,8 +118,12 @@ export class PeerSyncEngine {
     this.localSlot = isHost ? 0 : null;
     this.destroyed = false;
     this.retryCount = 0;
-    this.maxRetries = 3;
+    // PeerJS rooms can take several seconds to appear on its signaling broker,
+    // especially when the host has only just created the room. Keep trying for
+    // a bounded window instead of failing after four quick attempts.
+    this.maxRetries = 9;
     this.retrying = false;
+    this.lastConnectionError = "peer-unavailable";
     this.retryTimer = null;
     this.peerOpenTimer = null;
     this.hostConnectTimer = null;
@@ -201,9 +205,9 @@ export class PeerSyncEngine {
         if (err.type === "unavailable-id" && this.isHost) {
           this.onStatusChange?.("error", "This room code is already active. Create a new room code.");
         } else if (err.type === "peer-unavailable") {
-          this.handleGuestConnectionFailure();
+          this.handleGuestConnectionFailure(err.type);
         } else if (!this.isHost && ["network", "socket-error", "socket-closed", "server-error", "webrtc"].includes(err.type)) {
-          this.handleGuestConnectionFailure();
+          this.handleGuestConnectionFailure(err.type);
         } else if (!this.isHost) {
           this.onStatusChange?.("error", "Room connection failed. Check your network and retry.");
         } else if (["network", "socket-error", "socket-closed", "server-error"].includes(err.type)) {
@@ -223,7 +227,7 @@ export class PeerSyncEngine {
       if (!this.isHost) {
         this.peerOpenTimer = setTimeout(() => {
           if (!this.destroyed && !this.peer?.open) this.handleGuestConnectionFailure();
-        }, 8000);
+        }, 15000);
       }
     } catch (err) {
       console.warn("PeerJS creation failed, running on local sync:", err);
@@ -414,7 +418,7 @@ export class PeerSyncEngine {
         if (!conn.open && !this.destroyed) {
           this.handleGuestConnectionFailure();
         }
-      }, 6000);
+      }, 10000);
 
       conn.on("open", () => {
         clearTimeout(this.hostConnectTimer);
@@ -429,7 +433,7 @@ export class PeerSyncEngine {
           if (!this.destroyed && (this.localSlot === null || this.localSlot === undefined)) {
             this.handleGuestConnectionFailure();
           }
-        }, 8000);
+        }, 10000);
       });
 
       conn.on("data", (data) => {
@@ -463,16 +467,17 @@ export class PeerSyncEngine {
         this.handleGuestConnectionFailure();
       });
 
-      conn.on("error", () => {
-        this.handleGuestConnectionFailure();
+      conn.on("error", (error) => {
+        this.handleGuestConnectionFailure(error?.type || "data-connection-error");
       });
     } catch {
       this.handleGuestConnectionFailure();
     }
   }
 
-  handleGuestConnectionFailure() {
+  handleGuestConnectionFailure(reason = "connection-timeout") {
     if (this.destroyed || this.retryTimer || this.retrying) return;
+    this.lastConnectionError = reason;
     this.retrying = true;
     clearTimeout(this.hostConnectTimer);
     this.hostConnectTimer = null;
@@ -483,10 +488,7 @@ export class PeerSyncEngine {
 
     if (this.retryCount < this.maxRetries) {
       this.retryCount += 1;
-      this.onStatusChange?.(
-        "connecting",
-        `Connecting to Room... (Attempt ${this.retryCount + 1}/${this.maxRetries + 1})`,
-      );
+      this.onStatusChange?.("connecting", `Room not ready yet. Retrying (${this.retryCount + 1}/${this.maxRetries + 1})...`);
       this.retryTimer = setTimeout(() => {
         this.retryTimer = null;
         this.retrying = false;
@@ -494,7 +496,7 @@ export class PeerSyncEngine {
           if (this.peer?.disconnected) this.peer.reconnect();
           this.connectToHost(`pitchiq-room-${this.codeKey}`);
         }
-      }, 1500 * this.retryCount);
+      }, Math.min(2000 * this.retryCount, 5000));
     } else {
       // Check local storage fallback before showing error
       this.retrying = false;
@@ -506,16 +508,32 @@ export class PeerSyncEngine {
     clearTimeout(this.peerOpenTimer);
     clearTimeout(this.hostConnectTimer);
     const localFound = getRoom(this.roomCode);
-    if (localFound) {
-      this.onStatusChange?.("connected", "Connected via Local Sync! Waiting for host...");
-      this.handleIncomingRoomState(localFound, this.localSlot);
+    if (localFound && this.codeKey) {
+      const matchedSlot = localFound.slots?.find(
+        (slot) => slot.name === this.nickname && slot.occupied && !slot.isBot,
+      );
+      if (matchedSlot) {
+        this.localSlot = matchedSlot.id;
+        this.currentRoom = localFound;
+        this.onStatusChange?.("connected", `Connected to Room ${this.roomCode} on this device`);
+        this.handleIncomingRoomState(localFound, matchedSlot.id);
+        return;
+      }
+    }
+
+    if (this.lastConnectionError === "peer-unavailable") {
+      this.onStatusChange?.("error", `Host for Room ${this.roomCode} was not found. Ask the host to keep the lobby open and confirm it says Hosting Room.`);
+    } else if (["network", "socket-error", "socket-closed", "server-error"].includes(this.lastConnectionError)) {
+      this.onStatusChange?.("error", "Could not reach the room signaling service. Check both players' internet connections and retry.");
+    } else if (this.lastConnectionError === "webrtc") {
+      this.onStatusChange?.("error", "The room was found, but a direct connection failed. Retry from the same network or check VPN/firewall settings.");
     } else {
-      this.onStatusChange?.("error", "Invalid Room Code or Host Disconnected");
+      this.onStatusChange?.("error", `Could not connect to Room ${this.roomCode}. Confirm the host is online, then retry.`);
     }
   }
 
   handleIncomingRoomState(room, preferredSlot) {
-    if (!room || room.code !== this.roomCode) return;
+    if (!room || normalizeRoomCode(room.code) !== this.roomCode) return;
 
     this.currentRoom = room;
     let slot = preferredSlot;
