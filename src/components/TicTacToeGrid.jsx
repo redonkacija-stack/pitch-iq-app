@@ -17,6 +17,7 @@ import {
 import confetti from "canvas-confetti";
 import ClubCrest from "./ClubCrest";
 import FlagIcon from "./FlagIcon";
+import { i18n, useLanguage } from "../i18n";
 import { DATA_AS_OF, DATA_SEASON } from "../data/seasonConfig";
 import {
   gridCriteriaForCell,
@@ -77,6 +78,7 @@ function CriterionIcon({ criterion, league }) {
 }
 
 function LeagueSelection({ onSelect, onBack, waitingForHost = false }) {
+  useLanguage();
   return (
     <div className="mx-auto max-w-6xl space-y-7 px-4 py-7 sm:px-7">
       <button onClick={onBack} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:bg-white/10 active:scale-95">
@@ -96,7 +98,7 @@ function LeagueSelection({ onSelect, onBack, waitingForHost = false }) {
             </span>
             <span className="text-lg font-black uppercase tracking-[.12em] text-amber-200 group-hover:text-emerald-200">{league.name}</span>
             <span className="mt-1 rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-slate-300" style={{ borderColor: "rgba(148,163,184,.2)" }}>{league.emblem} · {league.season}</span>
-            <span className="mt-3 flex-1 text-xs leading-relaxed text-slate-400">{league.description}</span>
+            <span className="mt-3 flex-1 text-xs leading-relaxed text-slate-400">{i18n.t(league.descriptionKey)}</span>
             <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">Enter matrix <ChevronRight size={13} /></span>
           </button>
         ))}

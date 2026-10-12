@@ -66,6 +66,81 @@ const translations = {
   },
 };
 
+const leagueDescriptions = {
+  en: {
+    "champions-league": "All 36 clubs competing in the UEFA Champions League league phase.",
+    global: "World football, continental champions and international icons.",
+    england: "Premier League clubs, international stars and major honors.",
+    spain: "La Liga giants, nationalities and European honors.",
+    italy: "Serie A clubs, nationalities and trophy-winning players.",
+    germany: "Bundesliga clubs, German internationals and European winners.",
+    france: "Ligue 1 clubs, world champions and global football stars.",
+    netherlands: "Eredivisie clubs, Dutch internationals and European champions.",
+    argentina: "Primera División clubs, national heroes and World Cup winners.",
+    brazil: "Brasileirão clubs, Seleção stars and global honors.",
+  },
+  es: {
+    "champions-league": "Los 36 clubes que compiten en la fase liga de la UEFA Champions League.",
+    global: "Fútbol mundial, campeones continentales e iconos internacionales.",
+    england: "Clubes de la Premier League, estrellas internacionales y grandes títulos.",
+    spain: "Grandes clubes de La Liga, nacionalidades y títulos europeos.",
+    italy: "Clubes de la Serie A, nacionalidades y jugadores campeones.",
+    germany: "Clubes de la Bundesliga, internacionales alemanes y campeones europeos.",
+    france: "Clubes de la Ligue 1, campeones del mundo y estrellas del fútbol.",
+    netherlands: "Clubes de la Eredivisie, internacionales neerlandeses y campeones europeos.",
+    argentina: "Clubes de Primera División, héroes nacionales y campeones del mundo.",
+    brazil: "Clubes del Brasileirão, estrellas de la Seleção y grandes títulos.",
+  },
+  fr: {
+    "champions-league": "Les 36 clubs engagés dans la phase de ligue de l’UEFA Champions League.",
+    global: "Le football mondial, les champions continentaux et les stars internationales.",
+    england: "Clubs de Premier League, stars internationales et grands titres.",
+    spain: "Grands clubs de Liga, nationalités et titres européens.",
+    italy: "Clubs de Serie A, nationalités et joueurs titrés.",
+    germany: "Clubs de Bundesliga, internationaux allemands et champions d’Europe.",
+    france: "Clubs de Ligue 1, champions du monde et stars du football.",
+    netherlands: "Clubs d’Eredivisie, internationaux néerlandais et champions d’Europe.",
+    argentina: "Clubs de première division, héros nationaux et champions du monde.",
+    brazil: "Clubs du Brasileirão, stars de la Seleção et grands titres.",
+  },
+  de: {
+    "champions-league": "Alle 36 Klubs der Ligaphase der UEFA Champions League.",
+    global: "Weltfußball, Kontinentalmeister und internationale Legenden.",
+    england: "Premier-League-Klubs, internationale Stars und große Titel.",
+    spain: "La-Liga-Topklubs, Nationalitäten und europäische Titel.",
+    italy: "Serie-A-Klubs, Nationalitäten und Titelgewinner.",
+    germany: "Bundesliga-Klubs, deutsche Nationalspieler und Europapokalsieger.",
+    france: "Ligue-1-Klubs, Weltmeister und internationale Fußballstars.",
+    netherlands: "Eredivisie-Klubs, niederländische Nationalspieler und Europapokalsieger.",
+    argentina: "Erstligaklubs, Nationalhelden und Weltmeister.",
+    brazil: "Brasileirão-Klubs, Seleção-Stars und große Titel.",
+  },
+  ar: {
+    "champions-league": "الأندية الـ٣٦ المشاركة في مرحلة الدوري من دوري أبطال أوروبا.",
+    global: "كرة القدم العالمية وأبطال القارات وأبرز النجوم الدوليين.",
+    england: "أندية الدوري الإنجليزي والنجوم الدوليون وأهم الألقاب.",
+    spain: "أبرز أندية الدوري الإسباني والجنسيات والألقاب الأوروبية.",
+    italy: "أندية الدوري الإيطالي والجنسيات واللاعبون المتوجون بالألقاب.",
+    germany: "أندية الدوري الألماني والدوليون الألمان وأبطال أوروبا.",
+    france: "أندية الدوري الفرنسي وأبطال العالم ونجوم كرة القدم.",
+    netherlands: "أندية الدوري الهولندي والدوليون الهولنديون وأبطال أوروبا.",
+    argentina: "أندية الدرجة الأولى والأبطال الوطنيون والفائزون بكأس العالم.",
+    brazil: "أندية الدوري البرازيلي ونجوم السيليساو وأبرز الألقاب.",
+  },
+  pt: {
+    "champions-league": "Os 36 clubes que disputam a fase de liga da UEFA Champions League.",
+    global: "Futebol mundial, campeões continentais e ícones internacionais.",
+    england: "Clubes da Premier League, estrelas internacionais e grandes títulos.",
+    spain: "Destaques de La Liga, nacionalidades e títulos europeus.",
+    italy: "Clubes da Serie A, nacionalidades e jogadores campeões.",
+    germany: "Clubes da Bundesliga, internacionais alemães e campeões europeus.",
+    france: "Clubes da Ligue 1, campeões mundiais e estrelas do futebol.",
+    netherlands: "Clubes da Eredivisie, internacionais neerlandeses e campeões europeus.",
+    argentina: "Clubes da primeira divisão, heróis nacionais e campeões mundiais.",
+    brazil: "Clubes do Brasileirão, estrelas da Seleção e grandes títulos.",
+  },
+};
+
 function readStoredLanguage() {
   if (typeof window === "undefined") return "en";
   try {
@@ -81,7 +156,11 @@ const subscribers = new Set();
 export const i18n = {
   language: readStoredLanguage(),
   t(key) {
-    return translations[this.language]?.[key] ?? translations.en[key] ?? key;
+    const [, leagueId] = key.match(/^leagueDescription:(.+)$/) || [];
+    return (leagueId ? leagueDescriptions[this.language]?.[leagueId] : null)
+      ?? translations[this.language]?.[key]
+      ?? translations.en[key]
+      ?? key;
   },
   changeLanguage(language) {
     const nextLanguage = supportedLanguages.includes(language) ? language : "en";

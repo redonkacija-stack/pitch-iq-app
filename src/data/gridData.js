@@ -293,6 +293,7 @@ export const leagueOptions = [
   },
 ].map((league) => ({
   ...league,
+  descriptionKey: `leagueDescription:${league.id}`,
   dataSeason: DATA_SEASON,
   dataAsOf: DATA_AS_OF,
 }));
