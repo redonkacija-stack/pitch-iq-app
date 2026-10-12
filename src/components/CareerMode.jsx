@@ -17,11 +17,13 @@ import {
   gridPlayers,
   gridCriteriaForCell,
   leagueOptions,
+  playerMatchesGridCriterion,
   playerMatchesGridCell,
 } from "../data/gridData";
 
 const STORAGE_KEY = "pitchiq-career-mode-v1";
 const SEASON_MATCHDAYS = 10;
+const MATCH_TIME_LIMIT = 40;
 const LOWER_LEAGUE_CLUBS = [
   "Wrexham AFC", "Coventry City", "Norwich City", "Stoke City", "Swansea City",
   "Preston North End", "Blackburn Rovers", "Bristol City", "Portsmouth", "Middlesbrough",
@@ -70,32 +72,36 @@ function buildChallenge(season, matchday) {
   const typeIndex = (matchday - 1) % 4;
 
   if (typeIndex === 0 && matches.length) {
-    const match = matches[Math.floor(random() * matches.length)];
+    const lineupPool = matches.filter((item) => item.formation && item.players?.length >= 8);
+    const match = lineupPool[Math.floor(random() * lineupPool.length)];
     const players = match.players || [];
-    const shirtedPlayer = players[Math.floor(random() * players.length)];
-    const formations = [...new Set(matches.map((item) => item.formation).filter(Boolean))];
-    const names = [...new Set(players.map((player) => player.name).filter(Boolean))];
+    const target = players[Math.floor(random() * players.length)];
+    const position = target.position;
+    const comparablePlayers = matches.flatMap((item) => (item.players || []).filter((player) => player.position === position && player.name).map((player) => player.name));
+    const comparableNumbers = matches.flatMap((item) => (item.players || []).filter((player) => player.position === position && player.number != null).map((player) => String(player.number)));
     return {
       mode: "Guess the Lineup",
       questions: [
-        { prompt: `Which formation did ${match.team} use against ${match.opponent}?`, answer: match.formation, options: makeOptions(match.formation, formations, random) },
-        { prompt: `Who played in the ${shirtedPlayer?.position || "selected"} position for ${match.team}?`, answer: shirtedPlayer?.name, options: makeOptions(shirtedPlayer?.name, names, random) },
+        { prompt: `In ${match.title || `${match.team} vs ${match.opponent}`}, who started at ${position}?`, answer: target.name, options: makeOptions(target.name, comparablePlayers, random) },
+        { prompt: `What shirt number did ${target.name} wear in that ${match.formation} lineup?`, answer: String(target.number), options: makeOptions(String(target.number), comparableNumbers, random) },
       ],
     };
   }
 
   if (typeIndex === 1 && careers.length) {
-    const pool = careers.filter((item) => item.answer && item.clubs?.length > 1);
+    const pool = careers.filter((item) => item.answer && item.clubs?.length >= 3);
     const career = pool[Math.floor(random() * pool.length)];
     const clubs = career.clubs.map((clubItem) => clubItem.name).filter(Boolean);
-    const nextClubIndex = Math.max(1, Math.floor(random() * clubs.length));
+    const nextClubIndex = 1 + Math.floor(random() * (clubs.length - 1));
+    const previousClub = clubs[nextClubIndex - 1];
+    const nextClub = clubs[nextClubIndex];
     const players = [...new Set(careers.map((item) => item.answer).filter(Boolean))];
     const clubNames = [...new Set(careers.flatMap((item) => item.clubs || []).map((clubItem) => clubItem.name).filter(Boolean))];
     return {
       mode: "Transfer Chain",
       questions: [
-        { prompt: `Which player had a career that included ${clubs.slice(0, 3).join(", ")}?`, answer: career.answer, options: makeOptions(career.answer, players, random) },
-        { prompt: `Which club came after ${clubs[nextClubIndex - 1]} in ${career.answer}'s career?`, answer: clubs[nextClubIndex], options: makeOptions(clubs[nextClubIndex], clubNames, random) },
+        { prompt: `Which player moved directly from ${previousClub} to ${nextClub}?`, answer: career.answer, options: makeOptions(career.answer, players, random) },
+        { prompt: `Which club did ${career.answer} leave immediately before joining ${nextClub}?`, answer: previousClub, options: makeOptions(previousClub, clubNames, random) },
       ],
     };
   }
@@ -103,12 +109,12 @@ function buildChallenge(season, matchday) {
   if (typeIndex === 2 && profiles.length) {
     const profile = profiles[Math.floor(random() * profiles.length)];
     const managers = [...new Set(profiles.map((item) => item.answer).filter(Boolean))];
-    const formations = [...new Set(profiles.map((item) => item.formation).filter(Boolean))];
+    const principles = [...new Set(profiles.flatMap((item) => item.principles || []).filter(Boolean))];
     return {
       mode: "Tactical Breakdown",
       questions: [
-        { prompt: `${profile.systemName || "This tactical system"}: which manager is associated with it?`, answer: profile.answer, options: makeOptions(profile.answer, [...(profile.options || []), ...managers], random) },
-        { prompt: `What formation does ${profile.answer}'s system use?`, answer: profile.formation, options: makeOptions(profile.formation, formations, random) },
+        { prompt: `Which manager uses the ${profile.systemName || "described system"} with this principle: “${profile.principles?.[0]}”`, answer: profile.answer, options: makeOptions(profile.answer, [...(profile.options || []), ...managers], random) },
+        { prompt: `Which principle also belongs to ${profile.answer}'s tactical approach?`, answer: profile.principles?.[1] || profile.principles?.[0], options: makeOptions(profile.principles?.[1] || profile.principles?.[0], principles, random) },
       ],
     };
   }
@@ -118,18 +124,22 @@ function buildChallenge(season, matchday) {
     for (let index = 0; index < 9; index += 1) {
       const criteria = gridCriteriaForCell(league, index);
       const validPlayers = gridPlayers.filter((player) => playerMatchesGridCell(player, league, index));
-      if (criteria && validPlayers.length >= 4) cells.push({ league, criteria, validPlayers });
+      if (criteria && validPlayers.length >= 4) cells.push({ league, criteria, validPlayers, index });
     }
   }
   if (cells.length) {
     const selectedCells = shuffle(cells, random).slice(0, 2);
-    const questions = selectedCells.map(({ league, criteria, validPlayers }) => {
+    const questions = selectedCells.map(({ league, criteria, validPlayers, index }) => {
       const answer = validPlayers[Math.floor(random() * validPlayers.length)].name;
-      const names = [...new Set(gridPlayers.map((player) => player.name).filter(Boolean))];
+      const answerIsValid = (player) => playerMatchesGridCell(player, league, index);
+      const closeDistractors = gridPlayers
+        .filter((player) => player.name !== answer && !answerIsValid(player) && (playerMatchesGridCriterion(player, criteria.row) || playerMatchesGridCriterion(player, criteria.column)))
+        .map((player) => player.name);
+      const otherDistractors = gridPlayers.filter((player) => player.name !== answer && !answerIsValid(player)).map((player) => player.name);
       return {
-        prompt: `Which player fits ${criteria.row.label} and ${criteria.column.label} in the ${league.name} football grid?`,
+        prompt: `Which player satisfies both ${criteria.row.label} and ${criteria.column.label} for the ${league.name} grid?`,
         answer,
-        options: makeOptions(answer, names, random),
+        options: makeOptions(answer, [...closeDistractors, ...otherDistractors], random),
       };
     });
     return { mode: "Tic-Tac-Toe Grid", questions };
@@ -244,7 +254,7 @@ export default function CareerMode({ onBack }) {
   const [managerName, setManagerName] = useState("");
   const [entryClub, setEntryClub] = useState(LOWER_LEAGUE_CLUBS[0]);
   const [answers, setAnswers] = useState([null, null]);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(MATCH_TIME_LIMIT);
 
   useEffect(() => {
     if (profile) localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
@@ -258,7 +268,7 @@ export default function CareerMode({ onBack }) {
   useEffect(() => {
     if (profile?.status !== "playing" && profile?.status !== "ucl") return undefined;
     setAnswers([null, null]);
-    setTimeLeft(60);
+    setTimeLeft(MATCH_TIME_LIMIT);
     const timer = window.setInterval(() => setTimeLeft((value) => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);
   }, [profile?.status, profile?.season, profile?.matchday]);
@@ -279,7 +289,7 @@ export default function CareerMode({ onBack }) {
   function settleMatch() {
     if (!profile || profile.status !== "playing") return;
     const correct = challenge.questions.filter((question, index) => answers[index] === question.answer).length;
-    const points = correct === 2 && timeLeft > 15 ? 3 : correct > 0 ? 1 : 0;
+    const points = correct === 2 && timeLeft > 10 ? 3 : correct > 0 ? 1 : 0;
     const win = points === 3;
     const draw = points === 1;
     const nextLossesInARow = points === 0 ? profile.lossesInARow + 1 : 0;
@@ -349,13 +359,13 @@ export default function CareerMode({ onBack }) {
   function beginChampionsLeague() {
     setProfile((current) => ({ ...current, status: "ucl", championsLeagueRound: 0, championsLeagueWins: 0 }));
     setAnswers([null, null]);
-    setTimeLeft(60);
+    setTimeLeft(MATCH_TIME_LIMIT);
   }
 
   function settleChampionsLeague() {
     if (!challenge || !profile || profile.status !== "ucl") return;
     const correct = challenge.questions.filter((question, index) => answers[index] === question.answer).length;
-    const advanced = correct === 2 && timeLeft > 15;
+    const advanced = correct === 2 && timeLeft > 10;
     const round = profile.championsLeagueRound;
     if (!advanced) {
       setProfile((current) => ({ ...current, status: "season-end", championsLeagueUnlocked: false, championsLeagueRound: 0 }));
@@ -367,7 +377,7 @@ export default function CareerMode({ onBack }) {
     }
     setProfile((current) => ({ ...current, championsLeagueRound: current.championsLeagueRound + 1, championsLeagueWins: current.championsLeagueWins + 1 }));
     setAnswers([null, null]);
-    setTimeLeft(60);
+    setTimeLeft(MATCH_TIME_LIMIT);
   }
 
   function resetCareer() {
