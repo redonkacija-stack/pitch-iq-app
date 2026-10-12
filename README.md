@@ -11,6 +11,10 @@ npm run dev
 
 Validate production output with `npm run lint` and `npm run build`; preview with `npm run preview`.
 
+## Feedback email delivery
+
+The feedback form uses the Vercel `/api/feedback` function and Resend. Add `RESEND_API_KEY` to the Vercel project's environment variables to enable delivery. With Resend's default sender, the recipient must be verified in Resend; configure a verified sender domain before using a different `from` address. The recipient address is configured in the server function and is not sent to the browser.
+
 ## Game modes
 
 - **Guess the Lineup:** guess an iconic XI using formation, shirt numbers, flags, fuzzy player search, and hints.

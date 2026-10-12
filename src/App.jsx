@@ -29,6 +29,7 @@ import VarBlitzGame from "./components/VarBlitzGame";
 import DuoLinkGame from "./components/DuoLinkGame";
 import RoomInvasionGame from "./components/RoomInvasionGame";
 import StatsModal from "./components/StatsModal";
+import FeedbackForm from "./components/FeedbackForm";
 import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
@@ -777,6 +778,8 @@ function AppContent() {
         onClose={() => setShowStats(false)}
         stats={stats}
       />
+
+      <FeedbackForm />
 
       {/* Clean Global Footer */}
       <footer className="mt-16 border-t border-white/10 px-4 py-6 text-center text-xs text-slate-500">
