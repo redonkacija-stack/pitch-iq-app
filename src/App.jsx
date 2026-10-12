@@ -33,7 +33,7 @@ import { GameProvider } from "./context/GameContext";
 import { useGame } from "./context/useGame";
 import { careers, matches, profiles } from "./data/gameData";
 import { matchModes } from "./data/gameModes";
-import { gridPlayers, leagueOptions, playerMatchesGridCell } from "./data/gridData";
+import { gridPlayers, leagueOptions, leagueRows, pickLeagueRows, playerMatchesGridCell } from "./data/gridData";
 import { saveRoom } from "./utils/lobbySync";
 import { i18n, useLanguage } from "./i18n";
 
@@ -443,10 +443,19 @@ function AppContent() {
     engine?.broadcastAction({ type: "GRID_STATE", gridState: nextState });
   }
 
-  function acceptRoomGridStart(leagueId, targetRoom = room, engine = roomSyncRef.current) {
-    if (!targetRoom || !engine?.isHost || !leagueOptions.some((league) => league.id === leagueId)) return;
+  function acceptRoomGridStart(leagueId, rowTeamNames, targetRoom = room, engine = roomSyncRef.current) {
+    const league = leagueOptions.find((item) => item.id === leagueId);
+    if (!targetRoom || !engine?.isHost || !league) return;
+    const validTeamNames = Array.isArray(rowTeamNames)
+      ? [...new Set(rowTeamNames)].filter((name) => league.teams.includes(name))
+      : [];
+    const rows = validTeamNames.length === 3
+      ? leagueRows(validTeamNames)
+      : pickLeagueRows(league, 0.42);
+    if (rows.length !== 3) return;
     commitRoomGridState({
       leagueId,
+      rows,
       cells: Array(9).fill(null),
       finished: false,
       message: "",
@@ -481,11 +490,11 @@ function AppContent() {
     else applyTurnSwitch(senderSlot, "TURN_SWITCH", 0);
   }
 
-  function handleGridStart(leagueId) {
+  function handleGridStart(leagueId, rowTeamNames) {
     if (!room) return;
     const engine = roomSyncRef.current;
-    if (engine?.isHost) acceptRoomGridStart(leagueId, room, engine);
-    else engine?.broadcastAction({ type: "GRID_START_REQUEST", leagueId });
+    if (engine?.isHost) acceptRoomGridStart(leagueId, rowTeamNames, room, engine);
+    else engine?.broadcastAction({ type: "GRID_START_REQUEST", leagueId, rowTeamNames });
   }
 
   function handleGridClaim(payload, botAction = false) {
@@ -597,7 +606,7 @@ function AppContent() {
           syncEngine.broadcastAction({ type: "ROOM_SCORE", slot: action.slot, points: action.points, completedPlayer: action.completedPlayer });
         } else if (action?.type === "GRID_START_REQUEST" && syncEngine.isHost) {
           const hostSlot = launchedRoom.slots?.find((slot) => slot.host)?.id ?? 0;
-          if (action.senderSlot === hostSlot) acceptRoomGridStart(action.leagueId, launchedRoom, syncEngine);
+          if (action.senderSlot === hostSlot) acceptRoomGridStart(action.leagueId, action.rowTeamNames, launchedRoom, syncEngine);
         } else if (action?.type === "GRID_CLAIM_REQUEST" && syncEngine.isHost) {
           acceptRoomGridClaim(action, action.senderSlot, launchedRoom, syncEngine);
         } else if (action?.type === "GRID_STATE" && !syncEngine.isHost) {

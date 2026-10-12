@@ -22,6 +22,7 @@ import {
   gridCriteriaForCell,
   gridPlayers,
   leagueOptions,
+  pickLeagueRows,
   playerMatchesGridCriterion,
 } from "../data/gridData";
 
@@ -94,6 +95,8 @@ function LeagueSelection({ onSelect, onBack, waitingForHost = false }) {
             <span className="text-lg font-black uppercase tracking-[.12em] text-amber-200 group-hover:text-emerald-200">{league.name}</span>
             <span className="mt-1 rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-slate-300" style={{ borderColor: "rgba(148,163,184,.2)" }}>{league.emblem} · {league.season}</span>
             <span className="mt-3 flex-1 text-xs leading-relaxed text-slate-400">{league.description}</span>
+            <span className="mt-3 text-[9px] font-extrabold uppercase tracking-wider text-slate-500">All {league.teams.length} clubs in the pool</span>
+            <span className="mt-1 max-h-20 w-full overflow-y-auto rounded-lg border border-white/5 bg-black/20 p-2 text-left text-[9px] leading-relaxed text-slate-400">{league.teams.join(" · ")}</span>
             <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">Enter matrix <ChevronRight size={13} /></span>
           </button>
         ))}
@@ -119,9 +122,11 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
   const isMyTurn = !isRoomMatch || room.localSlot === activePlayerId;
   const cells = isRoomMatch ? roomGridState?.cells || Array(9).fill(null) : localCells;
   const turn = isRoomMatch ? (room.slots?.[activePlayerId]?.team === "B" ? 1 : 0) : localTurn;
-  const currentLeague = isRoomMatch
-    ? leagueOptions.find((league) => league.id === roomGridState?.leagueId) || null
-    : selectedLeague;
+  const currentLeague = useMemo(() => {
+    if (!isRoomMatch) return selectedLeague;
+    const league = leagueOptions.find((item) => item.id === roomGridState?.leagueId);
+    return league ? { ...league, rows: roomGridState?.rows?.length === 3 ? roomGridState.rows : league.rows.slice(0, 3) } : null;
+  }, [isRoomMatch, roomGridState?.leagueId, roomGridState?.rows, selectedLeague]);
   const matchFinished = isRoomMatch ? Boolean(roomGridState?.finished) : finished;
   const matchMessage = isRoomMatch ? roomGridState?.message || "" : message;
 
@@ -177,11 +182,12 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
   }, [activePlayerId, cells, currentLeague, isRoomHost, isRoomMatch, matchFinished, onGridClaim, room, roomGridState]);
 
   function chooseLeague(league) {
+    const rows = pickLeagueRows(league);
     if (isRoomMatch) {
-      if (isRoomHost) onGridStart?.(league.id);
+      if (isRoomHost) onGridStart?.(league.id, rows.map((row) => row.value));
       return;
     }
-    setSelectedLeague(league);
+    setSelectedLeague({ ...league, rows });
     setLocalCells(Array(9).fill(null));
     setSelected(null);
     setQuery("");
