@@ -11,7 +11,7 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: "Feedback must be between 1 and 1000 characters." });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY || process.env.PitchIQ_Feedback;
   if (!apiKey) {
     return response.status(503).json({ error: "Feedback delivery is not configured." });
   }
