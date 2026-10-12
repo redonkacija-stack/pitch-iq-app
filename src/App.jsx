@@ -261,6 +261,11 @@ function ModeRouter({
         onNext={onNextChallenge}
         onComplete={onComplete}
         onProgress={onProgress}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -274,6 +279,11 @@ function ModeRouter({
         onBack={onBack}
         onNext={onNextChallenge}
         onComplete={onComplete}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -287,6 +297,11 @@ function ModeRouter({
         onBack={onBack}
         onNext={onNextChallenge}
         onComplete={onComplete}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -297,6 +312,11 @@ function ModeRouter({
         key={`market-${challengeOffset}`}
         onBack={onBack}
         onComplete={onComplete}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -324,6 +344,11 @@ function ModeRouter({
         initialIndex={challengeOffset}
         onBack={onBack}
         onComplete={onComplete}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -334,6 +359,11 @@ function ModeRouter({
         key={`var-${challengeOffset}`}
         onBack={onBack}
         onComplete={onComplete}
+        room={room}
+        activePlayerId={activePlayerId}
+        turnDeadline={turnDeadline}
+        onTurn={onTurn}
+        onScore={onScore}
       />
     );
   }
@@ -343,6 +373,11 @@ function ModeRouter({
       key={`duo-${challengeOffset}`}
       onBack={onBack}
       onComplete={onComplete}
+      room={room}
+      activePlayerId={activePlayerId}
+      turnDeadline={turnDeadline}
+      onTurn={onTurn}
+      onScore={onScore}
     />
   );
 }
@@ -453,9 +488,18 @@ function AppContent() {
     else engine?.broadcastAction({ type: "GRID_START_REQUEST", leagueId });
   }
 
-  function handleGridClaim(payload) {
-    if (!room || room.localSlot !== activePlayerRef.current) return;
+  function handleGridClaim(payload, botAction = false) {
+    if (!room) return;
     const engine = roomSyncRef.current;
+    if (botAction) {
+      const hostSlot = room.slots?.find((slot) => slot.host)?.id ?? 0;
+      const activeSlot = room.slots?.[activePlayerRef.current];
+      if (engine?.isHost && room.localSlot === hostSlot && activeSlot?.isBot) {
+        acceptRoomGridClaim(payload, activePlayerRef.current, room, engine);
+      }
+      return;
+    }
+    if (room.localSlot !== activePlayerRef.current) return;
     if (engine?.isHost) acceptRoomGridClaim(payload, room.localSlot, room, engine);
     else engine?.broadcastAction({ type: "GRID_CLAIM_REQUEST", ...payload });
   }

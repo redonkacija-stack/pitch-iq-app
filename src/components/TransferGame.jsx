@@ -16,6 +16,7 @@ import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 import FlagIcon from "./FlagIcon";
 import ClubCrest from "./ClubCrest";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
 function normalize(value) {
   return value
@@ -31,6 +32,11 @@ export default function TransferGame({
   onBack,
   onNext,
   onComplete,
+  room = null,
+  activePlayerId = 0,
+  turnDeadline = 0,
+  onTurn,
+  onScore,
 }) {
   const { stats } = useGame();
   const playSound = useSound(stats.soundEnabled);
@@ -72,16 +78,17 @@ export default function TransferGame({
       });
   }
 
-  function submit(event) {
-    event.preventDefault();
-    if (!answer.trim() || result) return;
+  function submit(event, suppliedAnswer = answer) {
+    event?.preventDefault();
+    if (!suppliedAnswer.trim() || result) return;
     const accepted = [challenge.answer, ...challenge.aliases].some(
-      (name) => normalize(name) === normalize(answer),
+      (name) => normalize(name) === normalize(suppliedAnswer),
     );
     if (accepted) {
       setFeedback("That’s the one. Career mapped.");
       playSound("success");
       finishRound(true);
+      onScore?.(activePlayerId, 250, true);
     } else {
       setMistakes((count) => count + 1);
       setFeedback("Not quite. Read the route again.");
@@ -89,7 +96,13 @@ export default function TransferGame({
       window.setTimeout(() => setShake(false), 360);
       playSound("error");
     }
+    onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
   }
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${result?.won || "playing"}:${mistakes}:${hintsShown}`, onAction: ({ accuracy }) => {
+    if (result) return;
+    submit(null, Math.random() <= accuracy ? challenge.answer : "Unknown Player");
+  } });
 
   function revealHint() {
     if (hintsShown >= challenge.hints.length || result) return;

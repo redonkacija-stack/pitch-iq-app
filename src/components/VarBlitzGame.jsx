@@ -10,8 +10,9 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { varQuestions } from "../data/arcadeData";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
-export default function VarBlitzGame({ onBack, onComplete }) {
+export default function VarBlitzGame({ onBack, onComplete, room = null, activePlayerId = 0, turnDeadline = 0, onTurn, onScore }) {
   const [questions, setQuestions] = useState(() =>
     [...varQuestions].sort(() => Math.random() - 0.5),
   );
@@ -36,6 +37,8 @@ export default function VarBlitzGame({ onBack, onComplete }) {
         explanation: currentQ.explanation,
         citation: currentQ.ruleCategory,
       });
+      if (hit) onScore?.(activePlayerId, 20, true);
+      onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
 
       if (hit) {
         const nextScore = score + 20;
@@ -64,8 +67,14 @@ export default function VarBlitzGame({ onBack, onComplete }) {
         }
       }, 950);
     },
-    [feedback, done, questions, index, score, streak, seconds, onComplete],
+    [feedback, done, questions, index, score, streak, seconds, onComplete, onTurn, onScore, activePlayerId, room],
   );
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${index}:${done}`, onAction: ({ accuracy }) => {
+    if (!currentQ || done || feedback) return;
+    const answer = Math.random() <= accuracy ? currentQ.answer : !currentQ.answer;
+    respond(answer);
+  } });
 
   // 60-second countdown timer
   useEffect(() => {

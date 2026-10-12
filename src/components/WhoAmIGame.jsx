@@ -10,8 +10,9 @@ import {
 import confetti from "canvas-confetti";
 import { mysteryPlayers } from "../data/arcadeData";
 import FlagIcon from "./FlagIcon";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
-export default function WhoAmIGame({ onBack, onComplete, initialIndex }) {
+export default function WhoAmIGame({ onBack, onComplete, initialIndex, room = null, activePlayerId = 0, turnDeadline = 0, onTurn, onScore }) {
   const [index, setIndex] = useState(() =>
     initialIndex !== undefined
       ? initialIndex % mysteryPlayers.length
@@ -31,15 +32,17 @@ export default function WhoAmIGame({ onBack, onComplete, initialIndex }) {
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
 
-  function submit(event) {
+  function submit(event, suppliedAnswer = answer) {
     event?.preventDefault();
-    if (!answer.trim() || result !== null) return;
+    if (!suppliedAnswer.trim() || result !== null) return;
 
-    const correct = normalize(answer) === normalize(mystery.name);
+    const correct = normalize(suppliedAnswer) === normalize(mystery.name);
     setResult(correct);
 
     const points = correct ? Math.max(10, 50 - revealed * 10) : 0;
     onComplete?.(points, correct);
+    if (correct) onScore?.(activePlayerId, points, true);
+    onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
 
     if (correct) {
       confetti({
@@ -50,6 +53,11 @@ export default function WhoAmIGame({ onBack, onComplete, initialIndex }) {
       });
     }
   }
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${index}:${revealed}:${result}`, onAction: ({ accuracy }) => {
+    if (result !== null) return;
+    submit(null, Math.random() <= accuracy ? mystery.name : "Unknown Player");
+  } });
 
   function next() {
     setIndex((prev) => {

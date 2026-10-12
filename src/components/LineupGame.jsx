@@ -16,6 +16,7 @@ import FlagIcon from "./FlagIcon";
 import ClubCrest from "./ClubCrest";
 import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
 function normalize(value) {
   return value
@@ -48,6 +49,11 @@ export default function LineupGame({
   onNext,
   onComplete,
   onProgress,
+  room = null,
+  activePlayerId = 0,
+  turnDeadline = 0,
+  onTurn,
+  onScore,
 }) {
   const { stats } = useGame();
   const playSound = useSound(stats.soundEnabled);
@@ -61,6 +67,15 @@ export default function LineupGame({
   const [result, setResult] = useState(null);
   const players = challenge.players;
   const remaining = players.filter((player) => !guessed.has(player.id));
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${guessed.size}:${misses}`, onAction: ({ accuracy }) => {
+    if (!remaining.length || result) return;
+    if (Math.random() <= accuracy) {
+      reveal(remaining[Math.floor(Math.random() * remaining.length)].id);
+      onScore?.(activePlayerId, 100, true);
+    }
+    else { setMisses((count) => count + 1); setMessage("AI missed the lineup. Turn passed."); }
+    onTurn?.((activePlayerId + 1) % (room.capacity || 2), activePlayerId, "guess");
+  } });
   const searchValue = normalize(query.trim());
   const options =
     searchValue.length < 2

@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { duoLinks } from "../data/arcadeData";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
-export default function DuoLinkGame({ onBack, onComplete }) {
+export default function DuoLinkGame({ onBack, onComplete, room = null, activePlayerId = 0, turnDeadline = 0, onTurn, onScore }) {
   const [rounds, setRounds] = useState(() =>
     [...duoLinks].sort(() => Math.random() - 0.5),
   );
@@ -28,6 +29,8 @@ export default function DuoLinkGame({ onBack, onComplete }) {
   function choose(option) {
     if (locked) return;
     const hit = option === round.shared;
+    if (hit) onScore?.(activePlayerId, 30, true);
+    onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
     setSelected(option);
     setLocked(true);
     setResult(hit);
@@ -50,6 +53,13 @@ export default function DuoLinkGame({ onBack, onComplete }) {
       onComplete?.(score + (hit ? 30 : 0), hit);
     }
   }
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${index}:${locked}`, onAction: ({ accuracy }) => {
+    if (locked || !round) return;
+    const wrongOptions = round.options.filter((option) => option !== round.shared);
+    choose(Math.random() <= accuracy || !wrongOptions.length ? round.shared : wrongOptions[Math.floor(Math.random() * wrongOptions.length)]);
+    if (room) window.setTimeout(next, 1000);
+  } });
 
   function restart() {
     setRounds([...duoLinks].sort(() => Math.random() - 0.5));

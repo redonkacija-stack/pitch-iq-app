@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -54,6 +54,7 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
   const [event, setEvent] = useState(
     `Room ${room?.code} is ready. ${room?.slots?.[0]?.name || "Player 1"} has the first turn.`,
   );
+  const botActionRef = useRef("");
   const done = playerIndex >= pool.length;
   const current = pool[playerIndex];
   const tier = invasionTiers[tierIndex];
@@ -139,20 +140,34 @@ export default function RoomInvasionGame({ room, onBack, onComplete, onScore, on
 
   // Bots guess on their own turns after a short, difficulty-weighted delay.
   useEffect(() => {
+    const hostSlot = room?.slots?.find((slot) => slot.host)?.id ?? 0;
     const botSlot = room ? activePlayerId : turn;
-    if (done || room?.localSlot !== 0 || !room?.slots?.[botSlot]?.isBot || !question) return undefined;
-    const bot = room.slots[botSlot];
-    const accuracy = {
-      Easy: 0.32,
-      Medium: 0.58,
-      Hard: 0.82,
-    }[bot.botDifficulty] || 0.5;
-    const delay = 4000 + Math.random() * 4000 + (bot.botDifficulty === "Easy" ? 900 : 0);
+    const bot = room?.slots?.[botSlot];
+    if (done || !room || room.localSlot !== hostSlot || !bot?.isBot || !question) return undefined;
+
+    const actionKey = `${room.code}:${room.turnDeadline || turnDeadline}:${playerIndex}:${tierIndex}:${botSlot}`;
+    if (botActionRef.current === actionKey) return undefined;
+    const profiles = {
+      Easy: { accuracy: 0.35, min: 6500, max: 8500 },
+      Medium: { accuracy: 0.62, min: 4500, max: 7000 },
+      Hard: { accuracy: 0.84, min: 2500, max: 5000 },
+    };
+    const profile = profiles[bot.botDifficulty] || profiles.Medium;
+    const delay = profile.min + Math.random() * (profile.max - profile.min);
     const timerId = setTimeout(() => {
-      submitAnswer(Math.random() < accuracy ? question.answer : "Unknown Player", { botAction: true });
+      // Mark the turn before submitting so a rerender cannot schedule a duplicate answer.
+      botActionRef.current = actionKey;
+      const acceptedAnswers = [question.answer, ...(question.accepted || [])].map(normalize);
+      const wrongAnswers = invasionPlayers
+        .map((player) => player.name)
+        .filter((name) => !acceptedAnswers.includes(normalize(name)));
+      const guess = Math.random() < profile.accuracy || wrongAnswers.length === 0
+        ? question.answer
+        : wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+      submitAnswer(guess, { botAction: true });
     }, delay);
     return () => clearTimeout(timerId);
-  }, [done, room, turn, playerIndex, tierIndex, question]);
+  }, [activePlayerId, done, room, turn, turnDeadline, playerIndex, tierIndex, question]);
 
   function reset() {
     setTurn(0);

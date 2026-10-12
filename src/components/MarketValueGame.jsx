@@ -10,6 +10,7 @@ import confetti from "canvas-confetti";
 import { marketPlayers } from "../data/arcadeData";
 import FlagIcon from "./FlagIcon";
 import ClubCrest from "./ClubCrest";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
 function seededShuffle(items) {
   const pool = [...items];
@@ -20,7 +21,7 @@ function seededShuffle(items) {
   return pool;
 }
 
-export default function MarketValueGame({ onBack, onComplete }) {
+export default function MarketValueGame({ onBack, onComplete, room = null, activePlayerId = 0, turnDeadline = 0, onTurn, onScore }) {
   const [players, setPlayers] = useState(() => seededShuffle(marketPlayers));
   const [index, setIndex] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -37,6 +38,8 @@ export default function MarketValueGame({ onBack, onComplete }) {
       direction === "higher"
         ? right.value >= left.value
         : right.value <= left.value;
+    if (hit) onScore?.(activePlayerId, 25, true);
+    onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
 
     setCorrect(hit);
     if (hit) {
@@ -67,6 +70,13 @@ export default function MarketValueGame({ onBack, onComplete }) {
       onComplete?.(streak * 25, false);
     }
   }
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: `${index}:${state}`, onAction: ({ accuracy }) => {
+    if (!right || state !== "playing") return;
+    const correctDirection = right.value >= left.value ? "higher" : "lower";
+    const wrongDirection = correctDirection === "higher" ? "lower" : "higher";
+    guess(Math.random() <= accuracy || right.value === left.value ? correctDirection : wrongDirection);
+  } });
 
   function restart() {
     setPlayers(seededShuffle(marketPlayers));

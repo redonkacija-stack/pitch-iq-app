@@ -14,6 +14,7 @@ import { useGame } from "../context/useGame";
 import { useSound } from "../hooks/useSound";
 import FlagIcon from "./FlagIcon";
 import ClubCrest from "./ClubCrest";
+import useRoomBotTurn from "../hooks/useRoomBotTurn";
 
 // Formation node positions on tactical pitch board
 const formationSetups = {
@@ -110,6 +111,11 @@ export default function TacticsGame({
   onBack,
   onNext,
   onComplete,
+  room = null,
+  activePlayerId = 0,
+  turnDeadline = 0,
+  onTurn,
+  onScore,
 }) {
   const { stats } = useGame();
   const playSound = useSound(stats.soundEnabled);
@@ -123,6 +129,7 @@ export default function TacticsGame({
     setChoice(option);
     setResult({ correct, score });
     onComplete?.(score, correct);
+    if (correct) onScore?.(activePlayerId, score, true);
     playSound(correct ? "success" : "error");
     if (correct) {
       confetti({
@@ -132,7 +139,14 @@ export default function TacticsGame({
         colors: ["#22c55e", "#eaf7dd", "#5eac7c"],
       });
     }
+    onTurn?.((activePlayerId + 1) % (room?.capacity || 2), activePlayerId, "guess");
   }
+
+  useRoomBotTurn({ room, activePlayerId, turnDeadline, turnKey: choice || "ready", onAction: ({ accuracy }) => {
+    if (choice) return;
+    const wrong = challenge.options.filter((option) => option !== challenge.answer);
+    selectOption(Math.random() <= accuracy || !wrong.length ? challenge.answer : wrong[Math.floor(Math.random() * wrong.length)]);
+  } });
 
   return (
     <div className="mx-auto w-full max-w-[1080px] px-4 pb-14 pt-6 sm:px-7 sm:pt-8 lg:px-9">

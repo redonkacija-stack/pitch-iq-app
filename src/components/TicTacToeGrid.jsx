@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   Check,
@@ -112,6 +112,7 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
   const [message, setMessage] = useState("");
   const [localTurn, setLocalTurn] = useState(0);
   const [finished, setFinished] = useState(false);
+  const botActionRef = useRef("");
   const isRoomMatch = Boolean(room);
   const roomHostId = room?.slots?.find((slot) => slot.host)?.id ?? 0;
   const isRoomHost = isRoomMatch && room.localSlot === roomHostId;
@@ -143,6 +144,37 @@ export default function TicTacToeGrid({ onBack, onComplete, room = null, activeP
       (!search || normalize(player.name).includes(search))
     ).slice(0, 7);
   }, [activeCriteria, cells, query, selected]);
+
+  // Bot turns are executed by the host so every connected client receives the
+  // same validated tile claim and scoreboard update.
+  useEffect(() => {
+    const botSlot = room ? activePlayerId : -1;
+    const bot = room?.slots?.[botSlot];
+    if (!isRoomMatch || !isRoomHost || !bot?.isBot || !currentLeague || matchFinished || !roomGridState) return undefined;
+
+    const actionKey = `${room.code}:${room.turnDeadline || "turn"}:${roomGridState.leagueId}:${cells.filter(Boolean).length}:${botSlot}`;
+    if (botActionRef.current === actionKey) return undefined;
+    const delayProfiles = { Easy: [6500, 8500], Medium: [4500, 7000], Hard: [2500, 5000] };
+    const [minDelay, maxDelay] = delayProfiles[bot.botDifficulty] || delayProfiles.Medium;
+    const timer = setTimeout(() => {
+      const options = [];
+      for (let index = 0; index < 9; index += 1) {
+        if (cells[index]) continue;
+        const { row, column } = gridCriteriaForCell(currentLeague, index);
+        const candidates = gridPlayers.filter((player) =>
+          playerMatchesGridCriterion(player, row) &&
+          playerMatchesGridCriterion(player, column) &&
+          !cells.some((cell) => cell?.name === player.name)
+        );
+        if (candidates.length) options.push({ index, player: candidates[Math.floor(Math.random() * candidates.length)] });
+      }
+      if (!options.length) return;
+      botActionRef.current = actionKey;
+      const choice = options[Math.floor(Math.random() * options.length)];
+      onGridClaim?.({ index: choice.index, playerName: choice.player.name, leagueId: currentLeague.id }, true);
+    }, minDelay + Math.random() * (maxDelay - minDelay));
+    return () => clearTimeout(timer);
+  }, [activePlayerId, cells, currentLeague, isRoomHost, isRoomMatch, matchFinished, onGridClaim, room, roomGridState]);
 
   function chooseLeague(league) {
     if (isRoomMatch) {
